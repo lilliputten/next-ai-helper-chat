@@ -59,9 +59,7 @@
       "request": "launch",
       "program": "${workspaceRoot}/node_modules/gulp/bin/gulp.js",
       "console": "integratedTerminal",
-      "args": [
-        "build"
-      ]
+      "args": ["build"]
     },
     {
       "name": "Node: webpack",
@@ -69,27 +67,16 @@
       "request": "launch",
       "program": "${workspaceRoot}/node_modules/gulp/bin/gulp.js",
       "console": "integratedTerminal",
-      "args": [
-        "build"
-      ]
+      "args": ["build"]
     },
     {
       "type": "node",
       "request": "launch",
       "runtimeExecutable": "pnpm",
-      "runtimeArgs": [
-        "jest",
-        "${file}",
-        "--no-cache",
-        "--watchAll=false",
-        "--runInBand"
-      ],
+      "runtimeArgs": ["jest", "${file}", "--no-cache", "--watchAll=false", "--runInBand"],
       "console": "integratedTerminal",
       "protocol": "inspector",
-      "skipFiles": [
-        "${workspaceFolder}/node_modules/**/*.js",
-        "<node_internals>/**/*.js"
-      ]
+      "skipFiles": ["${workspaceFolder}/node_modules/**/*.js", "<node_internals>/**/*.js"]
     },
     {
       "name": "Next.js: debug server-side",
@@ -114,12 +101,8 @@
       "type": "node",
       "request": "launch",
       "program": "${workspaceFolder}/node_modules/.bin/next",
-      "runtimeArgs": [
-        "--inspect"
-      ],
-      "skipFiles": [
-        "<node_internals>/**"
-      ],
+      "runtimeArgs": ["--inspect"],
+      "skipFiles": ["<node_internals>/**"],
       "serverReadyAction": {
         "action": "debugWithEdge",
         "killOnServerStop": true,

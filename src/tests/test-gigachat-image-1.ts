@@ -5,8 +5,9 @@ import * as path from 'path';
 import { detectImage, GigaChat } from 'gigachat';
 import { ChatCompletion, WithXHeaders } from 'gigachat/interfaces';
 
-import { GIGACHAT_CREDENTIALS, isDev } from './env';
-import { getHttpsAgent } from './lib/getHttpsAgent';
+import { GIGACHAT_CREDENTIALS, isDev } from '@/env';
+import { getHttpsAgent } from '@/lib/getHttpsAgent';
+
 import savedResult from './test-gigachat-image-1-result-01.json';
 
 type TGigaChatRes = ChatCompletion & WithXHeaders;
