@@ -1,0 +1,26 @@
+{
+  "choices": [
+    {
+      "message": {
+        "content": "<img src=\"b1b4799f-95c7-4fcd-a066-9d20a2b930c6\" fuse=\"true\"/> Я нарисовал для вас розового кота.",
+        "role": "assistant",
+        "functions_state_id": "6e1f4d08-840e-48cf-85a6-abb481b695aa"
+      },
+      "index": 0,
+      "finish_reason": "stop"
+    }
+  ],
+  "created": 1757452386,
+  "model": "GigaChat-Pro:2.0.28.2",
+  "object": "chat.completion",
+  "usage": {
+    "prompt_tokens": 626,
+    "completion_tokens": 42,
+    "total_tokens": 668,
+    "precached_prompt_tokens": 3
+  },
+  "xHeaders": {
+    "xRequestID": "c494f183-51a2-4d57-b89c-97d62242f47a",
+    "xSessionID": "30212c14-e42d-426c-88ad-d6eb22109339"
+  }
+}

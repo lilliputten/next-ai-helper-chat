@@ -7,7 +7,7 @@ async function testClient() {
     const client = await getAiClient();
 
     const messages = [
-      // new SystemMessage('Translate the following message to Russian language'),
+      new SystemMessage('You are an image artist.'),
       new HumanMessage('Draw a pink cat!'),
       // new SystemMessage('Translate the following message to Russian language'),
       // new HumanMessage('Hello!'),

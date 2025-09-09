@@ -33,6 +33,8 @@ export const DATABASE_URL = process.env.DATABASE_URL || '';
 
 export const isVercel = !!VERCEL_URL;
 export const isDev = process.env.NODE_ENV === 'development' || process.argv?.includes('--dev');
+// NOTE: Beware direct console invocation
+export const isProd = !isDev;
 
 /** Configuration slot id */
 export const CONFIG_ID =
