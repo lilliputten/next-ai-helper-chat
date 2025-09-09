@@ -1,5 +1,5 @@
 // ex: set ft=jsonc :
-// @changed 2024.10.06, 23:23
+// @changed 2025.09.10, 02:02
 {
   // Use IntelliSense to learn about possible attributes.
   // Hover to view descriptions of existing attributes.
@@ -7,6 +7,21 @@
   // https://code.visualstudio.com/docs/editor/debugging#_launch-configurations
   "version": "0.2.0",
   "configurations": [
+    {
+      "type": "node-terminal",
+      "name": "Run local dev server",
+      "request": "launch",
+      "command": "pnpm run dev",
+      "cwd": "${workspaceFolder}",
+      "skipFiles": ["!${workspaceRoot}/node_modules/**/*.js"]
+      // "runtimeArgs": ["--preserve-symlinks"]
+    },
+    {
+      "type": "node-terminal",
+      "name": "xtunnel",
+      "request": "launch",
+      "command": "xtunnel http 3000"
+    },
     {
       "name": "Launch Chrome",
       "request": "launch",

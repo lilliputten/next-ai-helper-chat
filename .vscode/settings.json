@@ -1,17 +1,24 @@
 {
+  "search.excludeFolders": ["dist", ".git", "node_modules", ".venv"],
   "search.exclude": {
     "*.session": true,
     "tsconfig.tsbuildinfo": true,
     "pnpm-lock.yaml": true,
-    "preview-public": true,
-    "compiled-assets": true,
-    "static": true,
-    "build": true,
-    "node_modules": true,
-    "patches": true,
-    "publish": true
+    "dist": true,
+    "public": true,
+    "node_modules": true
   },
-  "git.ignoreLimitWarning": true,
-  "CodeGPT.apiKey": "CodeGPT Plus Beta",
-  "findUnusedExports.detectCircularImports": true
+  "files.exclude": {
+    "**/*.tmp": true,
+    "**/.*.sw?": true
+  },
+  "i18n-ally.localesPaths": ["src/i18n/locales"],
+  "i18n-ally.keystyle": "nested",
+  "i18n-ally.sourceLanguage": "en",
+  "css.validate": false,
+  "scss.validate": false,
+  "stylelint.validate": ["css", "scss"],
+  "editor.codeActionsOnSave": {
+    "source.fixAll.stylelint": "explicit"
+  }
 }
