@@ -22,23 +22,9 @@ export async function getCommunityAIClient() {
       model: 'gpt2',
       endpointUrl: 'https://api-inference.huggingface.co/models/gpt2',
       temperature: 0.7,
-      maxTokens: 50,
+      maxTokens: 100,
       apiKey: HUGGINGFACEHUB_API_KEY,
     });
-    /* // Deep Seek (requires balance refill)
-     * client = new ChatDeepSeek({
-     *   apiKey: DEEPSEEK_API_KEY,
-     *   model: 'deepseek-chat', // Use the correct DeepSeek model name
-     * });
-     */
-    /* // GigaChat
-     * client = new GigaChat({
-     *   credentials: GIGACHAT_CREDENTIALS,
-     *   model: GIGACHAT_MODEL,
-     *   useApiForTokens: true, // enable token counting via API
-     *   httpsAgent: getHttpsAgent(),
-     * });
-     */
     return client;
   } catch (error) {
     // eslint-disable-next-line no-console

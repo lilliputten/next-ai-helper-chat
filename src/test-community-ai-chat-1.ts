@@ -2,26 +2,29 @@ import { HumanMessage, SystemMessage } from '@langchain/core/messages';
 
 import { getCommunityAIClient } from '@/lib/getCommunityAIClient';
 
-async function testAiClient() {
+async function testClient() {
   try {
     const client = await getCommunityAIClient();
 
-    const messages = [
-      new SystemMessage('Translate the following message to Russian language'),
-      new HumanMessage('Hello!'),
-    ];
+    /* const messages = [
+     *   new SystemMessage('Translate the following message to Russian language'),
+     *   new HumanMessage('Hello!'),
+     * ];
+     * // Convert messages to string since HuggingFaceInference only accepts strings
+     * const prompt = messages.map((msg) => `${msg.constructor.name}: ${msg.content}`).join('\n');
+     */
 
-    // Convert messages to string since HuggingFaceInference only accepts strings
-    const prompt = messages.map((msg) => `${msg.constructor.name}: ${msg.content}`).join('\n');
-    const res = await client.invoke(prompt);
+    const res = await client.invoke(
+      'Question: What would be a good company name for a colorful socks brand?\nAnswer:',
+    );
 
     // NOTE: Hugging Face provider doesn't work
 
     // eslint-disable-next-line no-console
-    console.log('[getAiClient] ✅ Success:', {
+    console.log('[testClient] ✅ Success:', {
       res,
-      prompt,
-      messages,
+      // prompt,
+      // messages,
     });
     // eslint-disable-next-line no-debugger
     debugger;
@@ -29,7 +32,7 @@ async function testAiClient() {
     const message = error instanceof Error ? error.message : String(error);
     const errorJson = JSON.stringify(error, null, 2);
     // eslint-disable-next-line no-console
-    console.error('[getAiClient] ❌ Error:', message, {
+    console.error('[testClient] ❌ Error:', message, {
       error,
       errorJson,
     });
@@ -38,4 +41,4 @@ async function testAiClient() {
   }
 }
 
-testAiClient();
+testClient();

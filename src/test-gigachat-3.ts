@@ -2,7 +2,7 @@ import { HumanMessage, SystemMessage } from '@langchain/core/messages';
 
 import { getAIClient } from '@/lib/getAIClient';
 
-async function testAiClient() {
+async function testClient() {
   try {
     const client = await getAIClient();
 
@@ -17,12 +17,12 @@ async function testAiClient() {
 
     const tokenUsage = res.response_metadata?.tokenUsage;
 
-    console.log('[getAiClient] ✅ Sucess:', res.content, tokenUsage);
+    console.log('[testClient] ✅ Success:', res.content, tokenUsage);
     debugger;
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error);
     // eslint-disable-next-line no-console
-    console.error('[getAiClient] ❌ Error:', message, {
+    console.error('[testClient] ❌ Error:', message, {
       error,
       errorJson: JSON.stringify(error, null, 2),
     });
@@ -31,4 +31,4 @@ async function testAiClient() {
   }
 }
 
-testAiClient();
+testClient();
