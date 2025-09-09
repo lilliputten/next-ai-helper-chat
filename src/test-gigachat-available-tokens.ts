@@ -5,6 +5,8 @@ async function getAvailableTokens() {
     const tokens = await getGigaChatAvailableTokens();
     // eslint-disable-next-line no-console
     console.log('[get-available-tokens] Available tokens:', tokens);
+    // eslint-disable-next-line no-debugger
+    debugger;
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error('[get-available-tokens] ❌ Error:', error);

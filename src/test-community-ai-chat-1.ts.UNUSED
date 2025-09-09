@@ -1,8 +1,8 @@
-import { getCommunityAIClient } from '@/lib/getCommunityAIClient';
+import { getCommunityAiClient } from '@/lib/getCommunityAiClient';
 
 async function testClient() {
   try {
-    const client = await getCommunityAIClient();
+    const client = await getCommunityAiClient();
 
     const res = await client.invoke(
       'Question: What would be a good company name for a colorful socks brand?\nAnswer:',

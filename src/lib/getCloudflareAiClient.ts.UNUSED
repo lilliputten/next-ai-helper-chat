@@ -2,12 +2,12 @@ import { ChatCloudflareWorkersAI } from '@langchain/community/chat_models/cloudf
 
 import { CLOUDFLARE_ACCOUNT_ID, CLOUDFLARE_API_TOKEN } from '@/env';
 
-export type TCloudflareAIClient = ChatCloudflareWorkersAI;
+export type TCloudflareAiClient = ChatCloudflareWorkersAI;
 
-let client: TCloudflareAIClient | undefined;
+let client: TCloudflareAiClient | undefined;
 
 // Create client instance
-export async function getCloudflareAIClient() {
+export async function getCloudflareAiClient() {
   if (client) {
     return client;
   }
@@ -20,7 +20,7 @@ export async function getCloudflareAIClient() {
     return client;
   } catch (error) {
     // eslint-disable-next-line no-console
-    console.error('[getCloudflareAIClient] ❌ Error:', error);
+    console.error('[getCloudflareAiClient] ❌ Error:', error);
     debugger; // eslint-disable-line no-debugger
     throw error;
   }

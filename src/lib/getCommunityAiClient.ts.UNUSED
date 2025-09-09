@@ -7,12 +7,12 @@ import {
   // GIGACHAT_MODEL,
 } from '@/env';
 
-export type TCommunityAIClient = HuggingFaceInference;
+export type TCommunityAiClient = HuggingFaceInference;
 
-let client: TCommunityAIClient | undefined;
+let client: TCommunityAiClient | undefined;
 
 // Create client instance
-export async function getCommunityAIClient() {
+export async function getCommunityAiClient() {
   if (client) {
     return client;
   }
@@ -28,7 +28,7 @@ export async function getCommunityAIClient() {
     return client;
   } catch (error) {
     // eslint-disable-next-line no-console
-    console.error('[getCommunityAIClient:getCommunityAIClient] ❌ Error:', error);
+    console.error('[getCommunityAiClient:getCommunityAiClient] ❌ Error:', error);
     debugger; // eslint-disable-line no-debugger
     throw error;
   }

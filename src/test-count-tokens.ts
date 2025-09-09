@@ -1,7 +1,7 @@
-import { getAIClient } from '@/lib/getAIClient';
+import { getAiClient } from '@/lib/getAiClient';
 
 async function countTokensWithLangchainGigachat() {
-  const client = await getAIClient();
+  const client = await getAiClient();
 
   const textToCount = ['Hello world', 'This is a test message'];
 
