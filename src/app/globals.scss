@@ -4,13 +4,11 @@
 @tailwind components;
 @tailwind utilities;
 
-/* NOTE: Fix a wierd unsupported `@media (hover:hover)` media queries */
-/* stylelint-disable-next-line scss/at-rule-no-unknown, at-rule-no-unknown */
 @custom-variant hover (&:hover);
 
 :root {
   /* Define colors */
-  --backgroundColor: #242424;
+  --backgroundColor: #222;
   --primaryColor: #48f;
   --secondaryColor: #fb1;
   --appDestructiveColor: #f55;
@@ -20,11 +18,11 @@
   line-height: 1.5;
   font-weight: 400;
 
-  /* Set font size to approx fit 20 lines in the list */
-  /* font-size: max(14px, 1.62vh); */
+  // Set font size to approx fit 20 lines in the list
+  // font-size: max(14px, 1.62vh);
 
   color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
+  color: rgba(255, 255, 255, 0.85);
   background-color: var(--backgroundColor);
 
   font-synthesis: none;
@@ -33,15 +31,7 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* // Test
- * .test-page {
- *   .text {
- *     padding: 20px;
- *   }
- * }
- */
-
-/* // Clipping layout
+/* // Clipping layout example
  * body,
  * #root {
  *   position: fixed;

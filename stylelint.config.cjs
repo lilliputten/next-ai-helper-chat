@@ -14,6 +14,7 @@ module.exports = {
       {
         ignoreAtRules: [
           // Tailwind rules
+          'custom-variant',
           'forward',
           'function',
           'include',
@@ -35,6 +36,7 @@ module.exports = {
         ignoreAtRules: [
           // Tailwind rules
           'apply',
+          'custom-variant',
           'layer',
           'responsive',
           'screen',

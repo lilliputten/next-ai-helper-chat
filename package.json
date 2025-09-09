@@ -42,6 +42,7 @@
     "@typescript-eslint/eslint-plugin": "^8.16.0",
     "@typescript-eslint/parser": "^8.16.0",
     "autoprefixer": "^10.4.21",
+    "clsx": "^2.1.1",
     "concurrently": "^9.1.2",
     "cross-env": "^7.0.3",
     "dotenv": "^17.2.2",
@@ -77,6 +78,7 @@
     "stylelint-config-tailwindcss": "^0.0.7",
     "stylelint-order": "^6.0.4",
     "stylelint-scss": "^6.10.0",
+    "tailwind-merge": "^3.3.1",
     "tailwindcss": "^4.1.13",
     "ts-jest": "^29.4.0",
     "tsx": "^4.20.5",
@@ -94,7 +96,12 @@
     "eslint": "echo --Lint sources with eslint-- && eslint .",
     "lint-all": "echo --Run all pre-commit check-ups-- && npm-run-all eslint check-types stylelint && echo --All check-ups passed--",
     "check-all": "echo --Run all pre-commit check-ups-- && npm-run-all prettier lint-all && echo --All checks passed--",
+    "check-and-test": "echo --Run all pre-commit check-ups-- && npm-run-all check-all test && echo --All checks and tests passed--",
     "dev": "next dev",
+    "dev-https": "next dev --experimental-https",
+    "build": "echo --Build the project-- && next build",
+    "start": "echo --Start the project-- && next start",
+    "preview": "next build && next start",
     "vercel-clean": "vercel remove --safe --yes next-ai-helper-chat",
     "test": "jest"
   }
