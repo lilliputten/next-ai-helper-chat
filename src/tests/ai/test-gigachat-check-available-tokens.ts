@@ -1,4 +1,4 @@
-import { getGigaChatAvailableTokens } from '@/lib/getGigaChatAvailableTokens';
+import { getGigaChatAvailableTokens } from '@/lib/ai/getGigaChatAvailableTokens';
 
 async function getAvailableTokens() {
   try {

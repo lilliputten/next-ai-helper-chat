@@ -85,7 +85,7 @@
     "yaml-eslint-parser": "^1.3.0"
   },
   "scripts": {
-    "check-types": "echo --Run typescript linter: client-- && tsc --pretty --noEmit",
+    "check-types": "echo --Run typescript linter-- && tsc --pretty --noEmit",
     "prettier": "echo --Run prettier-- && prettier --write --cache . | grep -v -e cached -e unchanged || true",
     "stylelint": "echo --Lint styles-- && stylelint --allow-empty-input ./**/*.{css,scss,less}",
     "stylelint-fix": "echo --Lint and fix styles-- && stylelint --allow-empty-input ./**/*.{css,scss,less} --fix",

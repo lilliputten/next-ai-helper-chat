@@ -6,7 +6,7 @@ import { detectImage, GigaChat } from 'gigachat';
 import { ChatCompletion, WithXHeaders } from 'gigachat/interfaces';
 
 import { GIGACHAT_CREDENTIALS, isDev } from '@/config/env';
-import { getHttpsAgent } from '@/lib/getHttpsAgent';
+import { getHttpsAgent } from '@/lib/ai/getHttpsAgent';
 
 import savedResult from './test-gigachat-image-1-result-01.json';
 

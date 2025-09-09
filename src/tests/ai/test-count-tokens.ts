@@ -1,4 +1,4 @@
-import { getAiClient } from '@/lib/getAiClient';
+import { getAiClient } from '@/lib/ai/getAiClient';
 
 async function countTokensWithLangchainGigachat() {
   const client = await getAiClient();

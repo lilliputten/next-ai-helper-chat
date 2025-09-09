@@ -7,7 +7,7 @@ import {
   GIGACHAT_CREDENTIALS,
   GIGACHAT_MODEL,
 } from '@/config/env';
-import { getHttpsAgent } from '@/lib/getHttpsAgent';
+import { getHttpsAgent } from '@/lib/ai/getHttpsAgent';
 import { defaultAiClientType, TAiClientType } from '@/lib/types/TAiClientType';
 
 export type TAiClient = GigaChat<GigaChatCallOptions> | ChatCloudflareWorkersAI;

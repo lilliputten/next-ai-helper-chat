@@ -1,6 +1,6 @@
 import { HumanMessage, SystemMessage } from '@langchain/core/messages';
 
-import { getAiClient } from '@/lib/getAiClient';
+import { getAiClient } from '@/lib/ai/getAiClient';
 
 async function testClient() {
   try {

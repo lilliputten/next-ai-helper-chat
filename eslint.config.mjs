@@ -3,8 +3,6 @@
 import { fixupPluginRules } from '@eslint/compat';
 import pluginJs from '@eslint/js';
 import nextPlugin from '@next/eslint-plugin-next';
-// import tailwindcssPlugin from 'eslint-plugin-tailwindcss';
-// import pluginQuery from '@tanstack/eslint-plugin-query';
 import tsPlugin from '@typescript-eslint/eslint-plugin';
 import tsParser from '@typescript-eslint/parser';
 import { dirname } from 'path';
@@ -18,6 +16,9 @@ import pluginYml from 'eslint-plugin-yml';
 import globals from 'globals';
 import * as tseslint from 'typescript-eslint';
 import yamlParser from 'yaml-eslint-parser';
+
+// import tailwindcssPlugin from 'eslint-plugin-tailwindcss';
+// import pluginQuery from '@tanstack/eslint-plugin-query';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -49,6 +50,8 @@ export default [
       ...readGitignoreFiles({ cwd: __dirname }),
       '.next/**',
       'src/generated/prisma/**',
+      '*~',
+      '**/*~',
     ],
   },
 
