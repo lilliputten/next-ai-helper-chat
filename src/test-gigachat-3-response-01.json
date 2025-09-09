@@ -1,0 +1,21 @@
+﻿{
+  "lc": 1,
+  "type": "constructor",
+  "id": ["langchain_core", "messages", "AIMessage"],
+  "kwargs": {
+    "content": "Hello!",
+    "tool_calls": [],
+    "additional_kwargs": {},
+    "response_metadata": {
+      "tokenUsage": { "input_tokens": 22, "output_tokens": 3, "total_tokens": 25 },
+      "finish_reason": "stop",
+      "xHeaders": {
+        "xRequestID": "0300a8dd-1677-4180-80b6-6cae34382353",
+        "xSessionID": "e33feed2-5f93-4563-8164-04e413b52108"
+      }
+    },
+    "usage_metadata": { "input_tokens": 22, "output_tokens": 3, "total_tokens": 25 },
+    "id": "0300a8dd-1677-4180-80b6-6cae34382353",
+    "invalid_tool_calls": []
+  }
+}
