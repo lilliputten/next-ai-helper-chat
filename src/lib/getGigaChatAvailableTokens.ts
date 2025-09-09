@@ -1,7 +1,7 @@
 import { GigaChat as GigaChatDirect } from 'gigachat-node';
 import { IBalance } from 'gigachat-node/interfaces/balance';
 
-import { GIGACHAT_CREDENTIALS, GIGACHAT_MODEL } from '@/env';
+import { GIGACHAT_CREDENTIALS, GIGACHAT_MODEL } from '@/config/env';
 
 export async function getGigaChatAvailableTokens() {
   try {
@@ -15,7 +15,8 @@ export async function getGigaChatAvailableTokens() {
     });
 
     const balance: { balance: IBalance[] } = await directClient.getBalance();
-    const currentBalance = balance.balance.find((item) => item.usage === GIGACHAT_MODEL);
+    const balances = balance.balance;
+    const currentBalance = balances.find((item) => item.usage === GIGACHAT_MODEL);
     return currentBalance?.value;
   } catch (error) {
     // eslint-disable-next-line no-console
