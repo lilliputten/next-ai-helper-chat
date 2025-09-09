@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@huggingface/inference": "4",
+    "@langchain/cloudflare": "^0.1.1",
     "@langchain/community": "^0.3.55",
     "@langchain/core": "^0.3.75",
     "@langchain/deepseek": "^0.1.0",

@@ -1,18 +1,8 @@
-import { HumanMessage, SystemMessage } from '@langchain/core/messages';
-
 import { getCommunityAIClient } from '@/lib/getCommunityAIClient';
 
 async function testClient() {
   try {
     const client = await getCommunityAIClient();
-
-    /* const messages = [
-     *   new SystemMessage('Translate the following message to Russian language'),
-     *   new HumanMessage('Hello!'),
-     * ];
-     * // Convert messages to string since HuggingFaceInference only accepts strings
-     * const prompt = messages.map((msg) => `${msg.constructor.name}: ${msg.content}`).join('\n');
-     */
 
     const res = await client.invoke(
       'Question: What would be a good company name for a colorful socks brand?\nAnswer:',

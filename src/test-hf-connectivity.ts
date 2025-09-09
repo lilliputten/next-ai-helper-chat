@@ -1,5 +1,4 @@
-/* eslint-disable no-debugger */
-/* eslint-disable no-console */
+/* eslint-disable no-debugger, no-console */
 
 import { HUGGINGFACEHUB_API_KEY } from '@/env';
 

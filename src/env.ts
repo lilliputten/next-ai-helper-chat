@@ -9,6 +9,11 @@ export const GIGACHAT_BASE_URL =
 export const GIGACHAT_SCOPE = process.env.GIGACHAT_SCOPE || 'GIGACHAT_API_PERS';
 export const GIGACHAT_MODEL = process.env.GIGACHAT_MODEL || 'GigaChat-Pro';
 
+// CloudFlare
+
+export const CLOUDFLARE_ACCOUNT_ID = process.env.CLOUDFLARE_ACCOUNT_ID || '';
+export const CLOUDFLARE_API_TOKEN = process.env.CLOUDFLARE_API_TOKEN || '';
+
 // DeepSeek
 export const DEEPSEEK_API_KEY = process.env.DEEPSEEK_API_KEY || '';
 

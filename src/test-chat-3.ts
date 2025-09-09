@@ -17,8 +17,9 @@ async function testClient() {
 
     const tokenUsage = res.response_metadata?.tokenUsage;
 
+    // eslint-disable-next-line no-console
     console.log('[testClient] ✅ Success:', res.content, tokenUsage);
-    debugger;
+    debugger; // eslint-disable-line no-debugger
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error);
     // eslint-disable-next-line no-console
