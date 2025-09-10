@@ -10,6 +10,7 @@ export async function generateMetadata(/* { params }: TAwaitedLocaleProps */) {
     // locale,
   });
 }
+
 export default function IndexPage() {
   return (
     <div

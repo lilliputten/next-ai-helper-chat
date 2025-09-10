@@ -54,8 +54,8 @@ export function constructMetadata(params: TConstructMetadataParams = {}): Metada
       creator: '@lilliputten',
     },
     icons,
-    metadataBase: new URL(url),
-    manifest: `${url}/site.webmanifest`,
+    // ...(url && { metadataBase: new URL(url) }),
+    // ...(url && { manifest: `${url}/site.webmanifest` }),
     ...(noIndex && {
       robots: {
         index: false,

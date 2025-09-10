@@ -1,6 +1,6 @@
-import dotenv from 'dotenv';
-
-dotenv.config();
+// Next.js automatically loads .env files, no need for dotenv.config()
+// import dotenv from 'dotenv';
+// dotenv.config();
 
 // GigaChat API
 export const GIGACHAT_CREDENTIALS = process.env.GIGACHAT_CREDENTIALS || '';
@@ -33,8 +33,7 @@ export const DEFAULT_LANGUAGE = process.env.DEFAULT_LANGUAGE || 'en';
 export const dataContentType = 'application/json; charset=utf-8';
 
 export const isVercel = !!VERCEL_URL;
-export const isDev =
-  process.env.NODE_ENV === 'development' || !!process.env.LOCAL || process.argv?.includes('--dev');
+export const isDev = process.env.NODE_ENV === 'development' || !!process.env.LOCAL;
 // NOTE: Beware direct console invocation
 export const isProd = !isDev;
 
