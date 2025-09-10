@@ -1,0 +1,24 @@
+{
+  "content": "DEMO: The word \"hairable\" is not a standard English word, and it doesn't have a direct translation in Spanish.\n взаимопонимания. If you are referring to something related to hair or the ability to grow hair, possible translations could be:\n\n- Capilar (adjective): Relating to hair.\n- Cresíble (adjective): Capable of growing or developing.\n\nIf you provide more context, I can give a more precise translation.",
+  "additional_kwargs": {},
+  "response_metadata": {
+    "tokenUsage": {
+      "input_tokens": 27,
+      "output_tokens": 94,
+      "total_tokens": 121
+    },
+    "finish_reason": "stop",
+    "xHeaders": {
+      "xRequestID": "2a442907-2a5b-42da-b24f-7e84d1d182da",
+      "xSessionID": "972942ce-9576-4dd3-8f91-bba61baecec3"
+    }
+  },
+  "id": "2a442907-2a5b-42da-b24f-7e84d1d182da",
+  "tool_calls": [],
+  "invalid_tool_calls": [],
+  "usage_metadata": {
+    "input_tokens": 27,
+    "output_tokens": 94,
+    "total_tokens": 121
+  }
+}

@@ -5,8 +5,8 @@ import { AiClientTypeEnum, defaultAiClientType } from '@/lib/types/TAiClientType
 
 export const formSchema = z.object({
   model: z.nativeEnum(AiClientTypeEnum),
-  systemQueryText: z.string().optional(),
-  userQueryText: z.string().optional(),
+  systemQueryText: z.string(),
+  userQueryText: z.string(),
 });
 
 export type TFormData = z.infer<typeof formSchema>;

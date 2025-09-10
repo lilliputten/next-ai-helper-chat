@@ -18,7 +18,7 @@
     "ai": "^5.0.37"
   },
   "dependencies": {
-    "@hookform/resolvers": "^3.3.4",
+    "@hookform/resolvers": "^5.2.1",
     "@langchain/cloudflare": "^0.1.1",
     "@langchain/core": "^0.3.75",
     "clsx": "^2.1.1",

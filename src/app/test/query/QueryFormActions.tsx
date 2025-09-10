@@ -6,16 +6,26 @@ import { Check, Loader2, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { isDev } from '@/config';
 
+import { TLogRecord } from './LogRecords';
+import { TFormType } from './QueryFormDefinitions';
+
 interface TQueryFormActionsProps {
-  // handleSubmit: (e: React.FormEvent) => Promise<void>;
+  form: TFormType;
   clearLogs: () => void;
-  loading: boolean;
+  isPending: boolean;
+  logs: TLogRecord[];
 }
 
 export function QueryFormActions(props: TQueryFormActionsProps) {
-  const { clearLogs, loading } = props;
+  const { form, logs, clearLogs, isPending } = props;
 
-  const SubmitIcon = loading ? Loader2 : Check;
+  const { formState } = form;
+  const { isDirty, isValid } = formState;
+  const isSubmitEnabled = !isPending && isDirty && isValid;
+
+  const hasLogs = !!logs.length;
+
+  const SubmitIcon = isPending ? Loader2 : Check;
 
   return (
     <div
@@ -26,23 +36,23 @@ export function QueryFormActions(props: TQueryFormActionsProps) {
     >
       <button
         type="submit"
-        disabled={loading}
+        disabled={isPending}
         className={cn(
           'bg-primary-400 hover:bg-primary-300 focus:ring-primary-500 flex-1 cursor-pointer rounded px-4 py-2 font-semibold text-white focus:ring-2 focus:outline-none',
           'flex items-center justify-center gap-2 transition',
-          loading && 'pointer-events-none opacity-50',
+          !isSubmitEnabled && 'pointer-events-none opacity-50',
         )}
       >
-        <SubmitIcon className={cn('size-4 opacity-50', loading && 'animate-spin')} />
-        <span>{loading ? 'Processing...' : 'Submit'}</span>
+        <SubmitIcon className={cn('size-4 opacity-50', isPending && 'animate-spin')} />
+        <span>{isPending ? 'Processing...' : 'Submit'}</span>
       </button>
       <button
         type="button"
-        disabled={loading}
+        disabled={isPending}
         className={cn(
           'focus:ring-primary-500 cursor-pointer rounded bg-gray-600 px-4 py-2 font-semibold text-white hover:bg-gray-700 focus:ring-2 focus:outline-none',
           'flex items-center justify-center gap-2 transition',
-          loading && 'pointer-events-none opacity-50',
+          (!hasLogs || isPending) && 'pointer-events-none opacity-50',
         )}
         onClick={clearLogs}
       >
