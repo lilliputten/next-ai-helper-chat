@@ -19,6 +19,10 @@ export const CLOUDFLARE_API_TOKEN = process.env.CLOUDFLARE_API_TOKEN || '';
 // export const versionInfo = appInfo.versionInfo;
 
 export const VERCEL_URL = process.env.VERCEL_URL || '';
+export const NEXT_PUBLIC_APP_URL = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
+export const PUBLIC_URL = VERCEL_URL || NEXT_PUBLIC_APP_URL;
+
+export const DEFAULT_LANGUAGE = process.env.DEFAULT_LANGUAGE || 'en';
 
 // export const DEV_CLIENT_HOST = process.env.DEV_CLIENT_HOST || 'http://localhost:3000';
 // export const PORT = process.env.PORT || 3000;
