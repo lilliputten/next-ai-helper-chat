@@ -54,8 +54,8 @@ export function constructMetadata(params: TConstructMetadataParams = {}): Metada
       creator: '@lilliputten',
     },
     icons,
-    // ...(url && { metadataBase: new URL(url) }),
-    // ...(url && { manifest: `${url}/site.webmanifest` }),
+    metadataBase: new URL(url), // NOTE: It may break vercel build if there is a malformed url
+    manifest: `${url}/site.webmanifest`,
     ...(noIndex && {
       robots: {
         index: false,

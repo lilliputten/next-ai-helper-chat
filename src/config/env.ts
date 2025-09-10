@@ -18,7 +18,7 @@ export const CLOUDFLARE_API_TOKEN = process.env.CLOUDFLARE_API_TOKEN || '';
 // import appInfo from '@/app-info.json';
 // export const versionInfo = appInfo.versionInfo;
 
-export const VERCEL_URL = process.env.VERCEL_URL || '';
+export const VERCEL_URL = process.env.VERCEL_URL ? 'https://' + process.env.VERCEL_URL : '';
 export const NEXT_PUBLIC_APP_URL = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
 export const PUBLIC_URL = VERCEL_URL || NEXT_PUBLIC_APP_URL;
 
