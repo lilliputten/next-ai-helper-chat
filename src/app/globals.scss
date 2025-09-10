@@ -9,6 +9,8 @@
 :root {
   /* Define colors */
   --backgroundColor: #222;
+  --textColor: #ddd;
+
   --primaryColor: #48f;
   --secondaryColor: #fb1;
   --appDestructiveColor: #f55;
@@ -22,13 +24,31 @@
   // font-size: max(14px, 1.62vh);
 
   color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.85);
+  color: var(--textColor); // rgba(255, 255, 255, 0.85);
   background-color: var(--backgroundColor);
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+select {
+  color: var(--textColor);
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  appearance: none;
+  option {
+    &:hover,
+    &:checked {
+      background-color: var(--primaryColor);
+      color: #fff;
+    }
+  }
+  > * {
+    background-color: var(--backgroundColor);
+  }
+  background: url("/static/icons/select-arrows-dark.svg") no-repeat 100% 50%;
 }
 
 /* // Clipping layout example
