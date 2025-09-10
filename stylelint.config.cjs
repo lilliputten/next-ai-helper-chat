@@ -8,6 +8,7 @@ module.exports = {
   ],
   plugins: ['stylelint-order', 'stylelint-scss'],
   rules: {
+    'scss/operator-no-newline-after': null,
     'at-rule-no-deprecated': null,
     'at-rule-no-unknown': [
       true,
@@ -23,11 +24,12 @@ module.exports = {
           'tailwind',
           'theme',
           'use',
-          // 'apply',
-          // 'layer',
-          // 'responsive',
-          // 'screen',
-          // 'variants',
+          // SCSS control directives
+          'each',
+          'if',
+          'else',
+          'for',
+          'while',
         ],
       },
     ],
@@ -44,6 +46,12 @@ module.exports = {
           'tailwind',
           'theme',
           'variants',
+          // SCSS control directives
+          'each',
+          'if',
+          'else',
+          'for',
+          'while',
         ],
       },
     ],
