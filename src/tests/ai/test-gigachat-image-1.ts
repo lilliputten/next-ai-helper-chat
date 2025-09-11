@@ -17,7 +17,7 @@ const __debugUseSavedResult = true && isDev;
 async function testClient() {
   try {
     // @see https://developers.sber.ru/docs/ru/gigachat/guides/images-generation
-    const gigaClient = new GigaChat({
+    const gigaChatClient = new GigaChat({
       credentials: GIGACHAT_CREDENTIALS,
       httpsAgent: getHttpsAgent(),
     });
@@ -25,7 +25,7 @@ async function testClient() {
     if (__debugUseSavedResult) {
       gigaRes = savedResult as TGigaChatRes;
     } else {
-      gigaRes = await gigaClient.chat({
+      gigaRes = await gigaChatClient.chat({
         messages: [
           {
             role: 'system',
@@ -47,7 +47,7 @@ async function testClient() {
     // const tokenUsage = res.response_metadata?.tokenUsage;
 
     const detectedImage = detectImage(firstResult ?? '');
-    const image = detectedImage?.uuid && (await gigaClient.getImage(detectedImage.uuid));
+    const image = detectedImage?.uuid && (await gigaChatClient.getImage(detectedImage.uuid));
 
     console.log('[testClient] ✅ Success:', {
       image,
@@ -73,7 +73,7 @@ async function testClient() {
           });
           debugger;
         } else {
-          console.error('[test-gigachat-image-1] Image saviong error:', error);
+          console.error('[test-gigachat-image-1] Image saving error:', error);
           debugger;
           throw error;
         }

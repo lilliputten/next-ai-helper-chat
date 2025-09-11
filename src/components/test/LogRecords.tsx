@@ -1,14 +1,15 @@
 'use client';
 
 import React from 'react';
+import Image from 'next/image';
 
 import { cn } from '@/lib/utils';
 import { isDev } from '@/config';
 
-type TLogType = 'info' | 'error' | 'success' | 'data';
+type TLogType = 'info' | 'error' | 'success' | 'data' | 'imageData';
 
 export type TLogRecord = {
-  type: 'info' | 'error' | 'success' | 'data';
+  type: TLogType;
   title?: string;
   content: unknown;
 };
@@ -28,6 +29,16 @@ function JsonContent({ content }: { content: unknown }) {
   return <pre className="text-xs whitespace-pre-wrap">{JSON.stringify(content, null, 2)}</pre>;
 }
 
+function ImageContent({ content }: { content: string }) {
+  const base64Encoded = btoa(content);
+  const src = 'data:image;base64,' + base64Encoded;
+  return (
+    <div className="relative h-[300px] rounded-lg bg-black/10">
+      <Image src={src} alt="Image" fill className="overflow-hidden object-contain p-4" />
+    </div>
+  );
+}
+
 function UnknownContent({ content }: { content: unknown }) {
   const result =
     typeof content === 'string' || React.isValidElement(content) ? (
@@ -36,6 +47,17 @@ function UnknownContent({ content }: { content: unknown }) {
       <JsonContent content={content} />
     );
   return result;
+}
+
+function LogContent({ log }: { log: TLogRecord }) {
+  const { type, content } = log;
+  if (type === 'imageData') {
+    return <ImageContent content={String(content)} />;
+  }
+  if (type === 'data') {
+    return <JsonContent content={content} />;
+  }
+  return <UnknownContent content={content} />;
 }
 
 export function LogRecords(props: TLogRecordsProps) {
@@ -49,18 +71,13 @@ export function LogRecords(props: TLogRecordsProps) {
       )}
     >
       <h2 className="flex">
-        <span className="flex-1 text-lg font-semibold">ResultText / Error / Logs</span>{' '}
+        <span className="flex-1 text-lg font-semibold">Operation Log</span>{' '}
         <span className="opacity-30">(reversed)</span>
       </h2>
       <div className="flex flex-col gap-4 overflow-auto">
         {reversedLogs.map((log, i) => {
-          const { type, title, content } = log;
-          const result =
-            type === 'data' ? (
-              <JsonContent content={content} />
-            ) : (
-              <UnknownContent content={content} />
-            );
+          const { type, title } = log;
+          const result = <LogContent log={log} />;
           return (
             <div
               className={cn(

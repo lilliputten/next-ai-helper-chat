@@ -6,20 +6,18 @@ import { MessageContent } from '@langchain/core/messages';
 import { useForm } from 'react-hook-form';
 
 import { cn } from '@/lib/utils';
+import { LogRecords, TLogRecord } from '@/components/test/LogRecords';
 import { isDev } from '@/config';
-import { sendAiClientQuery } from '@/features/ai/actions/sendAiClientQuery';
+import { sendAiTextQuery } from '@/features/ai/actions/sendAiTextQuery';
 import { TPlainMessage } from '@/features/ai/types/messages';
 
-import { LogRecords, TLogRecord } from './LogRecords';
-import { QueryFormActions } from './QueryFormActions';
-import { defaultValues, formSchema, TFormData, TFormType } from './QueryFormDefinitions';
-import { QueryFormFields } from './QueryFormFields';
+import { TextQueryFormActions } from './TextQueryFormActions';
+import { defaultValues, formSchema, TFormData, TFormType } from './TextQueryFormDefinitions';
+import { TextQueryFormFields } from './TextQueryFormFields';
 
 const __useDebugData = isDev && true;
 
-export function SendQuery() {
-  const [_resultText, setResultText] = React.useState<MessageContent | null>(null);
-  const [_resultData, setResultData] = React.useState<unknown | null>(null);
+export function TextQueryForm() {
   const [_error, setError] = React.useState<string | null>(null);
   const [logs, setLogs] = React.useState<TLogRecord[]>([
     /* // DEMO: Sampe data
@@ -49,9 +47,7 @@ export function SendQuery() {
   const sendQuery = React.useCallback(
     async (formData: TFormData) => {
       const { model, systemQueryText, userQueryText } = formData;
-      setResultText(null);
       setError(null);
-      // setLoading(true);
       const queryInfo = [systemQueryText, userQueryText]
         .map((s) => s.trim())
         .filter(Boolean)
@@ -60,22 +56,22 @@ export function SendQuery() {
       addLog({ type: 'info', content: `Submitting query ${queryInfo} to model ${model}...` });
       try {
         const messages: TPlainMessage[] = [
-          { type: 'system', text: systemQueryText },
-          { type: 'user', text: userQueryText },
+          { role: 'system', content: systemQueryText },
+          { role: 'user', content: userQueryText },
         ];
-        console.log('[SendQuery:sendQuery] start', {
+        console.log('[TextQueryForm:sendQuery] start', {
           messages,
           model,
           systemQueryText,
           userQueryText,
         });
-        const queryResult = await sendAiClientQuery(model, messages, __useDebugData);
+        const queryResult = await sendAiTextQuery(model, messages, __useDebugData);
         const { content } = queryResult;
         // Simulating query call - replace with actual API call
         // await new Promise((r) => setTimeout(r, 1000));
         const resultText: MessageContent = content; // `Request ${queryInfo} for model ${model} processed successfully -> ${content}`;
         const resultData = queryResult; // { sample: 'ok' };
-        console.log('[SendQuery:sendQuery] done', {
+        console.log('[TextQueryForm:sendQuery] done', {
           content,
           queryResult,
           resultText,
@@ -84,19 +80,16 @@ export function SendQuery() {
           systemQueryText,
           userQueryText,
         });
-        setResultText(resultText);
-        setResultData(resultData);
         addLog({ type: 'data', title: 'Data received:', content: resultData });
         addLog({ type: 'success', title: 'Received response:', content: `${resultText}` });
       } catch (error) {
         const errMsg = error instanceof Error ? error.message : String(error);
         // eslint-disable-next-line no-console
-        console.error('[SendQuery:sendQuery]', errMsg, { error });
+        console.error('[TextQueryForm:sendQuery]', errMsg, { error });
         debugger; // eslint-disable-line no-debugger
         setError(errMsg);
         addLog({ type: 'error', content: `Error occurred: ${errMsg}` });
       } finally {
-        // setLoading(false);
         addLog({ type: 'info', content: 'Request complete' });
       }
     },
@@ -117,11 +110,12 @@ export function SendQuery() {
     <form
       onSubmit={onSubmit}
       className={cn(
-        isDev && '__QueryForm', // DEBUG
+        isDev && '__TextQueryForm', // DEBUG
         'mx-auto flex max-w-xl flex-col gap-6 rounded-md bg-black/10 p-6 shadow-md',
         // 'space-y-6',
       )}
     >
+      <h1 className="text-2xl">Text Query</h1>
       {__useDebugData && (
         <div>
           <span className="rounded-full bg-red-500 px-3 py-1.5 text-xs text-white">
@@ -130,8 +124,8 @@ export function SendQuery() {
           </span>
         </div>
       )}
-      <QueryFormFields form={form} />
-      <QueryFormActions form={form} logs={logs} clearLogs={clearLogs} isPending={isPending} />
+      <TextQueryFormFields form={form} />
+      <TextQueryFormActions form={form} logs={logs} clearLogs={clearLogs} isPending={isPending} />
       <LogRecords logs={logs} />
     </form>
   );

@@ -45,7 +45,7 @@ export async function getAiClient(clientType: TAiClientType = defaultAiClientTyp
     return client;
   } catch (error) {
     // eslint-disable-next-line no-console
-    console.error('[getAiClient:getAiClient] ❌ Error:', error);
+    console.error('[getAiClient] ❌ Error:', error);
     debugger; // eslint-disable-line no-debugger
     throw error;
   }

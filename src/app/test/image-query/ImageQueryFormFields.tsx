@@ -2,21 +2,20 @@
 
 import React from 'react';
 
-import { aiClientTypes } from '@/lib/types/TAiClientType';
+import { TFormType } from './ImageQueryFormDefinitions';
 
-import { TFormType } from './QueryFormDefinitions';
-
-interface TQueryFormFieldsProps {
+interface TImageQueryFormFieldsProps {
   form: TFormType;
 }
 
-export function QueryFormFields(props: TQueryFormFieldsProps) {
+export function ImageQueryFormFields(props: TImageQueryFormFieldsProps) {
   const { form } = props;
 
   const { register } = form;
 
   return (
     <>
+      {/* XXX: Model field isn't used here: Only GigaChat model is supported for image queries
       <div className="flex flex-col gap-1">
         <label htmlFor="model" className="block font-medium opacity-50">
           AI Model
@@ -33,6 +32,7 @@ export function QueryFormFields(props: TQueryFormFieldsProps) {
           ))}
         </select>
       </div>
+      */}
 
       {/*
         <div className="flex flex-col gap-1">

@@ -1,5 +1,5 @@
-export type TMessageType = 'system' | 'user';
+export type TMessageRole = 'system' | 'user';
 export type TPlainMessage = {
-  type: TMessageType;
-  text: string;
+  role: TMessageRole;
+  content: string;
 };

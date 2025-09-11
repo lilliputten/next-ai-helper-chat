@@ -1,0 +1,26 @@
+{
+  "choices": [
+    {
+      "message": {
+        "content": "<img src=\"0997f997-d244-4b1f-ac71-ff44264da9dc\" fuse=\"true\"/> I generated an image of a lime-green, rainbow-colored pony-cat hybrid. Check it out!",
+        "role": "assistant",
+        "functions_state_id": "0180e342-cb09-4ce3-ac03-c040884d4d0c"
+      },
+      "index": 0,
+      "finish_reason": "stop"
+    }
+  ],
+  "created": 1757555825,
+  "model": "GigaChat:2.0.28.2",
+  "object": "chat.completion",
+  "usage": {
+    "prompt_tokens": 635,
+    "completion_tokens": 59,
+    "total_tokens": 694,
+    "precached_prompt_tokens": 1
+  },
+  "xHeaders": {
+    "xRequestID": "df31f105-d866-4c12-8ed2-8de1eef9c249",
+    "xSessionID": "e2931e15-8381-47a9-b681-1ec3a9a2886d"
+  }
+}

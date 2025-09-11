@@ -2,7 +2,7 @@ import { constructMetadata } from '@/lib/constructMetadata';
 import { cn } from '@/lib/utils';
 import { isDev } from '@/config';
 
-import { SendQuery } from './SendQuery';
+import { ImageQueryForm } from './ImageQueryForm';
 
 export async function generateMetadata(/* { params }: TAwaitedLocaleProps */) {
   // const { locale } = await params;
@@ -17,10 +17,10 @@ export default function TestQueryPage() {
   return (
     <div
       className={cn(
-        isDev && '__TestQueryPage', // DEBUG
+        isDev && '__ImageQueryPage', // DEBUG
       )}
     >
-      <SendQuery />
+      <ImageQueryForm />
     </div>
   );
 }

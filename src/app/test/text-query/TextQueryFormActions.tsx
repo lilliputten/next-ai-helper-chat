@@ -4,24 +4,40 @@ import React from 'react';
 import { Check, Loader2, X } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
+import { TLogRecord } from '@/components/test/LogRecords';
 import { isDev } from '@/config';
 
-import { TLogRecord } from './LogRecords';
-import { TFormType } from './QueryFormDefinitions';
+import { TFormType } from './TextQueryFormDefinitions';
 
-interface TQueryFormActionsProps {
+interface TTextQueryFormActionsProps {
   form: TFormType;
   clearLogs: () => void;
   isPending: boolean;
   logs: TLogRecord[];
 }
 
-export function QueryFormActions(props: TQueryFormActionsProps) {
+export function TextQueryFormActions(props: TTextQueryFormActionsProps) {
   const { form, logs, clearLogs, isPending } = props;
 
-  const { formState } = form;
-  const { isDirty, isValid } = formState;
-  const isSubmitEnabled = !isPending && isDirty && isValid;
+  const { formState, getValues } = form;
+  const {
+    // isDirty,
+    isValid,
+  } = formState;
+
+  const isEmpty = React.useMemo(() => {
+    const values = getValues();
+    // Check if all values are empty or equivalent to their default empty state
+    return Object.values(values).every(
+      (value) =>
+        value === '' ||
+        value === null ||
+        value === undefined ||
+        (Array.isArray(value) && value.length === 0),
+    );
+  }, [getValues]);
+
+  const isSubmitEnabled = !isPending && !isEmpty && isValid;
 
   const hasLogs = !!logs.length;
 
@@ -30,7 +46,7 @@ export function QueryFormActions(props: TQueryFormActionsProps) {
   return (
     <div
       className={cn(
-        isDev && '__QueryFormActions', // DEBUG
+        isDev && '__TextQueryFormActions', // DEBUG
         'flex flex-wrap items-center gap-2',
       )}
     >
