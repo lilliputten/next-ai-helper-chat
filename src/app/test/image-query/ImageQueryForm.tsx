@@ -2,7 +2,6 @@
 
 import React from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { MessageContent } from '@langchain/core/messages';
 import { useForm } from 'react-hook-form';
 
 import { truncateString } from '@/lib/helpers';
@@ -92,14 +91,9 @@ export function ImageQueryForm() {
         const { imageData, response } = queryResult;
         // Simulating query call - replace with actual API call
         // await new Promise((r) => setTimeout(r, 1000));
-        // const resultText: MessageContent = `Image data of size ${imageData?.length} bytes`; // `Request ${queryInfo} for model ${model} processed successfully -> ${content}`;
-        // const resultData = queryResult; // { sample: 'ok' };
         console.log('[ImageQueryForm:sendQuery] done', {
           imageData: truncateString(imageData, 20),
           response,
-          // queryResult,
-          // resultText,
-          // resultData,
           model,
           systemQueryText,
           userQueryText,

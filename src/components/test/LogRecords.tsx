@@ -31,7 +31,7 @@ function JsonContent({ content }: { content: unknown }) {
 
 function ImageContent({ content }: { content: string }) {
   const base64Encoded = btoa(content);
-  const src = 'data:image;base64,' + base64Encoded;
+  const src = 'data:image/jpeg;base64,' + base64Encoded;
   return (
     <div className="relative h-[300px] rounded-lg bg-black/10">
       <Image src={src} alt="Image" fill className="overflow-hidden object-contain p-4" />

@@ -15,6 +15,7 @@ const __demoImageFile = './test-data/sendAiImageQuery-sample-image.jpg';
 
 type TResponse = ChatCompletion & WithXHeaders;
 
+/** Could be used for debug purposes externally */
 export async function loadDemoImage() {
   const imageData = await new Promise<string>((resolve, reject) => {
     fs.readFile(__demoImageFile, (err, data) => {
@@ -36,26 +37,32 @@ async function loadDemoData() {
 }
 
 async function saveDemoData(response: TResponse) {
-  fs.writeFile(__demoDataFile, JSON.stringify(response, null, 2), 'utf-8', (error) => {
-    if (error) {
-      // eslint-disable-next-line no-console
-      console.error('[sendAiImageQuery] Data saving error:', error);
-      // eslint-disable-next-line no-debugger
-      debugger;
-      throw error;
-    }
+  await new Promise<void>((resolve, reject) => {
+    fs.writeFile(__demoDataFile, JSON.stringify(response, null, 2), 'utf-8', (error) => {
+      if (error) {
+        // eslint-disable-next-line no-console
+        console.error('[sendAiImageQuery] Data saving error:', error);
+        // eslint-disable-next-line no-debugger
+        debugger;
+        return reject(error);
+      }
+      resolve();
+    });
   });
 }
 
 async function saveDemoImage(imageData: string) {
-  fs.writeFile(__demoImageFile, imageData, 'binary', (error) => {
-    if (error) {
-      // eslint-disable-next-line no-console
-      console.error('[sendAiImageQuery] Image saving error:', error);
-      // eslint-disable-next-line no-debugger
-      debugger;
-      throw error;
-    }
+  await new Promise<void>((resolve, reject) => {
+    fs.writeFile(__demoImageFile, imageData, 'binary', (error) => {
+      if (error) {
+        // eslint-disable-next-line no-console
+        console.error('[sendAiImageQuery] Image saving error:', error);
+        // eslint-disable-next-line no-debugger
+        debugger;
+        return reject(error);
+      }
+      resolve();
+    });
   });
 }
 
