@@ -42,9 +42,6 @@ export async function sendAiTextQuery(
     const client = await getAiClient(clientType);
     const res = await client.invoke(prepartedMessages);
     const {
-      // lc_serializable,
-      // lc_kwargs,
-      // lc_namespace,
       content,
       name,
       additional_kwargs,
@@ -64,14 +61,6 @@ export async function sendAiTextQuery(
       invalid_tool_calls,
       usage_metadata,
     };
-    // DEBUG
-    // const resJson = JSON.stringify(res, null, 2);
-    // const dataJson = JSON.stringify(data, null, 2);
-    console.log('[sendAiTextQuery]', {
-      res,
-      // resJson,
-      // dataJson,
-    });
     return data;
   } catch (error) {
     // eslint-disable-next-line no-console

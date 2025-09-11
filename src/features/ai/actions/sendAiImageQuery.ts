@@ -5,7 +5,6 @@ import { detectImage } from 'gigachat';
 import { ChatCompletion, WithXHeaders } from 'gigachat/interfaces';
 
 import { getGigaChatClient } from '@/lib/ai/getGigaChatClient';
-import { truncateString } from '@/lib/helpers';
 import { TAiClientType } from '@/lib/types/TAiClientType';
 
 import { TPlainMessage } from '../types/messages';
@@ -91,7 +90,6 @@ export async function sendAiImageQuery(
         saveDemoData(response);
       }
     }
-    const tokenUsage = response.usage;
     const { choices } = response;
     const firstResult = choices[0]?.message.content;
     const detectedImage = firstResult ? detectImage(firstResult) : null;
@@ -105,14 +103,6 @@ export async function sendAiImageQuery(
         saveDemoImage(imageData);
       }
     }
-
-    // DEBUG
-    console.log('[sendAiImageQuery]', {
-      imageData: truncateString(imageData, 20),
-      detectedImage,
-      tokenUsage,
-      response,
-    });
 
     if (!imageData) {
       throw new Error('No image found in the response.');

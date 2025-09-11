@@ -59,27 +59,10 @@ export function TextQueryForm() {
           { role: 'system', content: systemQueryText },
           { role: 'user', content: userQueryText },
         ];
-        console.log('[TextQueryForm:sendQuery] start', {
-          messages,
-          model,
-          systemQueryText,
-          userQueryText,
-        });
         const queryResult = await sendAiTextQuery(model, messages, __useDebugData);
         const { content } = queryResult;
-        // Simulating query call - replace with actual API call
-        // await new Promise((r) => setTimeout(r, 1000));
         const resultText: MessageContent = content; // `Request ${queryInfo} for model ${model} processed successfully -> ${content}`;
         const resultData = queryResult; // { sample: 'ok' };
-        console.log('[TextQueryForm:sendQuery] done', {
-          content,
-          queryResult,
-          resultText,
-          resultData,
-          model,
-          systemQueryText,
-          userQueryText,
-        });
         addLog({ type: 'data', title: 'Data received:', content: resultData });
         addLog({ type: 'success', title: 'Received response:', content: `${resultText}` });
       } catch (error) {

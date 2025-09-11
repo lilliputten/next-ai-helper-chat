@@ -3,11 +3,9 @@ import { ThemeProvider } from 'next-themes';
 
 import { cn } from '@/lib/utils';
 import { Toaster } from '@/components/ui/sonner';
-import { isDev } from '@/config';
+import { defaultLanguage, isDev } from '@/config';
 
 import '@/styles/globals.scss';
-
-import { defaultLanguage } from '@/constants';
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   // const { locale } = await params;

@@ -1,7 +1,7 @@
 import { GigaChat as GigaChatDirect } from 'gigachat-node';
 import { IBalance } from 'gigachat-node/interfaces/balance';
 
-import { GIGACHAT_CREDENTIALS, GIGACHAT_MODEL } from '@/config/env';
+import { GIGACHAT_CREDENTIALS, GIGACHAT_MODEL } from '@/config/envServer';
 
 export async function getGigaChatAvailableTokens() {
   try {

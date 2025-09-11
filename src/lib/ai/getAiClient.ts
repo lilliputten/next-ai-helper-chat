@@ -6,7 +6,7 @@ import {
   CLOUDFLARE_API_TOKEN,
   GIGACHAT_CREDENTIALS,
   GIGACHAT_MODEL,
-} from '@/config/env';
+} from '@/config/envServer';
 import { getHttpsAgent } from '@/lib/ai/getHttpsAgent';
 import { defaultAiClientType, TAiClientType } from '@/lib/types/TAiClientType';
 

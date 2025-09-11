@@ -81,23 +81,8 @@ export function ImageQueryForm() {
           { role: 'system', content: systemQueryText },
           { role: 'user', content: userQueryText },
         ];
-        console.log('[ImageQueryForm:sendQuery] start', {
-          messages,
-          model,
-          systemQueryText,
-          userQueryText,
-        });
         const queryResult = await sendAiImageQuery(model, messages, __useDebugData);
         const { imageData, response } = queryResult;
-        // Simulating query call - replace with actual API call
-        // await new Promise((r) => setTimeout(r, 1000));
-        console.log('[ImageQueryForm:sendQuery] done', {
-          imageData: truncateString(imageData, 20),
-          response,
-          model,
-          systemQueryText,
-          userQueryText,
-        });
         addLog({ type: 'success', title: 'Received response:', content: response });
         addLog({ type: 'imageData', title: 'Image received:', content: imageData });
       } catch (error) {

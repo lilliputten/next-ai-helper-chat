@@ -1,6 +1,6 @@
 import appInfoModule from '@/app-info.json';
 
-import { PUBLIC_URL } from './env';
+import { PUBLIC_URL } from './envServer';
 
 const siteUrl = PUBLIC_URL;
 
