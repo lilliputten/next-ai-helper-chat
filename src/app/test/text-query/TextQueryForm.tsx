@@ -6,7 +6,7 @@ import { MessageContent } from '@langchain/core/messages';
 import { useForm } from 'react-hook-form';
 
 import { cn } from '@/lib/utils';
-import { LogRecords, TLogRecord } from '@/components/test/LogRecords';
+import { ShowLogRecords, TLogRecord } from '@/components/test/ShowLogRecords';
 import { isDev } from '@/config';
 import { sendAiTextQuery } from '@/features/ai/actions/sendAiTextQuery';
 import { TPlainMessage } from '@/features/ai/types/messages';
@@ -109,7 +109,7 @@ export function TextQueryForm() {
       )}
       <TextQueryFormFields form={form} />
       <TextQueryFormActions form={form} logs={logs} clearLogs={clearLogs} isPending={isPending} />
-      <LogRecords logs={logs} />
+      <ShowLogRecords logs={logs} />
     </form>
   );
 }

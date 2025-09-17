@@ -21,7 +21,7 @@ const logStyles: Partial<Record<TLogType, string>> = {
   data: 'text-gray-600',
 };
 
-interface TLogRecordsProps {
+interface TShowLogRecordsProps {
   logs: TLogRecord[];
 }
 
@@ -60,13 +60,13 @@ function LogContent({ log }: { log: TLogRecord }) {
   return <UnknownContent content={content} />;
 }
 
-export function LogRecords(props: TLogRecordsProps) {
+export function ShowLogRecords(props: TShowLogRecordsProps) {
   const { logs } = props;
   const reversedLogs = [...logs].reverse();
   return (
     <div
       className={cn(
-        isDev && '__LogRecords', // DEBUG
+        isDev && '__ShowLogRecords', // DEBUG
         'flex min-h-[120px] flex-col gap-4 overflow-hidden rounded-md border border-gray-500/10 p-4',
       )}
     >
@@ -81,7 +81,7 @@ export function LogRecords(props: TLogRecordsProps) {
           return (
             <div
               className={cn(
-                isDev && '__LogRecords_Item', // DEBUG
+                isDev && '__ShowLogRecords_Item', // DEBUG
                 'flex flex-col gap-2',
                 logStyles[type],
               )}

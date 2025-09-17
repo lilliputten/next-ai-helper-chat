@@ -1,0 +1,77 @@
+'use client';
+
+import React from 'react';
+import { Check, Loader2, X } from 'lucide-react';
+
+import { TReactNode } from '@/lib/types/react';
+import { TIcon } from '@/lib/types/TIcon';
+import { cn } from '@/lib/utils';
+import { Button } from '@/components/ui/Button';
+import { isDev } from '@/config';
+
+export interface TConfirmFormProps {
+  handleConfirm: () => unknown;
+  handleClose?: () => void;
+  className?: string;
+  isPending?: boolean;
+  children?: TReactNode;
+  confirmButtonVariant?: React.ComponentProps<typeof Button>['variant'];
+  confirmButtonText?: string;
+  confirmButtonBusyText?: string;
+  confirmButtonIcon?: TIcon;
+  cancelButtonText?: string;
+}
+
+export function ConfirmForm(props: TConfirmFormProps) {
+  const {
+    children,
+    className,
+    handleConfirm,
+    handleClose,
+    isPending,
+    confirmButtonVariant,
+    confirmButtonText = 'Ok',
+    confirmButtonBusyText,
+    confirmButtonIcon = Check,
+    cancelButtonText = 'Cancel',
+  } = props;
+
+  const onClose = (ev: React.MouseEvent) => {
+    if (handleClose) {
+      handleClose();
+    }
+    ev.preventDefault();
+  };
+
+  const Icon = isPending ? Loader2 : confirmButtonIcon;
+  const buttonText =
+    !isPending || !confirmButtonBusyText ? confirmButtonText : confirmButtonBusyText;
+
+  return (
+    <div
+      className={cn(
+        isDev && '__ConfirmForm', // DEBUG
+        'flex w-full flex-col gap-4',
+        className,
+      )}
+    >
+      {children}
+      <div className="flex flex-col justify-between"></div>
+      {/* Actions */}
+      <div className="flex w-full gap-4">
+        <Button
+          type="submit"
+          variant={confirmButtonVariant}
+          className="gap-2"
+          onClick={handleConfirm}
+        >
+          <Icon className={cn('size-4', isPending && 'animate-spin')} /> <span>{buttonText}</span>
+        </Button>
+        <Button variant="ghost" onClick={onClose} className="gap-2">
+          <X className="size-4" />
+          <span>{cancelButtonText}</span>
+        </Button>
+      </div>
+    </div>
+  );
+}

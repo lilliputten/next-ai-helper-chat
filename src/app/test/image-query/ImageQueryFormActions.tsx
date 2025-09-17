@@ -4,7 +4,7 @@ import React from 'react';
 import { Check, Loader2, X } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
-import { TLogRecord } from '@/components/test/LogRecords';
+import { TLogRecord } from '@/components/test/ShowLogRecords';
 import { isDev } from '@/config';
 
 import { TFormType } from './ImageQueryFormDefinitions';

@@ -4,10 +4,9 @@ import React from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 
-import { truncateString } from '@/lib/helpers';
 import { TAiClientType } from '@/lib/types/TAiClientType';
 import { cn } from '@/lib/utils';
-import { LogRecords, TLogRecord } from '@/components/test/LogRecords';
+import { ShowLogRecords, TLogRecord } from '@/components/test/ShowLogRecords';
 import { isDev } from '@/config';
 import { loadDemoImage, sendAiImageQuery } from '@/features/ai/actions/sendAiImageQuery';
 import { TPlainMessage } from '@/features/ai/types/messages';
@@ -129,7 +128,7 @@ export function ImageQueryForm() {
       )}
       <ImageQueryFormFields form={form} />
       <ImageQueryFormActions form={form} logs={logs} clearLogs={clearLogs} isPending={isPending} />
-      <LogRecords logs={logs} />
+      <ShowLogRecords logs={logs} />
     </form>
   );
 }

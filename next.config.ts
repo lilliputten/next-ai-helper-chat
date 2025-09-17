@@ -16,9 +16,11 @@ $secondaryForegroundColor: ${secondaryForegroundColor};
 
 const nextConfig = {
   /* experimental: {
-   *   optimizePackageImports: ['@tailwindcss/oxide'],
+   *   // optimizePackageImports: ['@tailwindcss/oxide'],
+   *   // serverComponentsExternalPackages: ['grammy'],
    * },
    */
+  serverExternalPackages: ['grammy'],
   sassOptions: {
     additionalData: scssVariables,
     silenceDeprecations: ['legacy-js-api'],
