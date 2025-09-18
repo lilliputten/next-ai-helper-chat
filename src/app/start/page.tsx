@@ -1,7 +1,7 @@
 import { redirect } from 'next/navigation';
 
 import { constructMetadata } from '@/lib/constructMetadata';
-import { getCurrentUser } from '@/lib/session';
+import { getSessionUser } from '@/lib/session';
 
 import { StartBotPage } from './StartBotPage';
 
@@ -15,7 +15,7 @@ export async function generateMetadata(/* { params }: TAwaitedLocaleProps */) {
 }
 
 export default async function StartBotPageWrapper() {
-  const user = await getCurrentUser();
+  const user = await getSessionUser({ include: { accounts: true } });
   console.log('[StartBotPageWrapper]', {
     user,
   });

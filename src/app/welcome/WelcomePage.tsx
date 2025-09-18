@@ -1,12 +1,8 @@
-// import { getTranslations, setRequestLocale } from 'next-intl/server';
-
-// import { TAwaitedLocaleProps } from '@/i18n/types';
 import { constructMetadata } from '@/lib/constructMetadata';
-import { getCurrentUser } from '@/lib/session';
+import { getSessionUser } from '@/lib/session';
 import { cn } from '@/lib/utils';
 import { PageWrapper } from '@/components/layout/PageWrapper';
 import { WelcomeScreen } from '@/components/screens/WelcomeScreen';
-import { UseScrollableLayout } from '@/components/shared/ScrollableLayout';
 import { isDev } from '@/config';
 
 // type TWelcomePageProps = TAwaitedLocaleProps;
@@ -23,7 +19,7 @@ export async function generateMetadata(/* { params }: TAwaitedLocaleProps */) {
 export async function WelcomePage(/* { params }: TWelcomePageProps */) {
   // const { locale } = await params;
 
-  const user = await getCurrentUser();
+  const user = await getSessionUser();
   const userId = user?.id;
   // Check also if the user really exists in the database>
   const isLoggedUser = !!userId;
