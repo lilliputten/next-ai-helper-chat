@@ -1,4 +1,4 @@
-import { Laptop, LucideIcon, Moon, Sun } from 'lucide-react';
+import { Laptop, LucideIcon, Moon, Sun } from '@/components/shared/Icons';
 
 export const systemThemeIds = ['light', 'dark', 'system'] as const;
 export type TSystemThemeId = (typeof systemThemeIds)[number];

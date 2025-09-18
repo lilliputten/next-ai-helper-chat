@@ -21,6 +21,8 @@ const buttonVariants = cva(
     'select-none',
     'active:scale-[0.98]',
     'transition-all',
+    'cursor-pointer',
+    'truncate',
     // 'duration-200',
   ),
   {

@@ -1,12 +1,12 @@
 'use client';
 
 import React from 'react';
-import { Check, FlaskConical, Loader2, X } from 'lucide-react';
 import { toast } from 'sonner';
 
 import { getErrorText } from '@/lib/helpers';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/Button';
+import { Check, Close, FlaskConical, Spinner } from '@/components/shared/Icons';
 import { ShowLogRecords, TLogRecord } from '@/components/test/ShowLogRecords';
 import { ConfirmModal } from '@/components/ui-atoms';
 import { isDev } from '@/config';
@@ -107,9 +107,9 @@ export function StartBotPage() {
 
   const hasLogs = !!logs.length;
 
-  const ShowServerInfoIcon = isShowServerInfoRunning ? Loader2 : Check;
-  const InitWebhookIcon = isInitWebhookRunning ? Loader2 : Check;
-  const SetCommandsIcon = isSetCommandsRunning ? Loader2 : Check;
+  const ShowServerInfoIcon = isShowServerInfoRunning ? Spinner : Check;
+  const InitWebhookIcon = isInitWebhookRunning ? Spinner : Check;
+  const SetCommandsIcon = isSetCommandsRunning ? Spinner : Check;
 
   return (
     <div
@@ -200,7 +200,7 @@ export function StartBotPage() {
           )}
           onClick={clearLogs}
         >
-          <X className="size-4 opacity-50" />
+          <Close className="size-4 opacity-50" />
           <span className="truncate">Clear log</span>
         </button>
       </div>

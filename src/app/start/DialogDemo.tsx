@@ -2,7 +2,8 @@ import * as React from 'react';
 // import { Cross2Icon } from '@radix-ui/react-icons';
 // import { Dialog } from 'radix-ui';
 import * as Dialog from '@radix-ui/react-dialog';
-import { X } from 'lucide-react';
+
+import { Close } from '@/components/shared/Icons';
 
 export const DialogDemo = () => (
   <Dialog.Root>
@@ -35,7 +36,7 @@ export const DialogDemo = () => (
         </div>
         <Dialog.Close asChild>
           <button className="IconButton" aria-label="Close">
-            <X />
+            <Close />
           </button>
         </Dialog.Close>
       </Dialog.Content>

@@ -1,12 +1,11 @@
 'use client';
 
 import React from 'react';
-import { Check, Loader2, X } from 'lucide-react';
 
 import { TReactNode } from '@/lib/types/react';
-import { TIcon } from '@/lib/types/TIcon';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/Button';
+import { Check, Close, IconType, Spinner } from '@/components/shared/Icons';
 import { isDev } from '@/config';
 
 export interface TConfirmFormProps {
@@ -18,7 +17,7 @@ export interface TConfirmFormProps {
   confirmButtonVariant?: React.ComponentProps<typeof Button>['variant'];
   confirmButtonText?: string;
   confirmButtonBusyText?: string;
-  confirmButtonIcon?: TIcon;
+  confirmButtonIcon?: IconType;
   cancelButtonText?: string;
 }
 
@@ -43,7 +42,7 @@ export function ConfirmForm(props: TConfirmFormProps) {
     ev.preventDefault();
   };
 
-  const Icon = isPending ? Loader2 : confirmButtonIcon;
+  const Icon = isPending ? Spinner : confirmButtonIcon;
   const buttonText =
     !isPending || !confirmButtonBusyText ? confirmButtonText : confirmButtonBusyText;
 
@@ -68,7 +67,7 @@ export function ConfirmForm(props: TConfirmFormProps) {
           <Icon className={cn('size-4', isPending && 'animate-spin')} /> <span>{buttonText}</span>
         </Button>
         <Button variant="ghost" onClick={onClose} className="gap-2">
-          <X className="size-4" />
+          <Close className="size-4" />
           <span>{cancelButtonText}</span>
         </Button>
       </div>

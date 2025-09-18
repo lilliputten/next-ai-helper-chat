@@ -1,6 +1,7 @@
 @use 'tailwindcss';
-
 @use 'utils' as *;
+
+// @use 'root-layout';
 
 @tailwind base;
 @tailwind components;
@@ -13,6 +14,7 @@
    * @include defineThemeColor("primary", $primaryColor, 18%);
    * @include defineThemeColor("secondary", $secondaryColor, -8%);
    */
+  @include defineThemeColor('theme', $primaryColor);
   @include defineThemeColor('primary', $primaryColor);
   @include defineThemeColor('secondary', $secondaryColor);
 }

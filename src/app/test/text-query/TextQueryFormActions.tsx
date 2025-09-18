@@ -1,9 +1,9 @@
 'use client';
 
 import React from 'react';
-import { Check, Loader2, X } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
+import { Check, Close, Spinner } from '@/components/shared/Icons';
 import { TLogRecord } from '@/components/test/ShowLogRecords';
 import { isDev } from '@/config';
 
@@ -41,7 +41,7 @@ export function TextQueryFormActions(props: TTextQueryFormActionsProps) {
 
   const hasLogs = !!logs.length;
 
-  const SubmitIcon = isPending ? Loader2 : Check;
+  const SubmitIcon = isPending ? Spinner : Check;
 
   return (
     <div
@@ -72,7 +72,7 @@ export function TextQueryFormActions(props: TTextQueryFormActionsProps) {
         )}
         onClick={clearLogs}
       >
-        <X className="size-4 opacity-50" />
+        <Close className="size-4 opacity-50" />
         <span>Clear log</span>
       </button>
     </div>
