@@ -54,13 +54,15 @@ export function ConfirmModal(props: TConfirmModalProps) {
         isDev && '__ConfirmModal', // DEBUG
         'gap-0',
         isPending && '[&>*]:pointer-events-none [&>*]:opacity-50',
+        'flex flex-col',
       )}
     >
       <div
         className={cn(
           isDev && '__ConfirmModal_Header', // DEBUG
           // !isMobile && 'max-h-[90vh]',
-          'bg-accent flex flex-col border-b px-8 py-4',
+          'bg-theme-500 text-theme-foreground flex flex-col px-8 py-4',
+          'border-b',
         )}
       >
         <DialogTitle className="DialogTitle">{dialogTitle}</DialogTitle>
@@ -68,7 +70,7 @@ export function ConfirmModal(props: TConfirmModalProps) {
           {dialogDescription}
         </DialogDescription>
       </div>
-      <div className="flex flex-col px-8 py-4">
+      <div className="flex flex-1 flex-col px-8 py-4">
         <ConfirmForm
           handleConfirm={handleConfirm}
           className="p-8"

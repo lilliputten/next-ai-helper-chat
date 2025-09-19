@@ -6,15 +6,11 @@ import { signIn, SignInOptions } from 'next-auth/react';
 
 // import { useTranslations } from 'next-intl';
 
-// import { myTopicsRoute } from '@/config/routesConfig';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/Button';
 import { Github, Google, IconType, Spinner, Yandex } from '@/components/shared/Icons';
 import { Logo } from '@/components/shared/Logo';
 import { isDev } from '@/config';
-
-// import Google from 'next-auth/providers/google';
-// import Yandex from 'next-auth/providers/yandex';
 
 type TSignInParameters = Parameters<typeof signIn>;
 export type TSignInProvider = TSignInParameters[0];
@@ -94,8 +90,10 @@ export function SignInFormHeader(props: TSignInFormHeaderProps) {
       <Link href={'/'}>
         <Logo className="size-32" dark={dark} />
       </Link>
-      <h3 className="font-urban text-app-orange text-2xl font-bold">{t('sign-in')}</h3>
+      <h3 className="font-urban text-app-orange text-2xl font-bold">{t('Sign In')}</h3>
+      {/*
       <p className="text-center text-sm">{t('intro')}</p>
+      */}
     </>
   );
 }

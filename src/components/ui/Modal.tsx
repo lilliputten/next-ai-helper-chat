@@ -71,7 +71,8 @@ export function Modal({
         onCloseAutoFocus={(e) => e.preventDefault()}
         className={cn(
           isDev && '__DialogContent',
-          'overflow-hidden p-0 md:max-w-md md:rounded-2xl md:border',
+          'overflow-hidden p-0 md:max-w-md',
+          'max-sm::w-full max-sm:h-full max-sm:max-w-screen',
           className,
         )}
       >

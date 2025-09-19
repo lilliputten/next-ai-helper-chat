@@ -116,7 +116,8 @@ export function StartBotPage() {
       // onSubmit={onSubmit}
       className={cn(
         isDev && '__StartBotPage', // DEBUG
-        'mx-auto flex max-w-xl flex-col gap-6 rounded-md bg-black/10 p-6 shadow-md',
+        'mx-auto flex max-w-xl flex-col gap-5 p-5',
+        // 'rounded-md bg-black/10 p-6 shadow-md',
         // 'space-y-6',
       )}
     >
@@ -142,67 +143,55 @@ export function StartBotPage() {
         )}
       >
         {/* showServerInfo */}
-        <button
-          type="submit"
+        <Button
           disabled={isInitWebhookRunning}
           onClick={showServerInfo}
-          className={cn(
-            'bg-primary-500 hover:bg-primary-400 focus:ring-primary-500 cursor-pointer rounded px-4 py-2 font-semibold text-white focus:ring-2 focus:outline-none',
-            'flex flex-1 items-center justify-center gap-2 transition',
-            isShowServerInfoRunning && 'pointer-events-none opacity-50',
-          )}
+          variant="theme"
+          className={cn('flex gap-2', isShowServerInfoRunning && 'pointer-events-none opacity-50')}
         >
           <ShowServerInfoIcon
             className={cn('size-4 opacity-50', isShowServerInfoRunning && 'animate-spin')}
           />
           <span className="truncate">Show server info</span>
-        </button>
+        </Button>
         {/* initWebhook */}
-        <button
-          type="submit"
+        <Button
           disabled={isInitWebhookRunning}
           onClick={initWebhook}
-          className={cn(
-            'bg-primary-500 hover:bg-primary-400 focus:ring-primary-500 cursor-pointer rounded px-4 py-2 font-semibold text-white focus:ring-2 focus:outline-none',
-            'flex flex-1 items-center justify-center gap-2 transition',
-            isInitWebhookRunning && 'pointer-events-none opacity-50',
-          )}
+          variant="theme"
+          className={cn('flex gap-2', isInitWebhookRunning && 'pointer-events-none opacity-50')}
         >
           <InitWebhookIcon
             className={cn('size-4 opacity-50', isInitWebhookRunning && 'animate-spin')}
           />
           <span className="truncate">Initialize webhook</span>
-        </button>
+        </Button>
         {/* setCommands */}
-        <button
-          type="submit"
+        <Button
           disabled={isInitWebhookRunning}
           onClick={setCommands}
-          className={cn(
-            'bg-primary-500 hover:bg-primary-400 focus:ring-primary-500 cursor-pointer rounded px-4 py-2 font-semibold text-white focus:ring-2 focus:outline-none',
-            'flex flex-1 items-center justify-center gap-2 transition',
-            isSetCommandsRunning && 'pointer-events-none opacity-50',
-          )}
+          variant="theme"
+          className={cn('flex gap-2', isSetCommandsRunning && 'pointer-events-none opacity-50')}
         >
           <SetCommandsIcon
             className={cn('size-4 opacity-50', isSetCommandsRunning && 'animate-spin')}
           />
           <span className="truncate">Set commands</span>
-        </button>
+        </Button>
         {/* clearLogs */}
-        <button
-          type="button"
+        <Button
           disabled={isPending}
+          variant="ghost"
           className={cn(
-            'focus:ring-primary-500 cursor-pointer rounded bg-gray-600 px-4 py-2 font-semibold text-white hover:bg-gray-700 focus:ring-2 focus:outline-none',
-            'flex flex-1 items-center justify-center gap-2 transition',
+            // 'focus:ring-primary-500 cursor-pointer rounded bg-gray-600 px-4 py-2 font-semibold text-white hover:bg-gray-700 focus:ring-2 focus:outline-none',
+            'flex gap-2',
             (!hasLogs || isPending) && 'pointer-events-none opacity-50',
           )}
           onClick={clearLogs}
         >
           <Close className="size-4 opacity-50" />
           <span className="truncate">Clear log</span>
-        </button>
+        </Button>
       </div>
       <ShowLogRecords logs={logs} />
       {/* <DialogDemo /> */}
@@ -222,10 +211,21 @@ export function StartBotPage() {
       >
         Do you confirm deleting the answer?
       </ConfirmModal>
-      <Button onClick={() => setModalVisible(true)} className="flex gap-2" variant="primary">
-        <FlaskConical className="size-4" />
-        Show Modal
-      </Button>
+      <div
+        className={cn(
+          isDev && '__StartBotPageActions', // DEBUG
+          'flex flex-wrap items-center gap-2',
+        )}
+      >
+        <Button
+          onClick={() => setModalVisible(true)}
+          className="flex flex-1 gap-2"
+          variant="primary"
+        >
+          <FlaskConical className="size-4 opacity-50" />
+          <span className="truncate">Show Modal</span>
+        </Button>
+      </div>
     </div>
   );
 }

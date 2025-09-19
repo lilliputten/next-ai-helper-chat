@@ -28,14 +28,15 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: 'bg-theme text-theme-foreground hover:bg-theme/90',
-        primary: 'bg-primary text-primary-foreground hover:bg-primary/90',
-        theme: 'bg-theme text-theme-foreground hover:bg-theme/90',
+        default: 'bg-theme-400 text-theme-foreground hover:bg-theme-300',
+        primary: 'bg-primary-400 text-primary-foreground hover:bg-primary-300',
+        theme: 'bg-theme-400 text-theme-foreground hover:bg-theme-300',
         destructive: 'bg-destructive hover:opacity-90 text-destructive-foreground',
         success: 'bg-success hover:opacity-90 text-success-foreground',
         outline: 'border border-input hover:bg-accent hover:text-accent-foreground',
         secondary: 'bg-secondary text-secondary-foreground hover:bg-secondary/90',
-        ghost: 'hover:bg-accent hover:text-accent-foreground',
+        // ghost: 'hover:bg-accent hover:text-accent-foreground',
+        ghost: 'hover:bg-gray-500/20 hover:text-accent-foreground active:bg-gray-500',
         ghostBlue: 'hover:bg-blue-300/20 hover:text-accent-foreground active:bg-blue-500',
         ghostDark: 'hover:bg-black/20 hover:text-accent-foreground',
         ghostGray: 'hover:bg-gray-500/15 hover:text-accent-foreground',

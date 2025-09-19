@@ -6,10 +6,7 @@ import { TPropsWithClassName } from '@/lib/types/react';
 import { cn } from '@/lib/utils';
 import { SignInBlock } from '@/components/blocks/SignInBlock';
 import { WelcomeVisualBlock } from '@/components/blocks/WelcomeVisualBlock';
-import { UseScrollableLayout } from '@/components/shared/ScrollableLayout';
 import { isDev } from '@/config';
-
-// import { isDev } from '@/constants';
 
 export function WelcomeScreen(props: TPropsWithClassName & { isLoggedUser: boolean }) {
   const { className, isLoggedUser } = props;

@@ -23,12 +23,15 @@ export function WelcomeVisualBlock(props: TPropsWithClassName) {
     >
       <Image
         src={svgArt}
-        alt="Sign in illustration"
+        alt="Sign in"
         className={cn(
           isDev && '__WelcomeVisualBlock_Art', // DEBUG
-          'p-4',
-          'mx-auto mt-4',
-          'sm:max-w-md',
+          'mt-4',
+          'object-contain',
+          'mx-auto',
+          'max-lg:max-h-[200px]',
+          'md:max-w-sm',
+          'xl:max-w-md',
         )}
       />
       {/* // XXX: Alternate layout: the art as a background

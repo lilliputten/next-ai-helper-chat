@@ -1,13 +1,13 @@
 import { Metadata } from 'next';
 
-import { SiteConfig, siteConfig } from '@/config/site';
+import { PUBLIC_URL } from '@/config/envServer';
+import { siteDescription, siteKeywords, siteTitle } from '@/config';
 import { defaultLanguage } from '@/constants';
 
-interface TConstructMetadataParams
-  extends Partial<Pick<SiteConfig, 'title' | 'description' | 'keywords'>> {
-  // title?: string;
-  // description?: string;
-  // keywords: SiteConfig['keywords'];
+interface TConstructMetadataParams {
+  /*extends Partial<Pick<SiteConfig, 'title' | 'description' | 'keywords'>>*/ title?: string;
+  description?: string;
+  keywords?: string[];
   image?: string;
   icons?: string;
   noIndex?: boolean;
@@ -18,14 +18,14 @@ interface TConstructMetadataParams
 /** Create html, oath, twitter and other meta data tags */
 export function constructMetadata(params: TConstructMetadataParams = {}): Metadata {
   const {
-    title = siteConfig.title,
-    description = siteConfig.description,
-    keywords = siteConfig.keywords,
-    image = siteConfig.ogImage,
+    title = siteTitle,
+    description = siteDescription,
+    keywords = siteKeywords,
+    image = '/static/opengraph-image.jpg',
     icons = '/favicon.ico',
     noIndex = true,
     locale = defaultLanguage, // routing.defaultLocale as TLocale,
-    url = siteConfig.url,
+    url = PUBLIC_URL,
   } = params;
   return {
     title,

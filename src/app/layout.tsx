@@ -12,6 +12,9 @@ import { isDev } from '@/config';
 import '@/styles/globals.scss';
 import '@/styles/root-layout.scss';
 
+import { GenericLayout } from '@/components/layout/GenericLayout';
+import ModalProvider from '@/components/modals/providers';
+import { TailwindIndicator } from '@/components/service/TailwindIndicator';
 import { defaultLanguage } from '@/constants';
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -40,35 +43,41 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             disableTransitionOnChange
             // storageKey="app-theme"
           >
-            {/* NOTE: The toaster should be located before the main content */}
-            <Toaster
-              // @see https://sonner.emilkowal.ski/toaster#api-reference
-              expand
-              richColors
-              closeButton
-              theme="dark"
-              // invert?: boolean;
-              // theme?: 'light' | 'dark' | 'system';
-              // position?: Position;
-              // hotkey?: string[];
-              // richColors?: boolean;
-              // expand?: boolean;
-              // duration?: number;
-              // gap?: number;
-              // visibleToasts?: number;
-              // closeButton?: boolean;
-              // toastOptions?: ToastOptions;
-              // className?: string;
-              // style?: React.CSSProperties;
-              // offset?: Offset;
-              // mobileOffset?: Offset;
-              // dir?: 'rtl' | 'ltr' | 'auto';
-              // swipeDirections?: SwipeDirection[];
-              // icons?: ToastIcons;
-              // containerAriaLabel?: string;
-              // pauseWhenPageIsHidden?: boolean;
-            />
-            {children}
+            <ModalProvider>
+              {/* NOTE: The toaster should be located before the main content */}
+              <Toaster
+                // @see https://sonner.emilkowal.ski/toaster#api-reference
+                expand
+                richColors
+                closeButton
+                theme="dark"
+                // invert?: boolean;
+                // theme?: 'light' | 'dark' | 'system';
+                // position?: Position;
+                // hotkey?: string[];
+                // richColors?: boolean;
+                // expand?: boolean;
+                // duration?: number;
+                // gap?: number;
+                // visibleToasts?: number;
+                // closeButton?: boolean;
+                // toastOptions?: ToastOptions;
+                // className?: string;
+                // style?: React.CSSProperties;
+                // offset?: Offset;
+                // mobileOffset?: Offset;
+                // dir?: 'rtl' | 'ltr' | 'auto';
+                // swipeDirections?: SwipeDirection[];
+                // icons?: ToastIcons;
+                // containerAriaLabel?: string;
+                // pauseWhenPageIsHidden?: boolean;
+              />
+              <GenericLayout>
+                {/* Core content */}
+                {children}
+              </GenericLayout>
+              <TailwindIndicator />
+            </ModalProvider>
           </ThemeProvider>
         </SessionProvider>
       </body>

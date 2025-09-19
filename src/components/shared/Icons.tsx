@@ -1,6 +1,6 @@
-// NOTE: See stock icons at:
-// https://lucide.dev/icons/
-// node_modules/lucide-react/dist/lucide-react.d.ts
+// NOTE: See stock icons at: https://lucide.dev/icons/
+
+// Data definitions: node_modules/lucide-react/dist/lucide-react.d.ts
 
 import React from 'react';
 import * as icons from 'lucide-react';
@@ -11,6 +11,8 @@ export type IconProps = icons.LucideProps;
 export type IconType = (p: IconProps) => React.JSX.Element;
 export type { LucideIcon } from 'lucide-react';
 
+export type TGenericIcon = IconType | icons.LucideIcon;
+
 // Lucide icons exact...
 
 export const {
@@ -19,6 +21,7 @@ export const {
   ArrowUpRight,
   BookOpen,
   Bot,
+  Rocket,
   Braces,
   CalendarDays,
   ChartNoAxesGantt,
@@ -101,7 +104,7 @@ export const Warning = icons.AlertTriangle;
 
 // Custom icons...
 
-export const Github = ({ ...props }: IconProps) => (
+export const Github: IconType = ({ ...props }: IconProps) => (
   <svg
     aria-hidden="true"
     focusable="false"
@@ -118,7 +121,7 @@ export const Github = ({ ...props }: IconProps) => (
     />
   </svg>
 );
-export const Yandex = ({ ...props }: IconProps) => (
+export const Yandex: IconType = ({ ...props }: IconProps) => (
   <svg
     aria-hidden="true"
     focusable="false"
@@ -136,7 +139,7 @@ export const Yandex = ({ ...props }: IconProps) => (
     />
   </svg>
 );
-export const Google = ({ ...props }: IconProps) => (
+export const Google: IconType = ({ ...props }: IconProps) => (
   <svg
     aria-hidden="true"
     focusable="false"
@@ -153,7 +156,7 @@ export const Google = ({ ...props }: IconProps) => (
     />
   </svg>
 );
-export const NextJs = ({ ...props }: IconProps) => (
+export const NextJs: IconType = ({ ...props }: IconProps) => (
   <svg
     aria-hidden="true"
     focusable="false"
@@ -170,7 +173,7 @@ export const NextJs = ({ ...props }: IconProps) => (
     />
   </svg>
 );
-export const Twitter = ({ ...props }: IconProps) => (
+export const Twitter: IconType = ({ ...props }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 24 24"
@@ -187,7 +190,7 @@ export const Twitter = ({ ...props }: IconProps) => (
     />
   </svg>
 );
-export const Telegram = ({ ...props }: IconProps) => (
+export const Telegram: IconType = ({ ...props }: IconProps) => (
   <svg
     aria-hidden="true"
     focusable="false"

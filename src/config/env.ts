@@ -15,3 +15,13 @@ export const isProd = !isDev;
 export const defaultLanguage = process.env.NEXT_PUBLIC_DEFAULT_LANGUAGE || 'en';
 
 export const dataContentType = 'application/json; charset=utf-8';
+
+export const siteTitle = 'Next AI Helper Chat';
+export const siteDescription = 'NextJS chat application';
+export const siteKeywords = [
+  // ...
+  'next.js',
+  'ai',
+  'chat',
+];
+export const mailSupport = 'lilliputten@gmail.com';

@@ -28,7 +28,7 @@ export function ConfirmForm(props: TConfirmFormProps) {
     handleConfirm,
     handleClose,
     isPending,
-    confirmButtonVariant,
+    confirmButtonVariant = 'theme',
     confirmButtonText = 'Ok',
     confirmButtonBusyText,
     confirmButtonIcon = Check,

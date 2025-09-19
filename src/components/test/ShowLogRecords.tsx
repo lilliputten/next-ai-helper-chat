@@ -4,6 +4,7 @@ import React from 'react';
 import Image from 'next/image';
 
 import { cn } from '@/lib/utils';
+import { ScrollArea } from '@/components/ui/ScrollArea';
 import { isDev } from '@/config';
 
 type TLogType = 'info' | 'error' | 'success' | 'data' | 'imageData';
@@ -74,7 +75,18 @@ export function ShowLogRecords(props: TShowLogRecordsProps) {
         <span className="flex-1 text-lg font-semibold">Operation Log</span>{' '}
         <span className="opacity-30">(reversed)</span>
       </h2>
-      <div className="flex flex-col gap-4 overflow-auto">
+      <ScrollArea
+        className={cn(
+          isDev && '__ShowLogRecords_Scroll', // DEBUG
+          'flex flex-col gap-4',
+          // 'overflow-auto',
+          'h-full overflow-y-auto',
+        )}
+        viewportClassName={cn(
+          isDev && '__ShowLogRecords_ScrollViewport', // DEBUG
+          // '[&>div]:h-full',
+        )}
+      >
         {reversedLogs.map((log, i) => {
           const { type, title } = log;
           const result = <LogContent log={log} />;
@@ -92,7 +104,7 @@ export function ShowLogRecords(props: TShowLogRecordsProps) {
             </div>
           );
         })}
-      </div>
+      </ScrollArea>
     </div>
   );
 }
