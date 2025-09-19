@@ -116,9 +116,7 @@ export function StartBotPage() {
       // onSubmit={onSubmit}
       className={cn(
         isDev && '__StartBotPage', // DEBUG
-        'mx-auto flex max-w-xl flex-col gap-5 p-5',
-        // 'rounded-md bg-black/10 p-6 shadow-md',
-        // 'space-y-6',
+        'mx-auto flex w-full max-w-3xl flex-col gap-4 overflow-hidden',
       )}
     >
       <h1 className="text-2xl">Initialize Telegram Webhook</h1>
@@ -159,7 +157,7 @@ export function StartBotPage() {
           disabled={isInitWebhookRunning}
           onClick={initWebhook}
           variant="theme"
-          className={cn('flex gap-2', isInitWebhookRunning && 'pointer-events-none opacity-50')}
+          className="flex gap-2"
         >
           <InitWebhookIcon
             className={cn('size-4 opacity-50', isInitWebhookRunning && 'animate-spin')}
@@ -168,25 +166,19 @@ export function StartBotPage() {
         </Button>
         {/* setCommands */}
         <Button
-          disabled={isInitWebhookRunning}
+          disabled={isSetCommandsRunning}
           onClick={setCommands}
           variant="theme"
-          className={cn('flex gap-2', isSetCommandsRunning && 'pointer-events-none opacity-50')}
+          className="flex gap-2"
         >
-          <SetCommandsIcon
-            className={cn('size-4 opacity-50', isSetCommandsRunning && 'animate-spin')}
-          />
+          <SetCommandsIcon className={cn('size-4 opacity-50')} />
           <span className="truncate">Set commands</span>
         </Button>
         {/* clearLogs */}
         <Button
-          disabled={isPending}
+          disabled={!hasLogs || isPending}
           variant="ghost"
-          className={cn(
-            // 'focus:ring-primary-500 cursor-pointer rounded bg-gray-600 px-4 py-2 font-semibold text-white hover:bg-gray-700 focus:ring-2 focus:outline-none',
-            'flex gap-2',
-            (!hasLogs || isPending) && 'pointer-events-none opacity-50',
-          )}
+          className="flex gap-2"
           onClick={clearLogs}
         >
           <Close className="size-4 opacity-50" />
@@ -203,7 +195,6 @@ export function StartBotPage() {
         cancelButtonText="Cancel"
         handleClose={() => setModalVisible(false)}
         handleConfirm={() => {
-          debugger;
           setModalVisible(false);
         }}
         isPending={isPending}

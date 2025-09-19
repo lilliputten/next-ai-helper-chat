@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { cn } from '@/lib/utils';
-import { TGenericIcon } from '@/components/shared/Icons';
+import { TGenericIcon } from '@/components/shared/IconTypes';
 
 type ErrorPlaceHolderProps = React.HTMLAttributes<HTMLDivElement>;
 

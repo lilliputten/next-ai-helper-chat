@@ -5,7 +5,8 @@ import React from 'react';
 import { TReactNode } from '@/lib/types/react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/Button';
-import { Check, Close, IconType, Spinner } from '@/components/shared/Icons';
+import { Check, Close, Spinner } from '@/components/shared/Icons';
+import { TGenericIcon } from '@/components/shared/IconTypes';
 import { isDev } from '@/config';
 
 export interface TConfirmFormProps {
@@ -17,7 +18,7 @@ export interface TConfirmFormProps {
   confirmButtonVariant?: React.ComponentProps<typeof Button>['variant'];
   confirmButtonText?: string;
   confirmButtonBusyText?: string;
-  confirmButtonIcon?: IconType;
+  confirmButtonIcon?: TGenericIcon;
   cancelButtonText?: string;
 }
 

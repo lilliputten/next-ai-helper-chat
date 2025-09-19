@@ -19,6 +19,7 @@ const __useDebugData = isDev && true;
 
 export function TextQueryForm() {
   const [_error, setError] = React.useState<string | null>(null);
+  const [showForm, toggleForm] = React.useState(true);
   const [logs, setLogs] = React.useState<TLogRecord[]>([
     /* // DEMO: Sampe data
      * {
@@ -65,6 +66,7 @@ export function TextQueryForm() {
         const resultData = queryResult; // { sample: 'ok' };
         addLog({ type: 'data', title: 'Data received:', content: resultData });
         addLog({ type: 'success', title: 'Received response:', content: `${resultText}` });
+        toggleForm(false);
       } catch (error) {
         const errMsg = error instanceof Error ? error.message : String(error);
         // eslint-disable-next-line no-console
@@ -94,8 +96,7 @@ export function TextQueryForm() {
       onSubmit={onSubmit}
       className={cn(
         isDev && '__TextQueryForm', // DEBUG
-        'mx-auto flex max-w-xl flex-col gap-6 rounded-md bg-black/10 p-6 shadow-md',
-        // 'space-y-6',
+        'mx-auto flex w-full max-w-3xl flex-col gap-4 overflow-hidden',
       )}
     >
       <h1 className="text-2xl">Text Query</h1>
@@ -107,8 +108,15 @@ export function TextQueryForm() {
           </span>
         </div>
       )}
-      <TextQueryFormFields form={form} />
-      <TextQueryFormActions form={form} logs={logs} clearLogs={clearLogs} isPending={isPending} />
+      {showForm && <TextQueryFormFields form={form} />}
+      <TextQueryFormActions
+        form={form}
+        logs={logs}
+        clearLogs={clearLogs}
+        isPending={isPending}
+        showForm={showForm}
+        toggleForm={toggleForm}
+      />
       <ShowLogRecords logs={logs} />
     </form>
   );

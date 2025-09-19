@@ -22,7 +22,7 @@ interface TPageWrapperProps extends TPropsWithChildrenAndClassName {
 
 export function PageWrapper(props: TPageWrapperProps) {
   const {
-    // id,
+    id,
     className,
     children,
     scrollable,
@@ -41,6 +41,7 @@ export function PageWrapper(props: TPageWrapperProps) {
       className={cn(
         isDev && '__PageWrapper_InnerWrapper', // DEBUG
         'flex flex-1 flex-col',
+        'h-full w-full',
         !scrollable && 'overflow-hidden',
         innerClassName,
       )}
@@ -88,6 +89,7 @@ export function PageWrapper(props: TPageWrapperProps) {
 
   return (
     <div
+      data-testid={id}
       className={cn(
         isDev && '__PageWrapper', // DEBUG
         'flex flex-1 flex-col items-center',

@@ -3,7 +3,8 @@
 import React from 'react';
 
 import { cn } from '@/lib/utils';
-import { Check, Close, Spinner } from '@/components/shared/Icons';
+import { Button } from '@/components/ui/Button';
+import { Check, Close, Eye, Spinner } from '@/components/shared/Icons';
 import { TLogRecord } from '@/components/test/ShowLogRecords';
 import { isDev } from '@/config';
 
@@ -14,30 +15,32 @@ interface TTextQueryFormActionsProps {
   clearLogs: () => void;
   isPending: boolean;
   logs: TLogRecord[];
+  showForm: boolean;
+  toggleForm: (v: boolean) => void;
 }
 
 export function TextQueryFormActions(props: TTextQueryFormActionsProps) {
-  const { form, logs, clearLogs, isPending } = props;
+  const { form, logs, clearLogs, isPending, showForm, toggleForm } = props;
 
-  const { formState, getValues } = form;
-  const {
-    // isDirty,
-    isValid,
-  } = formState;
+  const { formState, watch } = form;
+  const { isValid, isReady } = formState;
+
+  const values = watch();
 
   const isEmpty = React.useMemo(() => {
-    const values = getValues();
     // Check if all values are empty or equivalent to their default empty state
-    return Object.values(values).every(
-      (value) =>
-        value === '' ||
-        value === null ||
-        value === undefined ||
-        (Array.isArray(value) && value.length === 0),
-    );
-  }, [getValues]);
+    return Object.entries(values)
+      .filter(([id]) => id !== 'model')
+      .every(
+        ([_id, value]) =>
+          value === '' ||
+          value === null ||
+          value === undefined ||
+          (Array.isArray(value) && value.length === 0),
+      );
+  }, [values]);
 
-  const isSubmitEnabled = !isPending && !isEmpty && isValid;
+  const isSubmitEnabled = !isPending && !isEmpty && isValid && isReady;
 
   const hasLogs = !!logs.length;
 
@@ -50,31 +53,29 @@ export function TextQueryFormActions(props: TTextQueryFormActionsProps) {
         'flex flex-wrap items-center gap-2',
       )}
     >
-      <button
-        type="submit"
-        disabled={isPending}
-        className={cn(
-          'bg-primary-400 hover:bg-primary-300 focus:ring-primary-500 flex-1 cursor-pointer rounded px-4 py-2 font-semibold text-white focus:ring-2 focus:outline-none',
-          'flex items-center justify-center gap-2 transition',
-          !isSubmitEnabled && 'pointer-events-none opacity-50',
-        )}
-      >
+      <Button type="submit" disabled={!isSubmitEnabled} variant="theme" className="flex gap-2">
         <SubmitIcon className={cn('size-4 opacity-50', isPending && 'animate-spin')} />
         <span>{isPending ? 'Processing...' : 'Submit'}</span>
-      </button>
-      <button
+      </Button>
+      <Button
         type="button"
-        disabled={isPending}
-        className={cn(
-          'focus:ring-primary-500 cursor-pointer rounded bg-gray-600 px-4 py-2 font-semibold text-white hover:bg-gray-700 focus:ring-2 focus:outline-none',
-          'flex items-center justify-center gap-2 transition',
-          (!hasLogs || isPending) && 'pointer-events-none opacity-50',
-        )}
+        variant="theme"
+        className="flex gap-2"
+        onClick={() => toggleForm(!showForm)}
+      >
+        <Eye className="size-4 opacity-50" />
+        <span>{showForm ? 'Hide form' : 'Show form'}</span>
+      </Button>
+      <Button
+        type="button"
+        disabled={!hasLogs || isPending}
+        variant="ghost"
+        className="flex gap-2"
         onClick={clearLogs}
       >
         <Close className="size-4 opacity-50" />
         <span>Clear log</span>
-      </button>
+      </Button>
     </div>
   );
 }

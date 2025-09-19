@@ -6,7 +6,7 @@ import { getHttpsAgent } from '@/lib/ai/getHttpsAgent';
 let cachedClient: GigaChat | undefined;
 
 // Create client instance
-export async function getGigaChatClient() {
+export function getGigaChatClient() {
   if (cachedClient) {
     return cachedClient;
   }

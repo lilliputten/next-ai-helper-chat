@@ -8,6 +8,7 @@ import { TAiClientType } from '@/lib/types/TAiClientType';
 import { cn } from '@/lib/utils';
 import { ShowLogRecords, TLogRecord } from '@/components/test/ShowLogRecords';
 import { isDev } from '@/config';
+import { fetchGigaChatAvailableTokens } from '@/features/ai/actions/fetchGigaChatAvailableTokens';
 import { loadDemoImage, sendAiImageQuery } from '@/features/ai/actions/sendAiImageQuery';
 import { TPlainMessage } from '@/features/ai/types/messages';
 
@@ -22,8 +23,10 @@ const __useInitialData = isDev && false;
 const model: TAiClientType = 'GigaChat';
 
 export function ImageQueryForm() {
-  const [_error, setError] = React.useState<string | null>(null);
+  const [showForm, toggleForm] = React.useState(true);
   const [logs, setLogs] = React.useState<TLogRecord[]>([]);
+  const [isSubmitting, startSubmitting] = React.useTransition();
+  const [isLoadingTokens, startLoadingTokens] = React.useTransition();
 
   const addLog = React.useCallback((record: TLogRecord) => {
     setLogs((prev) => [...prev, record]);
@@ -59,8 +62,6 @@ export function ImageQueryForm() {
 
   const { handleSubmit } = form;
 
-  const [isPending, startTransition] = React.useTransition();
-
   const sendQuery = React.useCallback(
     async (formData: TFormData) => {
       const {
@@ -68,7 +69,6 @@ export function ImageQueryForm() {
         systemQueryText,
         userQueryText,
       } = formData;
-      setError(null);
       const queryInfo = [systemQueryText, userQueryText]
         .map((s) => s.trim())
         .filter(Boolean)
@@ -84,12 +84,12 @@ export function ImageQueryForm() {
         const { imageData, response } = queryResult;
         addLog({ type: 'success', title: 'Received response:', content: response });
         addLog({ type: 'imageData', title: 'Image received:', content: imageData });
+        toggleForm(false);
       } catch (error) {
         const errMsg = error instanceof Error ? error.message : String(error);
         // eslint-disable-next-line no-console
         console.error('[ImageQueryForm:sendQuery]', errMsg, { error });
         debugger; // eslint-disable-line no-debugger
-        setError(errMsg);
         addLog({ type: 'error', content: `Error occurred: ${errMsg}` });
       } finally {
         addLog({ type: 'info', content: 'Request complete' });
@@ -99,8 +99,26 @@ export function ImageQueryForm() {
   );
 
   const onSubmit = handleSubmit((formData) => {
-    startTransition(async () => {
+    startSubmitting(async () => {
       await sendQuery(formData);
+    });
+  });
+
+  const loadTokens = handleSubmit(() => {
+    startLoadingTokens(async () => {
+      try {
+        const tokens = await fetchGigaChatAvailableTokens();
+        addLog({ type: 'data', title: 'Received tokens info response:', content: tokens });
+        toggleForm(false);
+      } catch (error) {
+        const errMsg = error instanceof Error ? error.message : String(error);
+        // eslint-disable-next-line no-console
+        console.error('[ImageQueryForm:loadTokens]', errMsg, { error });
+        debugger; // eslint-disable-line no-debugger
+        addLog({ type: 'error', content: `Error occurred: ${errMsg}` });
+      } finally {
+        addLog({ type: 'info', content: 'Request complete' });
+      }
     });
   });
 
@@ -113,21 +131,32 @@ export function ImageQueryForm() {
       onSubmit={onSubmit}
       className={cn(
         isDev && '__ImageQueryForm', // DEBUG
-        'mx-auto flex max-w-xl flex-col gap-6 rounded-md bg-black/10 p-6 shadow-md',
-        // 'space-y-6',
+        'mx-auto flex w-full max-w-3xl flex-col gap-4 overflow-hidden',
       )}
     >
       <h1 className="text-2xl">Image Query</h1>
-      {__useDebugData && (
-        <div>
+      <div className="flex gap-2">
+        {__useDebugData && (
           <span className="rounded-full bg-red-500 px-3 py-1.5 text-xs text-white">
             <span className="font-bold">DEBUG MODE</span>{' '}
             <span className="opacity-70">The fake local data will be returned</span>
           </span>
-        </div>
-      )}
-      <ImageQueryFormFields form={form} />
-      <ImageQueryFormActions form={form} logs={logs} clearLogs={clearLogs} isPending={isPending} />
+        )}
+        <span className="rounded-full bg-gray-500 px-3 py-1.5 text-xs text-white">
+          Only GigaChat model is supported for image generation
+        </span>
+      </div>
+      {showForm && <ImageQueryFormFields form={form} />}
+      <ImageQueryFormActions
+        form={form}
+        logs={logs}
+        clearLogs={clearLogs}
+        isSubmitting={isSubmitting}
+        showForm={showForm}
+        toggleForm={toggleForm}
+        isLoadingTokens={isLoadingTokens}
+        loadTokens={loadTokens}
+      />
       <ShowLogRecords logs={logs} />
     </form>
   );

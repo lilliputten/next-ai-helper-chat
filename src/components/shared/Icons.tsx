@@ -5,17 +5,11 @@
 import React from 'react';
 import * as icons from 'lucide-react';
 
-// export type TLucideIcon = icons.LucideIcon; // ???
+import { IconProps, IconType } from './IconTypes';
 
-export type IconProps = icons.LucideProps;
-export type IconType = (p: IconProps) => React.JSX.Element;
-export type { LucideIcon } from 'lucide-react';
-
-export type TGenericIcon = IconType | icons.LucideIcon;
-
-// Lucide icons exact...
-
+// Lucide icons...
 export const {
+  Sigma,
   ArrowLeft,
   ArrowRight,
   ArrowUpRight,
@@ -78,7 +72,6 @@ export const {
 } = icons;
 
 // Renamed icons...
-
 export const Add = icons.Plus;
 export const AllTopics = icons.SquareLibrary;
 export const Answers = icons.ListChecks;
@@ -103,7 +96,6 @@ export const Sun = icons.SunMedium;
 export const Warning = icons.AlertTriangle;
 
 // Custom icons...
-
 export const Github: IconType = ({ ...props }: IconProps) => (
   <svg
     aria-hidden="true"

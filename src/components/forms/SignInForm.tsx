@@ -4,11 +4,13 @@ import React from 'react';
 import Link from 'next/link';
 import { signIn, SignInOptions } from 'next-auth/react';
 
+import { startRoute } from '@/config/routesConfig';
 // import { useTranslations } from 'next-intl';
 
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/Button';
-import { Github, Google, IconType, Spinner, Yandex } from '@/components/shared/Icons';
+import { Github, Google, Spinner, Yandex } from '@/components/shared/Icons';
+import { TGenericIcon } from '@/components/shared/IconTypes';
 import { Logo } from '@/components/shared/Logo';
 import { isDev } from '@/config';
 
@@ -22,7 +24,7 @@ interface OAuthSignInButtonProps {
   onSignInStart?: (provider: TSignInProvider) => void;
   onSignInDone?: (provider: TSignInProvider) => void;
   provider: TSignInProvider;
-  ProviderIcon: IconType; // React.FC;
+  ProviderIcon: TGenericIcon; // React.FC;
   text: string;
   /** Rendered inside Link body or in the app header */
   inBody?: boolean;
@@ -42,7 +44,7 @@ function OAuthSignInButton(props: OAuthSignInButtonProps) {
   const isClicked = !!currentProvider;
   const isThisClicked = currentProvider == provider;
   const onSignIn = React.useCallback(() => {
-    const options: SignInOptions = { redirectTo: '/start' };
+    const options: SignInOptions = { redirectTo: startRoute };
     if (onSignInStart) {
       onSignInStart(provider);
     }

@@ -79,12 +79,10 @@ export function ShowLogRecords(props: TShowLogRecordsProps) {
         className={cn(
           isDev && '__ShowLogRecords_Scroll', // DEBUG
           'flex flex-col gap-4',
-          // 'overflow-auto',
-          'h-full overflow-y-auto',
         )}
         viewportClassName={cn(
           isDev && '__ShowLogRecords_ScrollViewport', // DEBUG
-          // '[&>div]:h-full',
+          '[&>div]:!flex [&>div]:flex-col [&>div]:gap-4',
         )}
       >
         {reversedLogs.map((log, i) => {

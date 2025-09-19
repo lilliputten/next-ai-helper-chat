@@ -8,6 +8,8 @@ export const infoRoute = '/info';
 export const rootRoute = '/';
 export const settingsRoute = '/settings';
 export const startRoute = '/start';
+export const testImageQueryRoute = '/test/image-query';
+export const testTextQueryRoute = '/test/text-query';
 export const welcomeRoute = '/welcome';
 
 /** NOTE: That's used only to mock real intl context */
@@ -22,6 +24,8 @@ export const pathnames = {
   [rootRoute]: rootRoute,
   [settingsRoute]: settingsRoute,
   [startRoute]: adminRoute,
+  [testImageQueryRoute]: testImageQueryRoute,
+  [testTextQueryRoute]: testTextQueryRoute,
   [welcomeRoute]: welcomeRoute,
 };
 

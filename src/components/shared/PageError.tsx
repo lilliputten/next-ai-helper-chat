@@ -12,7 +12,8 @@ import { TReactNode } from '@/lib/types/react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/Button';
 import { ErrorPlaceHolder } from '@/components/shared/ErrorPlaceHolder';
-import { ArrowLeft, Home, Refresh, TGenericIcon, Warning } from '@/components/shared/Icons';
+import { ArrowLeft, Home, Refresh, Warning } from '@/components/shared/Icons';
+import { TGenericIcon } from '@/components/shared/IconTypes';
 import { isDev } from '@/config';
 import { useGoBack } from '@/hooks';
 

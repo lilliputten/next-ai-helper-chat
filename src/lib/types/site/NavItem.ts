@@ -1,5 +1,5 @@
 import { TRoutePath } from '@/config/routesConfig';
-import { TGenericIcon } from '@/components/shared/Icons';
+import { TGenericIcon } from '@/components/shared/IconTypes';
 
 export interface NavItemBase {
   titleId: string; // Id for i18n

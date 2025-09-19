@@ -76,7 +76,7 @@ export async function sendAiImageQuery(
     }
     let response: TResponse | undefined;
     let imageData: string | undefined;
-    const client = await getGigaChatClient();
+    const client = getGigaChatClient();
     if (__useDebugData && fs.existsSync(__demoDataFile)) {
       await new Promise((r) => setTimeout(r, 1000));
       response = await loadDemoData();
