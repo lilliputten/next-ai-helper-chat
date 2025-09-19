@@ -5,8 +5,6 @@ import Link from 'next/link';
 import { signIn, SignInOptions } from 'next-auth/react';
 
 import { startRoute } from '@/config/routesConfig';
-// import { useTranslations } from 'next-intl';
-
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/Button';
 import { Github, Google, Spinner, Yandex } from '@/components/shared/Icons';
@@ -130,7 +128,7 @@ export function SignInForm(props: TSignInFormProps) {
         onSignInDone={onSignInDone}
         provider="github"
         ProviderIcon={Github}
-        text={t('sign-in-with-github')}
+        text={t('Sign in with Github')}
         // inBody={inBody}
       />
       <OAuthSignInButton
@@ -139,7 +137,7 @@ export function SignInForm(props: TSignInFormProps) {
         onSignInDone={onSignInDone}
         provider="yandex"
         ProviderIcon={Yandex}
-        text={t('sign-in-with-yandex')}
+        text={t('Sign in with Yandex')}
         // inBody={inBody}
       />
       <OAuthSignInButton
@@ -148,7 +146,7 @@ export function SignInForm(props: TSignInFormProps) {
         onSignInDone={onSignInDone}
         provider="google"
         ProviderIcon={Google}
-        text={t('sign-in-with-google')}
+        text={t('Sign in with Google')}
         // inBody={inBody}
       />
       {/* // NOTE: Temporarily don't use telegram login, as it's buggy (see `team-tree-app` project for an example of `telegram-auth` usage)
@@ -158,7 +156,7 @@ export function SignInForm(props: TSignInFormProps) {
         onSignInDone={onSignInDone}
         provider="telegram-auth"
         ProviderIcon={Telegram}
-        text={t('sign-in-with-telegram')}
+        text={t('Sign in with Telegram')}
         // inBody={inBody}
       />
       */}

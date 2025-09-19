@@ -9,13 +9,12 @@ import { IconProps, IconType } from './IconTypes';
 
 // Lucide icons...
 export const {
-  Sigma,
   ArrowLeft,
   ArrowRight,
   ArrowUpRight,
+  AtSign,
   BookOpen,
   Bot,
-  Rocket,
   Braces,
   CalendarDays,
   ChartNoAxesGantt,
@@ -56,18 +55,21 @@ export const {
   PanelRightClose,
   Pencil,
   Plus,
+  Rocket,
   Rows3,
   Search,
   Settings,
   Shield,
   ShieldAlert,
   ShieldCheck,
+  Sigma,
   SquareChartGantt,
   SquareDashedKanban,
   SquareLibrary,
   Tags,
   Trash,
   User,
+  Users,
   XIcon,
 } = icons;
 

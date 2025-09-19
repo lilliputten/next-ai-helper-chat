@@ -1,4 +1,4 @@
-import { WEBHOOK_HOST } from '@/config/envServer';
+// import { WEBHOOK_HOST } from '@/config/envServer';
 
 class ServerStartUp {
   // private static envServer: typeof envServer = envServer;
@@ -23,7 +23,7 @@ class ServerStartUp {
       // eslint-disable-next-line no-console
       console.log('[src/app/serverStartUp] ServerStartUp process started.', {
         // BOT_TOKEN,
-        WEBHOOK_HOST,
+        // WEBHOOK_HOST,
       });
       // Start recurring jobs or other server-side tasks
     }

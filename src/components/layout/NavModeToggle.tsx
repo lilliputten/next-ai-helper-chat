@@ -12,10 +12,9 @@ import { TSidebarBlockProps } from './SidebarComponents';
 
 export function NavModeToggle(props: TSidebarBlockProps) {
   const { onPrimary, onSidebar, className } = props;
-  const t = (s: string) => s; // useTranslations('NavModeToggle');
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild aria-label={t('label')}>
+      <DropdownMenuTrigger asChild aria-label="Change theme">
         <Button
           variant={onPrimary || onSidebar ? 'ghostOnTheme' : 'ghost'}
           size="sm"
@@ -25,11 +24,11 @@ export function NavModeToggle(props: TSidebarBlockProps) {
             // onSidebar && 'flex justify-start gap-2 px-2',
             className,
           )}
-          title={t('label')}
+          title="Change theme"
         >
           <Sun className="scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90" />
           <Moon className="absolute scale-0 rotate-90 transition-all dark:scale-100 dark:rotate-0" />
-          <span className="sr-only">{t('label')}</span>
+          <span className="sr-only">Change theme</span>
         </Button>
       </DropdownMenuTrigger>
       <NavModeToggleBlock align="end" onPrimary={onPrimary} onSidebar={onSidebar} />

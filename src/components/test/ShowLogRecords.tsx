@@ -82,7 +82,7 @@ export function ShowLogRecords(props: TShowLogRecordsProps) {
         )}
         viewportClassName={cn(
           isDev && '__ShowLogRecords_ScrollViewport', // DEBUG
-          '[&>div]:!flex [&>div]:flex-col [&>div]:gap-4',
+          '[&>div]:!flex [&>div]:flex-col [&>div]:gap-4 [&>div]:flex-1',
         )}
       >
         {reversedLogs.map((log, i) => {

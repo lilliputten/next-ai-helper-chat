@@ -10,11 +10,8 @@ import { isDev } from '@/config';
 import { ImageQueryForm } from './ImageQueryForm';
 
 export async function generateMetadata(/* { params }: TAwaitedLocaleProps */) {
-  // const { locale } = await params;
-  // const locale = defaultLanguage;
   return constructMetadata({
     title: 'Test Image Query',
-    // locale,
   });
 }
 
@@ -35,10 +32,7 @@ export default async function ImageQueryPage() {
       innerClassName={cn(
         isDev && '__ImageQueryPage_Inner', // DEBUG
       )}
-      // layoutType="scrollable"
       padded
-      // scrollable
-      // limitWidth
     >
       <ImageQueryForm />
     </PageWrapper>

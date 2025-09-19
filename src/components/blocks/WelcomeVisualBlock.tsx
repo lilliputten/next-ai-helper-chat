@@ -1,24 +1,29 @@
 import Image from 'next/image';
 
-import { TPropsWithClassName } from '@/lib/types/react';
+import { TPropsWithChildrenAndClassName } from '@/lib/types/react';
 import { cn } from '@/lib/utils';
-import { SmallWelcomeText } from '@/components/screens/SmallWelcomeText';
+import { ScrollArea } from '@/components/ui/ScrollArea';
 import { isDev } from '@/config';
 
 import svgArt from '/public/static/arts/login-blue.svg';
 
-export function WelcomeVisualBlock(props: TPropsWithClassName) {
-  const { className } = props;
+export function WelcomeVisualBlock(props: TPropsWithChildrenAndClassName) {
+  const { className, children } = props;
   return (
-    <div
+    <ScrollArea
       className={cn(
         isDev && '__WelcomeVisualBlock', // DEBUG
-        className,
-        // 'm-4',
         'gap-4',
         'flex flex-1 flex-col',
         'items-stretch',
         'justify-center',
+        // 'overflow-auto',
+        className,
+      )}
+      viewportClassName={cn(
+        isDev && '__WelcomeVisualBlock_ScrollViewport', // DEBUG
+        'flex flex-1 flex-col',
+        '[&>div]:!flex [&>div]:flex-col [&>div]:gap-4 [&>div]:flex-1 [&>div]:justify-center',
       )}
     >
       <Image
@@ -49,7 +54,7 @@ export function WelcomeVisualBlock(props: TPropsWithClassName) {
         }}
       />
       */}
-      <SmallWelcomeText className="mb-5" />
-    </div>
+      {children}
+    </ScrollArea>
   );
 }

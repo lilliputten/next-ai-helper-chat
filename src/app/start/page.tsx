@@ -10,11 +10,8 @@ import { isDev } from '@/config';
 import { StartBotPage } from './StartBotPage';
 
 export async function generateMetadata(/* { params }: TAwaitedLocaleProps */) {
-  // const { locale } = await params;
-  // const locale = defaultLanguage;
   return constructMetadata({
     title: 'Start Bot',
-    // locale,
   });
 }
 
@@ -35,10 +32,7 @@ export default async function StartBotPageWrapper() {
       innerClassName={cn(
         isDev && '__ImageQueryPage_Inner', // DEBUG
       )}
-      // layoutType="scrollable"
       padded
-      // scrollable
-      // limitWidth
     >
       <StartBotPage />
     </PageWrapper>

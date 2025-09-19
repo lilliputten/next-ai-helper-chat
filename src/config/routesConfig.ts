@@ -2,7 +2,9 @@
 // export const availableTopicsRoute = '/topics/available'; // Example
 // export const chartsRoute = '/charts';
 // export const myTopicsRoute = '/topics/my';
+export const adminAllowedUsersRoute = '/admin/allowed-users';
 export const adminRoute = '/admin';
+export const contactsRoute = '/contacts';
 export const dashboardRoute = '/dashboard';
 export const infoRoute = '/info';
 export const rootRoute = '/';
@@ -19,6 +21,7 @@ export const pathnames = {
   // [chartsRoute]: chartsRoute,
   // [myTopicsRoute]: myTopicsRoute,
   [adminRoute]: adminRoute,
+  [contactsRoute]: contactsRoute,
   [dashboardRoute]: dashboardRoute,
   [infoRoute]: infoRoute,
   [rootRoute]: rootRoute,

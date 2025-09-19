@@ -6,22 +6,23 @@ import { FlaskConical } from 'lucide-react';
 import { UserRoles } from '@/lib/db';
 import { SidebarNavItem } from '@/lib/types/site/NavItem';
 import {
+  AtSign,
   BookOpen,
-  Dashboard,
   Hand,
-  Home,
   Laptop,
   Messages,
   Rocket,
   Settings,
+  Users,
 } from '@/components/shared/Icons';
 
 import {
+  adminAllowedUsersRoute,
   adminRoute,
   // allTopicsRoute,
   // availableTopicsRoute,
   // chartsRoute,
-  dashboardRoute,
+  // dashboardRoute,
   // myTopicsRoute,
   rootRoute,
   settingsRoute,
@@ -53,18 +54,22 @@ export const sidebarLinks: SidebarNavItem[] = [
       { href: startRoute, icon: Rocket, titleId: 'Start', authorizedOnly: true },
       { href: testTextQueryRoute, icon: FlaskConical, titleId: 'Test Text Query', authorizedOnly: true },
       { href: testImageQueryRoute, icon: FlaskConical, titleId: 'Test Image Query', authorizedOnly: true },
-      { href: adminRoute, icon: Laptop, titleId: 'Admin Panel', authorizedOnly: UserRoles.ADMIN, disabled: true },
-      { href: dashboardRoute, icon: Dashboard, titleId: 'Dashboard', disabled: true },
-      // { href: chartsRoute, icon: 'lineChart', titleId: 'Charts', disabled: true },
     ],
   },
   {
-    titleId: 'Options',
+    titleId: 'Configuration',
+    items: [
+      { href: adminAllowedUsersRoute, icon: Users, titleId: 'Allowed Users', disabled: true },
+      { href: adminRoute, icon: Laptop, titleId: 'Admin Panel', authorizedOnly: UserRoles.ADMIN, disabled: true },
+    ],
+  },
+  {
+    titleId: 'Project',
     items: [
       { href: settingsRoute, icon: Settings, titleId: 'Settings', disabled: true },
-      { href: rootRoute, icon: Home, titleId: 'Homepage' },
       { href: rootRoute, icon: BookOpen, titleId: 'Documentation', disabled: true },
-      { href: rootRoute, icon: Messages, titleId: 'Support', authorizedOnly: UserRoles.USER, disabled: true },
+      { href: rootRoute, icon: Messages, titleId: 'Support', disabled: true },
+      { href: rootRoute, icon: AtSign, titleId: 'Contacts', disabled: true },
     ],
   },
 ];

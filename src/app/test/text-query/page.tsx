@@ -10,11 +10,8 @@ import { isDev } from '@/config';
 import { TextQueryForm } from './TextQueryForm';
 
 export async function generateMetadata(/* { params }: TAwaitedLocaleProps */) {
-  // const { locale } = await params;
-  // const locale = defaultLanguage;
   return constructMetadata({
     title: 'Test Query',
-    // locale,
   });
 }
 
@@ -35,10 +32,7 @@ export default async function TestQueryPage() {
       innerClassName={cn(
         isDev && '__ImageQueryPage_Inner', // DEBUG
       )}
-      // layoutType="scrollable"
       padded
-      // scrollable
-      // limitWidth
     >
       <TextQueryForm />
     </PageWrapper>

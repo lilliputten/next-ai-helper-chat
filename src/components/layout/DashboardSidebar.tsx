@@ -166,7 +166,7 @@ export function DashboardSidebar({ links }: DashboardSidebarProps) {
                                     ? 'bg-theme-500/10 hover:text-theme-foreground'
                                     : 'text-muted-foreground',
                                   item.disabled &&
-                                    'hover:text-muted-foreground cursor-not-allowed opacity-50 hover:bg-transparent',
+                                    'hover:text-muted-foreground pointer-events-none opacity-50 hover:bg-transparent',
                                 )}
                               >
                                 <Icon className="size-5" />
@@ -189,7 +189,7 @@ export function DashboardSidebar({ links }: DashboardSidebarProps) {
                                         ? 'bg-theme-500/10 hover:text-theme-foreground'
                                         : 'text-muted-foreground hover:text-theme-foreground',
                                       item.disabled &&
-                                        'hover:text-muted-foreground pointer-events-none cursor-not-allowed opacity-30 hover:bg-transparent',
+                                        'hover:text-muted-foreground pointer-events-none opacity-30 hover:bg-transparent',
                                     )}
                                   >
                                     <span className="flex size-full items-center justify-center">
@@ -284,7 +284,7 @@ function MenuSections(props: DashboardSidebarProps & TMobileSheetProps) {
                     'hover:bg-theme hover:text-theme-foreground flex items-center gap-3 rounded-md p-2 text-sm font-medium',
                     isCurrentPath ? 'bg-theme-500/10' : 'text-muted-foreground',
                     item.disabled &&
-                      'hover:text-muted-foreground pointer-events-none cursor-not-allowed opacity-50 hover:bg-transparent',
+                      'hover:text-muted-foreground pointer-events-none opacity-50 hover:bg-transparent',
                   )}
                 >
                   <Icon className="size-5" />

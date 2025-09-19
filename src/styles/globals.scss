@@ -236,68 +236,80 @@ html.dark {
       transform: rotate(360deg);
     }
   }
+
+  :root {
+    --formSize: 2.5em;
+
+    font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+    line-height: 1.5;
+    font-weight: 400;
+
+    // Set font size to approx fit 20 lines in the list
+    // font-size: max(14px, 1.62vh);
+
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  .text-content {
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    p,
+    ul,
+    ol {
+      margin-top: 0.25em;
+      margin-bottom: 0.25em;
+    }
+    h1,
+    h2,
+    h3 {
+      color: var(--color-primary-500);
+    }
+    h1 {
+      font-size: 2rem;
+    }
+    h2 {
+      font-size: 1.75rem;
+    }
+    h3 {
+      font-size: 1.5rem;
+    }
+    a {
+      color: var(--color-primary-500);
+      &:hover {
+        text-decoration: underline;
+        color: var(--color-primary-400);
+      }
+    }
+  }
+
+  select {
+    // background-color: var(--color-background);
+    background:
+      url('/static/icons/select-arrows-gray.svg') no-repeat 98% 50%,
+      var(--color-background);
+    color: var(--color-foreground);
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    appearance: none;
+    /* // NOTE: It works wierd, let use browser's native styles
+     * option {
+     *   background-color: var(--color-background);
+     *   &:hover,
+     *   &:checked {
+     *     background-color: var(--color-primary) !important;
+     *     color: #fff;
+     *   }
+     *   &:hover {
+     *     box-shadow: 0 0 10px 100px #0f0 inset !important;
+     *   }
+     * }
+     */
+  }
 }
-
-:root {
-  --formSize: 2.5em;
-
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-
-  // Set font size to approx fit 20 lines in the list
-  // font-size: max(14px, 1.62vh);
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-select {
-  // background-color: var(--color-background);
-  background:
-    url('/static/icons/select-arrows-gray.svg') no-repeat 98% 50%,
-    var(--color-background);
-  color: var(--color-foreground);
-  -moz-appearance: none;
-  -webkit-appearance: none;
-  appearance: none;
-  /* // NOTE: It works wierd, let use browser's native styles
-   * option {
-   *   background-color: var(--color-background);
-   *   &:hover,
-   *   &:checked {
-   *     background-color: var(--color-primary) !important;
-   *     color: #fff;
-   *   }
-   *   &:hover {
-   *     box-shadow: 0 0 10px 100px #0f0 inset !important;
-   *   }
-   * }
-   */
-}
-
-/* // DEMO: Clipping layout example
- * body,
- * #root {
- *   position: fixed;
- *   left: 0;
- *   right: 0;
- *   bottom: 0;
- *   top: 0;
- *   overflow: hidden;
- * }
- *
- * body {
- *   margin: 0;
- *   padding: 0;
- * }
- *
- * #root {
- *   display: flex;
- *   flex-direction: column;
- *   align-items: stretch;
- *   align-content: space-around;
- * }
- */

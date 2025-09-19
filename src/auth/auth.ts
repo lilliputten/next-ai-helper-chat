@@ -10,6 +10,16 @@ import { TExtendedUser } from '@/features/users/types/TUser';
 
 import authConfig from './auth.config.server';
 
+// TODO: Move to constants (and provide a way to extend from env), create a DB table with available emails and other data to detect allowed users
+const validEmails = [
+  // Allowed emails
+  'dmia@yandex.ru',
+  'igor@lilliputten.com',
+];
+const invalidEmailRoute = '/demo-info';
+
+export type TInvalidEmailReason = 'NO_EMAIL' | 'UNKNOWN_EMAIL';
+
 /* // UNUSED: Workaround for make sure that `auth.config.server` is used only on server.
  * // Use different imports for server and client
  * import authConfig from './auth.config';
@@ -33,7 +43,7 @@ export const nextAuthApp = NextAuth({
     // error: "/auth/error",
   },
   callbacks: {
-    async signIn(_params) {
+    async signIn(params) {
       /* // Got params for 'telegram` here:
        * {
        *   "user": {
@@ -53,16 +63,44 @@ export const nextAuthApp = NextAuth({
        *   }
        * }
        */
-      /*
-       * const { user, account, profile, email, credentials } = _params;
-       * console.log('[auth:callbacks:signIn]', {
+      const {
+        user,
+        account,
+        profile,
+        // email: verificationEmail, // { verificationRequest?: boolean }
+        credentials,
+      } = params;
+      const profileEmail = profile?.email;
+      const email = profileEmail;
+      /* console.log('[auth:callbacks:signIn]', {
+       *   email,
+       *   profileEmail,
        *   user,
        *   account,
        *   profile,
-       *   email,
        *   credentials,
        * });
        */
+      let rejectReason: TInvalidEmailReason | undefined;
+      if (!email) {
+        rejectReason = 'NO_EMAIL';
+      } else if (!validEmails.includes(email)) {
+        rejectReason = 'UNKNOWN_EMAIL';
+      }
+      if (rejectReason) {
+        // eslint-disable-next-line no-console
+        console.warn('[auth:callbacks:signIn] Sing in rejected:', {
+          rejectReason,
+          email,
+          profileEmail,
+          user,
+          account,
+          profile,
+          credentials,
+        });
+        debugger; // eslint-disable-line no-debugger
+        return `${invalidEmailRoute}?reason=${rejectReason}`;
+      }
       return true;
     },
     async session(params) {
