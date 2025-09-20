@@ -6,16 +6,11 @@ import { JWT } from 'next-auth/jwt';
 import { prisma } from '@/lib/db';
 import { isDev } from '@/config';
 import { getUserById } from '@/features/users/actions/';
+import { getValidEmails } from '@/features/users/actions/getValidEmails';
 import { TExtendedUser } from '@/features/users/types/TUser';
 
 import authConfig from './auth.config.server';
 
-// TODO: Move to constants (and provide a way to extend from env), create a DB table with available emails and other data to detect allowed users
-const validEmails = [
-  // Allowed emails
-  'dmia@yandex.ru',
-  'igor@lilliputten.com',
-];
 const invalidEmailRoute = '/demo-info';
 
 export type TInvalidEmailReason = 'NO_EMAIL' | 'UNKNOWN_EMAIL';
@@ -44,6 +39,7 @@ export const nextAuthApp = NextAuth({
   },
   callbacks: {
     async signIn(params) {
+      const validEmails = await getValidEmails();
       /* // Got params for 'telegram` here:
        * {
        *   "user": {
@@ -70,17 +66,10 @@ export const nextAuthApp = NextAuth({
         // email: verificationEmail, // { verificationRequest?: boolean }
         credentials,
       } = params;
+      const { provider, type, providerAccountId } = account || {};
+      const userEmail = user.email;
       const profileEmail = profile?.email;
-      const email = profileEmail;
-      /* console.log('[auth:callbacks:signIn]', {
-       *   email,
-       *   profileEmail,
-       *   user,
-       *   account,
-       *   profile,
-       *   credentials,
-       * });
-       */
+      const email = userEmail || profileEmail;
       let rejectReason: TInvalidEmailReason | undefined;
       if (!email) {
         rejectReason = 'NO_EMAIL';
@@ -92,15 +81,34 @@ export const nextAuthApp = NextAuth({
         console.warn('[auth:callbacks:signIn] Sing in rejected:', {
           rejectReason,
           email,
+          userEmail,
           profileEmail,
+          provider,
+          type,
+          providerAccountId,
           user,
           account,
           profile,
           credentials,
         });
-        debugger; // eslint-disable-line no-debugger
+        // debugger; // eslint-disable-line no-debugger
+        if (provider === 'nodemailer' && type === 'email') {
+          throw rejectReason;
+        }
         return `${invalidEmailRoute}?reason=${rejectReason}`;
       }
+      /* console.log('[auth:callbacks:signIn] success', {
+       *   email,
+       *   profileEmail,
+       *   provider,
+       *   type,
+       *   providerAccountId,
+       *   user,
+       *   account,
+       *   profile,
+       *   credentials,
+       * });
+       */
       return true;
     },
     async session(params) {

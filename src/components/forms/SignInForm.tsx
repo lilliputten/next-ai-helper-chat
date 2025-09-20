@@ -12,6 +12,8 @@ import { TGenericIcon } from '@/components/shared/IconTypes';
 import { Logo } from '@/components/shared/Logo';
 import { isDev } from '@/config';
 
+import { EmailSignInForm } from './EmailSignInForm';
+
 type TSignInParameters = Parameters<typeof signIn>;
 export type TSignInProvider = TSignInParameters[0];
 
@@ -160,7 +162,8 @@ export function SignInForm(props: TSignInFormProps) {
         // inBody={inBody}
       />
       */}
-      {/* TODO: Email login section (resend) */}
+      {/* Email login section */}
+      <EmailSignInForm />
     </>
   );
 }

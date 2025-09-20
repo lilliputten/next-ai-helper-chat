@@ -58,6 +58,7 @@ export const sidebarLinks: SidebarNavItem[] = [
   },
   {
     titleId: 'Configuration',
+    authorizedOnly: UserRoles.ADMIN,
     items: [
       { href: adminAllowedUsersRoute, icon: Users, titleId: 'Allowed Users', disabled: true },
       { href: adminRoute, icon: Laptop, titleId: 'Admin Panel', authorizedOnly: UserRoles.ADMIN, disabled: true },

@@ -43,8 +43,12 @@ const envSchema = z.object({
   GOOGLE_CLIENT_SECRET: z.string().min(1),
   YANDEX_CLIENT_ID: z.string().min(1),
   YANDEX_CLIENT_SECRET: z.string().min(1),
-  RESEND_API_KEY: z.string().min(1),
   EMAIL_FROM: z.string().min(1),
+  EMAIL_HOST: z.string().min(1),
+  EMAIL_PORT: z.coerce.number(),
+  // EMAIL_USE_SSL: z.coerce.boolean().optional(), // Will be converted below via ensureBoolean
+  EMAIL_HOST_USER: z.string().min(1),
+  EMAIL_HOST_PASSWORD: z.string().min(1),
 });
 
 const parsedEnv = envSchema.safeParse(process.env);
@@ -75,9 +79,16 @@ export const {
   GOOGLE_CLIENT_SECRET,
   YANDEX_CLIENT_ID,
   YANDEX_CLIENT_SECRET,
-  RESEND_API_KEY,
+  // Email
   EMAIL_FROM,
+  EMAIL_HOST,
+  EMAIL_PORT,
+  // EMAIL_USE_SSL,
+  EMAIL_HOST_USER,
+  EMAIL_HOST_PASSWORD,
 } = envServer;
+
+export const EMAIL_USE_SSL = ensureBoolean(process.env.EMAIL_USE_SSL);
 
 export const isLocal = ensureBoolean(process.env.NEXT_PUBLIC_LOCAL);
 export const isDev = process.env.NODE_ENV === 'development' || !!isLocal;

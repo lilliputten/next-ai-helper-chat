@@ -1,9 +1,17 @@
 import type { NextAuthConfig } from 'next-auth';
 import Github from 'next-auth/providers/github';
 import Google from 'next-auth/providers/google';
+import EmailProvider from 'next-auth/providers/nodemailer';
 import Yandex from 'next-auth/providers/yandex';
 
+// import CredentialsProvider from 'next-auth/providers/credentials';
+
 import {
+  EMAIL_FROM,
+  EMAIL_HOST,
+  EMAIL_HOST_PASSWORD,
+  EMAIL_HOST_USER,
+  EMAIL_PORT,
   GITHUB_CLIENT_ID,
   GITHUB_CLIENT_SECRET,
   GOOGLE_CLIENT_ID,
@@ -33,12 +41,22 @@ export default {
       clientId: GOOGLE_CLIENT_ID,
       clientSecret: GOOGLE_CLIENT_SECRET,
     }),
-    /* Resend({
-     *   apiKey: env.RESEND_API_KEY,
-     *   from: env.EMAIL_FROM,
-     *   sendVerificationRequest,
-     * }),
-     */
+    // EmailProvider({
+    //   server: process.env.EMAIL_SERVER,
+    //   from: process.env.EMAIL_FROM,
+    // }),
+    EmailProvider({
+      server: {
+        host: EMAIL_HOST,
+        port: EMAIL_PORT,
+        auth: { user: EMAIL_HOST_USER, pass: EMAIL_HOST_PASSWORD },
+      },
+      from: EMAIL_FROM,
+      // Optionally set maxAge for magic link expiration (in seconds)
+      // maxAge: 24 * 60 * 60, // 24 hours
+      // sendVerificationRequest // https://next-auth.js.org/providers/email#customizing-emails
+      // normalizeIdentifier // https://next-auth.js.org/providers/email#normalizing-the-email-address
+    }),
     // telegramProvider, // NOTE: Temporarily don't use it, as it's buggy
   ],
 } satisfies NextAuthConfig;

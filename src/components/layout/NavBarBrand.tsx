@@ -2,7 +2,7 @@
 
 import { usePathname } from 'next/navigation';
 
-import { infoRoute, welcomeRoute } from '@/config/routesConfig';
+import { startRoute, welcomeRoute } from '@/config/routesConfig';
 import { TPropsWithChildrenAndClassName } from '@/lib/types/react';
 // import { getAllRouteSynonyms } from '@/lib/routes';
 import { cn } from '@/lib/utils';
@@ -21,7 +21,7 @@ function BrandWrapper(props: TPropsWithChildrenAndClassName & NavBarBrandProps) 
   const { isUser, children, className: parentClassName } = props;
   // const locale = useLocale() as TLocale;
   const pathname = decodeURI(usePathname() || '');
-  const rootRoute = isUser ? infoRoute : welcomeRoute;
+  const rootRoute = isUser ? startRoute : welcomeRoute;
   const rootRoutesList = [rootRoute]; // getAllRouteSynonyms(rootRoute, locale);
   const isRoot = !pathname || rootRoutesList.includes(pathname);
   const className = cn(
