@@ -7,7 +7,7 @@ import { signIn, SignInOptions } from 'next-auth/react';
 import { startRoute } from '@/config/routesConfig';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/Button';
-import { Github, Google, Spinner, Telegram, Yandex } from '@/components/shared/Icons';
+import { ExternalLink, Github, Google, Spinner, Telegram, Yandex } from '@/components/shared/Icons';
 import { TGenericIcon } from '@/components/shared/IconTypes';
 import { Logo } from '@/components/shared/Logo';
 import { isDev } from '@/config';
@@ -92,14 +92,30 @@ function TelegramSignInButton() {
         className={cn(isDev && '__TelegramSignInButton', 'flex gap-2')}
         variant="theme"
         rounded="full"
-        onClick={() => window.open(telegramUrl, '_blank')}
+        // onClick={() => window.open(telegramUrl, '_blank')}
       >
-        <Telegram className="mr-2 size-4" />
-        <span>Sign in with Telegram bot</span>
+        <Link
+          target="_blank"
+          rel="noopener noreferrer"
+          href={telegramUrl}
+          className="flex items-center gap-2"
+        >
+          <Telegram className="mr-2 size-4" />
+          <span>Sign in with Telegram bot</span>
+        </Link>
       </Button>
-      <p className="text-content center text-sm">
-        Open the <Link href={telegramUrl}>@{botUsername}</Link> telegram bot, and select the{' '}
-        <code>/authorize</code> command.
+      <p className="text-content text-center text-sm">
+        Click the button above or go to the{' '}
+        <Link
+          target="_blank"
+          rel="noopener noreferrer"
+          href={telegramUrl}
+          // className="flex-inline gap-1"
+        >
+          @{botUsername}
+          <ExternalLink className="ml-0.5 inline size-3.5 align-baseline opacity-50" />
+        </Link>{' '}
+        telegram bot, and select the <code>/authorize</code> command.
       </p>
     </>
   );

@@ -27,8 +27,13 @@ export async function GET(request: NextRequest) {
     const errMsg = ['Wrong authentication parameters', getErrorText(error)]
       .filter(Boolean)
       .join(': ');
+    // Redirect to error page with error details
+    const errorUrl = new URL('/auth/error', request.url);
+    errorUrl.searchParams.set('title', 'Authentication Failed');
+    errorUrl.searchParams.set('message', errMsg);
     // eslint-disable-next-line no-console
     console.error('[src/app/api/auth/callback/telegram/route.ts]', errMsg, {
+      errorUrl: errorUrl.toString(),
       searchParams,
       token,
       identifier,
@@ -38,8 +43,7 @@ export async function GET(request: NextRequest) {
     });
     // eslint-disable-next-line no-debugger
     debugger;
-    // Error: step 1
-    return new Response(errMsg, { status });
+    return Response.redirect(errorUrl);
   }
 
   // Create a redirect url...
@@ -64,8 +68,13 @@ export async function GET(request: NextRequest) {
   } catch (error) {
     const status = error instanceof ServerError ? error.statusCode : 500;
     const errMsg = ['Authentication failed', getErrorText(error)].filter(Boolean).join(': ');
+    // Redirect to error page with error details
+    const errorUrl = new URL('/auth/error', request.url);
+    errorUrl.searchParams.set('title', 'Authentication Failed');
+    errorUrl.searchParams.set('message', errMsg);
     // eslint-disable-next-line no-console
     console.error('[src/app/api/auth/callback/telegram/route.ts]', errMsg, {
+      errorUrl: errorUrl.toString(),
       user,
       searchParams,
       token,
@@ -76,6 +85,6 @@ export async function GET(request: NextRequest) {
     });
     // eslint-disable-next-line no-debugger
     debugger;
-    return new Response(errMsg, { status });
+    return Response.redirect(errorUrl);
   }
 }
