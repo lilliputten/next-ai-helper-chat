@@ -4,8 +4,6 @@ import Google from 'next-auth/providers/google';
 import EmailProvider from 'next-auth/providers/nodemailer';
 import Yandex from 'next-auth/providers/yandex';
 
-// import CredentialsProvider from 'next-auth/providers/credentials';
-
 import {
   EMAIL_FROM,
   EMAIL_HOST,
@@ -19,14 +17,8 @@ import {
   YANDEX_CLIENT_ID,
   YANDEX_CLIENT_SECRET,
 } from '@/config/envServer';
-import { verifyTelegramToken } from './telegram/telegram-provider';
 
-// import { envServer } from '@/env/envServer';
-
-// import Resend from 'next-auth/providers/resend';
-// import { sendVerificationRequest } from '@/lib/email';
-
-// import { telegramProvider } from './telegram-provider';
+import TelegramProvider from './telegram/telegram-provider';
 
 export default {
   providers: [
@@ -42,10 +34,6 @@ export default {
       clientId: GOOGLE_CLIENT_ID,
       clientSecret: GOOGLE_CLIENT_SECRET,
     }),
-    // EmailProvider({
-    //   server: process.env.EMAIL_SERVER,
-    //   from: process.env.EMAIL_FROM,
-    // }),
     EmailProvider({
       server: {
         host: EMAIL_HOST,
@@ -58,25 +46,6 @@ export default {
       // sendVerificationRequest // https://next-auth.js.org/providers/email#customizing-emails
       // normalizeIdentifier // https://next-auth.js.org/providers/email#normalizing-the-email-address
     }),
-    // telegramProvider, // NOTE: Temporarily don't use it, as it's buggy
-    /* // EXAMPLE 1: Using `credentials` provider
-     * {
-     *   id: 'telegram',
-     *   name: 'Telegram',
-     *   type: 'credentials',
-     *   credentials: {
-     *     token: { label: 'Token', type: 'text' },
-     *     telegramUserId: { label: 'Telegram User ID', type: 'text' },
-     *   },
-     *   authorize: async (credentials) => {
-     *     // Validate the token here against your database
-     *     const user = await verifyTelegramToken(credentials);
-     *     if (user) {
-     *       return user; // Return user object to sign in
-     *     }
-     *     return null;
-     *   },
-     * },
-     */
+    TelegramProvider(),
   ],
 } satisfies NextAuthConfig;

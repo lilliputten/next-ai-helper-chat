@@ -71,6 +71,12 @@ export const nextAuthApp = NextAuth({
       const profileEmail = profile?.email;
       const email = userEmail || profileEmail;
       let rejectReason: TInvalidEmailReason | undefined;
+
+      // Skip email validation for telegram provider
+      if (provider === 'telegram') {
+        return true;
+      }
+
       if (!email) {
         rejectReason = 'NO_EMAIL';
       } else if (!validEmails.includes(email)) {

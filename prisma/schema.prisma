@@ -82,6 +82,10 @@ model VerificationToken {
   token      String   @unique
   expires    DateTime
 
+  // Extra optional paramteres (for telegram bot auth provideer)
+  name   String?
+  locale String?
+
   @@unique([identifier, token])
   @@map("verification_tokens")
 }

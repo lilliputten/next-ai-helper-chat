@@ -1,5 +1,8 @@
-import { CommonProviderOptions, CredentialInput } from '@auth/core/providers';
+import { CommonProviderOptions, Provider } from '@auth/core/providers';
 import { Awaitable } from '@auth/core/types';
+
+import { prisma } from '@/lib/db';
+import { getErrorText } from '@/lib/helpers';
 
 // import { createTransport } from 'nodemailer';
 // import type { Transport, TransportOptions } from 'nodemailer';
@@ -50,44 +53,121 @@ export interface ProviderConfig extends CommonProviderOptions {
 }
 
 export interface TelegramProviderConfig extends ProviderConfig {
-  // server?: AllTransportOptions;
-  // sendVerificationRequest: (params: {
-  //   identifier: string;
-  //   url: string;
-  //   expires: Date;
-  //   provider: TelegramProviderConfig;
-  //   token: string;
-  //   theme: Theme;
-  //   request: Request;
-  // }) => Awaitable<void>;
-  options?: TelegramProviderUserConfig;
+  credentials: {
+    token: { label: 'Token'; type: 'text' };
+    identifier: { label: 'Telegram User ID'; type: 'text' };
+  };
+  authorize: typeof verifyTelegramToken;
 }
 
-export type TelegramProviderUserConfig = Omit<Partial<TelegramProviderConfig>, 'options' | 'type'>;
-
-export default function TelegramProvider(
-  config: TelegramProviderUserConfig = {},
-): TelegramProviderConfig {
-  // if (!config.server) throw new AuthError('TelegramProvider requires a `server` configuration');
-
+export default function TelegramProvider(): Provider {
   return {
     id: 'telegram',
     type: 'credentials',
-    name: 'TelegramProvider',
-    maxAge: 24 * 60 * 60,
-    options: config,
+    name: 'Telegram',
+    // maxAge: 24 * 60 * 60,
+    credentials: {
+      token: { label: 'Token', type: 'text' },
+      identifier: { label: 'Telegram User ID', type: 'text' },
+    },
+    authorize: async (credentials) => {
+      debugger;
+      return await verifyTelegramToken(credentials || {});
+    },
   };
 }
 
-export async function verifyTelegramToken(credentials: Record<string, unknown>) {
-  const {
-    // ???
+export interface TTelegramCredentials {
+  token?: string;
+  identifier?: string;
+}
+
+export async function verifyTelegramToken(credentials: TTelegramCredentials) {
+  const { token, identifier } = credentials;
+
+  console.log('[src/auth/telegram/telegram-provider.ts:verifyTelegramToken]', {
     token,
-    telegramUserId,
-  } = credentials;
-  console.log('[credentials:verifyTelegramToken]', {
+    identifier,
     credentials,
   });
-  debugger;
-  return null;
+
+  try {
+    if (!token) {
+      debugger;
+      throw new Error('Auth token is undefined');
+    }
+    if (!token || !identifier) {
+      debugger;
+      throw new Error('Auth identifier is undefined');
+    }
+
+    const now = new Date();
+
+    // Delete all expired tokens
+    await prisma.verificationToken.deleteMany({
+      where: {
+        expires: {
+          lt: now,
+        },
+      },
+    });
+
+    // Find and verify the token
+    const verificationToken = await prisma.verificationToken.findUnique({
+      where: {
+        identifier_token: {
+          identifier: identifier,
+          token,
+        },
+      },
+    });
+
+    if (!verificationToken || verificationToken.expires < now) {
+      debugger;
+      throw new Error('Verification token not found or expired');
+    }
+
+    const { name, locale } = verificationToken;
+
+    // Delete the used token
+    await prisma.verificationToken.delete({
+      where: {
+        identifier_token: {
+          identifier: identifier as string,
+          token: token as string,
+        },
+      },
+    });
+
+    const id = identifier;
+    // const email = identifier; // Use telegram ID as email identifier?
+    console.log('[src/auth/telegram/telegram-provider.ts:verifyTelegramToken] Done', {
+      id,
+      // email,
+      name,
+      locale,
+    });
+    debugger;
+
+    // Return user object
+    return {
+      id,
+      // email, // Use telegram ID as email identifier
+      name,
+      locale,
+    };
+  } catch (error) {
+    const errMsg = ['Token verification error', getErrorText(error)].filter(Boolean).join(': ');
+    // eslint-disable-next-line no-console
+    console.error('[src/auth/telegram/telegram-provider.ts:verifyTelegramToken]', errMsg, {
+      token,
+      identifier,
+      credentials,
+      error,
+    });
+    debugger; // eslint-disable-line no-debugger
+    // return null;
+    // Error: step 1
+    throw new Error(errMsg);
+  }
 }

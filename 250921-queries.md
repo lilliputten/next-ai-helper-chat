@@ -1,8 +1,8 @@
 > 2025.09.21
 
-next-auth v.5: How to create custom auth provider, like `next-auth/providers/nodemailer`, to authenticate user via external callback URL with a token obtained from an associated telegram bot?
+Create a custom next-auth provider, like `next-auth/providers/nodemailer`, to authenticate user via external callback URL with a token obtained from an associated telegram bot?
 
-The telegram bot has access to the app database and can create a verification token in a table similar to next-auth's `VerificationToken`.
+The telegram bot (with a name of `BOT_USERNAME` from server environment) has access to the app database and can create a verification token in a table similar to next-auth's `VerificationToken`.
 
 For example, the nodemailer provider sends email messages with authorization links in form:
 
@@ -15,11 +15,13 @@ See for:
 - providers definition in the `src/auth/auth.config.server.ts`,
 - telegram provider in `src/auth/telegram/telegram-provider.ts`
 
-Add a telegram provider section in the `src/components/forms/SignInForm.tsx` module -- it should contain a link to open the tellegram bot with a name `BOT_USERNAME` (it's provided from a server environment, src/config/envServer.ts`; add a context in the `src/contexts/EnvContext.tsx` to pass some configuration variables to the client, including bot name from `BOT_USERNAME` and connect this context in the `src/app/layout.tsx`).
+Add a telegram provider section in the `src/components/forms/SignInForm.tsx` module -- it should contain a link to open the tellegram bot with a name `BOT_USERNAME` (it's provided from a server environment, src/config/envServer.ts`; add a context in the `src/contexts/EnvContext.tsx`to pass some configuration variables to the client, including bot name from`BOT_USERNAME`and connect this context in the`src/app/layout.tsx`).
 
 Add an invocation command to the telegram bot link: `https://t.me/{BOT_USERNAME}?start=/authorize`.
 
 Create an `/authorize` command processor in `src/app/api/bot/authorize.ts` and use it in `src/app/api/bot/route.ts` to process user's aurization requests -- this command should add a verification token in the database and return a link in a form specified above.
+
+It's possible to pass and parse complex commands like `/authorize-{SOME_ID_OR_WHATEVER}` if it's necessary.
 
 Check for passed token and return the created user in the `verifyTelegramToken` funciton (in the `src/auth/telegram/telegram-provider.ts`).
 

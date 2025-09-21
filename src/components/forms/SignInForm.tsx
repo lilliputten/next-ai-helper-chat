@@ -7,10 +7,11 @@ import { signIn, SignInOptions } from 'next-auth/react';
 import { startRoute } from '@/config/routesConfig';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/Button';
-import { Github, Google, Spinner, Yandex } from '@/components/shared/Icons';
+import { Github, Google, Spinner, Telegram, Yandex } from '@/components/shared/Icons';
 import { TGenericIcon } from '@/components/shared/IconTypes';
 import { Logo } from '@/components/shared/Logo';
 import { isDev } from '@/config';
+import { useEnv } from '@/contexts/EnvContext';
 
 import { EmailSignInForm } from './EmailSignInForm';
 
@@ -77,6 +78,30 @@ function OAuthSignInButton(props: OAuthSignInButtonProps) {
       {icon}
       <span className="truncate">{text}</span>
     </Button>
+  );
+}
+
+function TelegramSignInButton() {
+  const { botUsername } = useEnv();
+  const telegramUrl = `https://t.me/${botUsername}?start=/authorize`;
+
+  return (
+    <>
+      <p className="mt-2 text-center text-sm font-medium">Or use telegram bot sign-in:</p>
+      <Button
+        className={cn(isDev && '__TelegramSignInButton', 'flex gap-2')}
+        variant="theme"
+        rounded="full"
+        onClick={() => window.open(telegramUrl, '_blank')}
+      >
+        <Telegram className="mr-2 size-4" />
+        <span>Sign in with Telegram bot</span>
+      </Button>
+      <p className="text-content center text-sm">
+        Open the <Link href={telegramUrl}>@{botUsername}</Link> telegram bot, and select the{' '}
+        <code>/authorize</code> command.
+      </p>
+    </>
   );
 }
 
@@ -162,6 +187,8 @@ export function SignInForm(props: TSignInFormProps) {
         // inBody={inBody}
       />
       */}
+      {/* Telegram login section */}
+      <TelegramSignInButton />
       {/* Email login section */}
       <EmailSignInForm />
     </>
