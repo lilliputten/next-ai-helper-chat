@@ -19,6 +19,7 @@ import {
   YANDEX_CLIENT_ID,
   YANDEX_CLIENT_SECRET,
 } from '@/config/envServer';
+import { verifyTelegramToken } from './telegram/telegram-provider';
 
 // import { envServer } from '@/env/envServer';
 
@@ -58,5 +59,24 @@ export default {
       // normalizeIdentifier // https://next-auth.js.org/providers/email#normalizing-the-email-address
     }),
     // telegramProvider, // NOTE: Temporarily don't use it, as it's buggy
+    /* // EXAMPLE 1: Using `credentials` provider
+     * {
+     *   id: 'telegram',
+     *   name: 'Telegram',
+     *   type: 'credentials',
+     *   credentials: {
+     *     token: { label: 'Token', type: 'text' },
+     *     telegramUserId: { label: 'Telegram User ID', type: 'text' },
+     *   },
+     *   authorize: async (credentials) => {
+     *     // Validate the token here against your database
+     *     const user = await verifyTelegramToken(credentials);
+     *     if (user) {
+     *       return user; // Return user object to sign in
+     *     }
+     *     return null;
+     *   },
+     * },
+     */
   ],
 } satisfies NextAuthConfig;
