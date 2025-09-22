@@ -3,7 +3,7 @@ import { PrismaAdapter } from '@auth/prisma-adapter';
 import NextAuth from 'next-auth';
 import { JWT } from 'next-auth/jwt';
 
-import { welcomeRoute } from '@/config/routesConfig';
+import { authErrorRoute, welcomeRoute } from '@/config/routesConfig';
 import { prisma } from '@/lib/db';
 import { isDev } from '@/config';
 import { getUserById } from '@/features/users/actions/';
@@ -41,7 +41,7 @@ export const nextAuthApp = NextAuth({
   pages: {
     // @see https://next-auth.js.org/configuration/pages
     signIn: welcomeRoute, // <-- /api/auth/signin
-    error: '/auth/error', // <-- /api/auth/error
+    error: authErrorRoute, // <-- /api/auth/error
     // signOut: '/auth/signout',
   },
   callbacks: {

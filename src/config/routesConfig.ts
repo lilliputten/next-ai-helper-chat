@@ -2,6 +2,7 @@
 // export const availableTopicsRoute = '/topics/available'; // Example
 // export const chartsRoute = '/charts';
 // export const myTopicsRoute = '/topics/my';
+export const authErrorRoute = '/auth/error';
 export const adminAllowedUsersRoute = '/admin/allowed-users';
 export const adminRoute = '/admin';
 export const contactsRoute = '/contacts';

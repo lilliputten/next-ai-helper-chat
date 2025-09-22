@@ -40,7 +40,6 @@ function TelegramSignInButton({ telegramUrl }: { telegramUrl: string }) {
 function TelegramQRCode({ telegramUrl }: { telegramUrl: string }) {
   return (
     <QRCode
-      // ...
       value={telegramUrl}
       size={140}
       bgColor="#FFFFFF"

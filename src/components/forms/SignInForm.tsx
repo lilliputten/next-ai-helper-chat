@@ -88,7 +88,6 @@ interface TSignInFormHeaderProps {
 
 export function SignInFormHeader(props: TSignInFormHeaderProps) {
   const { dark, inBody } = props;
-  // const t = useTranslations('SignInForm');
   return (
     <>
       {false && !inBody && (
@@ -97,9 +96,6 @@ export function SignInFormHeader(props: TSignInFormHeaderProps) {
         </Link>
       )}
       <h3 className="font-urban text-app-orange text-2xl font-bold">Sign In</h3>
-      {/*
-      <p className="text-center text-sm">{t('intro')}</p>
-      */}
     </>
   );
 }
@@ -114,7 +110,6 @@ interface TSignInFormProps {
 export function SignInForm(props: TSignInFormProps) {
   const { onSignInStart, onSignInDone } = props;
   const [currentProvider, setCurrentProvider] = React.useState<TSignInProvider>(undefined);
-  // const t = useTranslations('SignInForm');
 
   const handleSignInStart = React.useCallback(
     (provider: TSignInProvider) => {

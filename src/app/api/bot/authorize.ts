@@ -108,7 +108,7 @@ export async function handleAuthorizeCommand(ctx: Context) {
         helloStr,
         'Now you can sign-in in the application with the following authorization code:',
         token,
-        `Or, you can just click the link below:`,
+        `Or, just click the link below:`,
         authUrl,
         isDev && localUrl,
         `This link will expire in ${expiredMins} minutes.`,

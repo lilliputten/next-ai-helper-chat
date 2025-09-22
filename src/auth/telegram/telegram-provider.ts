@@ -12,7 +12,6 @@ export default function TelegramProvider(): Provider {
     // maxAge: 24 * 60 * 60,
     credentials: {
       token: { label: 'Token', type: 'text' },
-      // identifier: { label: 'Telegram User ID', type: 'text' },
     },
     authorize: async (credentials) => {
       return await verifyTelegramToken(credentials || {});
@@ -22,45 +21,30 @@ export default function TelegramProvider(): Provider {
 
 export interface TTelegramCredentials {
   token?: string;
-  // identifier?: string;
 }
 
 const __debugKeepToken = false && isDev;
 
 export async function verifyTelegramToken(credentials: TTelegramCredentials) {
-  const {
-    token,
-    // identifier,
-  } = credentials;
+  const { token } = credentials;
 
   try {
     if (!token) {
       throw new Error('Auth token is undefined');
     }
-    // if (!identifier) {
-    //   throw new Error('Auth identifier is undefined');
-    // }
 
     const now = new Date();
 
     // Delete all expired tokens
     await prisma.verificationToken.deleteMany({
       where: {
-        expires: {
-          lt: now,
-        },
+        expires: { lt: now },
       },
     });
 
     // Find and verify the token
     const verificationToken = await prisma.verificationToken.findUnique({
-      where: {
-        token,
-        // identifier_token: {
-        //   // identifier: identifier,
-        //   token,
-        // },
-      },
+      where: { token },
     });
 
     if (!verificationToken || verificationToken.expires < now) {
@@ -72,13 +56,7 @@ export async function verifyTelegramToken(credentials: TTelegramCredentials) {
     // Delete the used token
     if (!__debugKeepToken) {
       await prisma.verificationToken.delete({
-        where: {
-          token,
-          // identifier_token: {
-          //   identifier,
-          //   token,
-          // },
-        },
+        where: { token },
       });
     }
 
@@ -96,7 +74,6 @@ export async function verifyTelegramToken(credentials: TTelegramCredentials) {
     // eslint-disable-next-line no-console
     console.error('[src/auth/telegram/telegram-provider.ts:verifyTelegramToken]', errMsg, {
       token,
-      // identifier,
       credentials,
       error,
     });
