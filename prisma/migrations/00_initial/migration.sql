@@ -42,13 +42,16 @@ CREATE TABLE "users" (
 CREATE TABLE "verification_tokens" (
     "identifier" TEXT NOT NULL,
     "token" TEXT NOT NULL,
-    "expires" DATETIME NOT NULL
+    "expires" DATETIME NOT NULL,
+    "name" TEXT,
+    "locale" TEXT,
+    "image" TEXT
 );
 
 -- CreateTable
-CREATE TABLE "telegram_session" (
-    "key" TEXT NOT NULL PRIMARY KEY,
-    "value" TEXT NOT NULL
+CREATE TABLE "allowed_users" (
+    "type" TEXT NOT NULL DEFAULT 'EMAIL',
+    "value" TEXT NOT NULL DEFAULT ''
 );
 
 -- CreateTable
@@ -88,7 +91,8 @@ CREATE UNIQUE INDEX "verification_tokens_token_key" ON "verification_tokens"("to
 CREATE UNIQUE INDEX "verification_tokens_identifier_token_key" ON "verification_tokens"("identifier", "token");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "telegram_session_key_key" ON "telegram_session"("key");
+CREATE UNIQUE INDEX "allowed_users_type_value_key" ON "allowed_users"("type", "value");
 
 -- CreateIndex
 CREATE INDEX "user_settings_userId_idx" ON "user_settings"("userId");
+

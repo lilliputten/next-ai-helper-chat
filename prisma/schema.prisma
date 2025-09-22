@@ -91,13 +91,21 @@ model VerificationToken {
   @@map("verification_tokens")
 }
 
-// Telegram user session
-model TelegramSession {
-  // id    Int    @id @default(autoincrement())
-  key   String @id @unique
-  value String // Session data in json string
+// // Telegram user session
+// model TelegramSession {
+//   // id    Int    @id @default(autoincrement())
+//   key   String @id @unique
+//   value String // Session data in json string
+//
+//   @@map("telegram_session")
+// }
 
-  @@map("telegram_session")
+model AllowedUsers {
+  type  String @default("EMAIL") // EMAIL (String), TELEGRAM (Int)
+  value String @default("")
+
+  @@unique([type, value])
+  @@map("allowed_users")
 }
 
 // User settings
