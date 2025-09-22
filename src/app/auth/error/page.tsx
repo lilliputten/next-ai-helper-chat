@@ -10,7 +10,7 @@ import { isDev } from '@/config';
 export default function AuthErrorPage() {
   const searchParams = useSearchParams();
   const title = searchParams.get('title') || 'Authentication Error';
-  const message = searchParams.get('message') || 'An authentication error occurred.';
+  const error = searchParams.get('error') || 'An authentication error occurred.';
 
   return (
     <PageError
@@ -18,7 +18,7 @@ export default function AuthErrorPage() {
         isDev && '__AuthErrorPage', // DEBUG
       )}
       title={title}
-      error={message}
+      error={error}
     />
   );
 }

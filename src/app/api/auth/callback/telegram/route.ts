@@ -1,5 +1,6 @@
 import { NextRequest } from 'next/server';
 
+import { PUBLIC_URL } from '@/config/envServer';
 import { ServerError } from '@/lib/errors';
 import { getErrorText } from '@/lib/helpers';
 import { verifyTelegramToken } from '@/auth/telegram/telegram-provider';
@@ -28,9 +29,10 @@ export async function GET(request: NextRequest) {
       .filter(Boolean)
       .join(': ');
     // Redirect to error page with error details
-    const errorUrl = new URL('/auth/error', request.url);
-    errorUrl.searchParams.set('title', 'Authentication Failed');
-    errorUrl.searchParams.set('message', errMsg);
+    // const errorUrl = new URL('/auth/error', PUBLIC_URL);
+    const errorUrl = new URL('/api/auth/error', PUBLIC_URL);
+    errorUrl.searchParams.set('error', errMsg);
+    // errorUrl.searchParams.set('title', 'Authentication Failed');
     // eslint-disable-next-line no-console
     console.error('[src/app/api/auth/callback/telegram/route.ts]', errMsg, {
       errorUrl: errorUrl.toString(),
@@ -69,9 +71,10 @@ export async function GET(request: NextRequest) {
     const status = error instanceof ServerError ? error.statusCode : 500;
     const errMsg = ['Authentication failed', getErrorText(error)].filter(Boolean).join(': ');
     // Redirect to error page with error details
-    const errorUrl = new URL('/auth/error', request.url);
-    errorUrl.searchParams.set('title', 'Authentication Failed');
-    errorUrl.searchParams.set('message', errMsg);
+    // const errorUrl = new URL('/auth/error', PUBLIC_URL);
+    const errorUrl = new URL('/api/auth/error', PUBLIC_URL);
+    errorUrl.searchParams.set('error', errMsg);
+    // errorUrl.searchParams.set('title', 'Authentication Failed');
     // eslint-disable-next-line no-console
     console.error('[src/app/api/auth/callback/telegram/route.ts]', errMsg, {
       errorUrl: errorUrl.toString(),

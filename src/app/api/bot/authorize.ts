@@ -1,8 +1,9 @@
 import { randomBytes } from 'crypto';
 import { Context } from 'grammy';
 
-import { WEBHOOK_HOST } from '@/config/envServer';
+import { PUBLIC_URL, WEBHOOK_HOST } from '@/config/envServer';
 import { prisma } from '@/lib/db';
+import { isDev } from '@/config';
 import { minuteMs } from '@/constants';
 
 const expireTime = 10 * minuteMs;
@@ -62,7 +63,9 @@ export async function handleAuthorizeCommand(ctx: Context) {
 
     // Create authorization URL
     const callbackUrl = encodeURIComponent('/');
-    const authUrl = `${WEBHOOK_HOST}/api/auth/callback/telegram?callbackUrl=${callbackUrl}&token=${token}&id=${id}`;
+    const urlPath = `/api/auth/callback/telegram?callbackUrl=${callbackUrl}&token=${token}&id=${id}`;
+    const authUrl = `${WEBHOOK_HOST}${urlPath}`;
+    const localUrl = `${PUBLIC_URL}${urlPath}`;
 
     // TODO: To use `useFormattedDuration` or whatever else
     const expiredMins = Math.round(expireTime / minuteMs);
@@ -75,8 +78,11 @@ export async function handleAuthorizeCommand(ctx: Context) {
         helloStr,
         `Click the link below to sign in:`,
         `${authUrl}`,
+        isDev && localUrl,
         `This link will expire in ${expiredMins} minutes.`,
-      ].join('\n\n'),
+      ]
+        .filter(Boolean)
+        .join('\n\n'),
       {
         // parse_mode: 'Markdown',
         link_preview_options: { is_disabled: true },
