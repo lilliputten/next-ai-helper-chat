@@ -25,14 +25,14 @@ export default async function StartBotPageWrapper() {
 
   return (
     <PageWrapper
-      id="ImageQueryPage"
+      id="StartBotPageWrapper"
       className={cn(
-        isDev && '__ImageQueryPage', // DEBUG
+        isDev && '__StartBotPageWrapper', // DEBUG
       )}
       innerClassName={cn(
-        isDev && '__ImageQueryPage_Inner', // DEBUG
+        isDev && '__StartBotPageWrapper_Inner', // DEBUG
       )}
-      padded
+      // padded
     >
       <StartBotPage />
     </PageWrapper>

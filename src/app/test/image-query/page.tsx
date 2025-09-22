@@ -32,7 +32,7 @@ export default async function ImageQueryPage() {
       innerClassName={cn(
         isDev && '__ImageQueryPage_Inner', // DEBUG
       )}
-      padded
+      // padded
     >
       <ImageQueryForm />
     </PageWrapper>

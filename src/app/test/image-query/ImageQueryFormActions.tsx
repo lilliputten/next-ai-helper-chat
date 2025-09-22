@@ -52,7 +52,7 @@ export function ImageQueryFormActions(props: TImageQueryFormActionsProps) {
     <div
       className={cn(
         isDev && '__ImageQueryFormActions', // DEBUG
-        'flex flex-wrap items-center gap-2',
+        'flex flex-wrap items-center gap-2 p-4',
       )}
     >
       <Button type="submit" disabled={!isSubmitEnabled} variant="theme" className="flex gap-2">

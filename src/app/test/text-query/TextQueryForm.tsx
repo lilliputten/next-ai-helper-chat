@@ -96,18 +96,20 @@ export function TextQueryForm() {
       onSubmit={onSubmit}
       className={cn(
         isDev && '__TextQueryForm', // DEBUG
-        'mx-auto flex w-full max-w-3xl flex-col gap-4 overflow-hidden',
+        'mx-auto flex w-full max-w-3xl flex-1 flex-col overflow-hidden py-4',
       )}
     >
-      <h1 className="text-2xl">Text Query</h1>
-      {__useDebugData && (
-        <div>
-          <span className="rounded-full bg-red-500 px-3 py-1.5 text-xs text-white">
-            <span className="font-bold">DEBUG MODE</span>{' '}
-            <span className="opacity-70">The fake local data will be returned</span>
-          </span>
-        </div>
-      )}
+      <div className="flex flex-col gap-4 px-4 py-4">
+        <h1 className="text-2xl">Text Query</h1>
+        {__useDebugData && (
+          <div className="flex flex-wrap gap-2">
+            <span className="rounded-full bg-red-500 px-3 py-1.5 text-xs text-white">
+              <span className="font-bold">DEBUG MODE</span>{' '}
+              <span className="opacity-70">The fake local data will be returned</span>
+            </span>
+          </div>
+        )}
+      </div>
       {showForm && <TextQueryFormFields form={form} />}
       <TextQueryFormActions
         form={form}
@@ -117,7 +119,7 @@ export function TextQueryForm() {
         showForm={showForm}
         toggleForm={toggleForm}
       />
-      <ShowLogRecords logs={logs} />
+      <ShowLogRecords logs={logs} className="mx-4 mt-4" />
     </form>
   );
 }

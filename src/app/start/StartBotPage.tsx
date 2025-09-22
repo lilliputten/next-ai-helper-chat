@@ -116,18 +116,20 @@ export function StartBotPage() {
       // onSubmit={onSubmit}
       className={cn(
         isDev && '__StartBotPage', // DEBUG
-        'mx-auto flex w-full max-w-3xl flex-col gap-4 overflow-hidden',
+        'mx-auto flex w-full max-w-3xl flex-1 flex-col overflow-hidden py-4',
       )}
     >
-      <h1 className="text-2xl">Initialize Telegram Webhook</h1>
-      {__useDebugData && (
-        <div>
-          <span className="rounded-full bg-red-500 px-3 py-1.5 text-xs text-white">
-            <span className="font-bold">DEBUG MODE</span>{' '}
-            <span className="opacity-70">The fake local data will be returned</span>
-          </span>
-        </div>
-      )}
+      <div className="flex flex-col gap-4 px-4 py-4">
+        <h1 className="text-2xl">Initialize Telegram Webhook</h1>
+        {__useDebugData && (
+          <div className="flex flex-wrap gap-2">
+            <span className="rounded-full bg-red-500 px-3 py-1.5 text-xs text-white">
+              <span className="font-bold">DEBUG MODE</span>{' '}
+              <span className="opacity-70">The fake local data will be returned</span>
+            </span>
+          </div>
+        )}
+      </div>
       {/*
       <StartBotPageActions logs={logs} clearLogs={clearLogs} isPending={isPending}
         initWebhook={initWebhook}
@@ -137,7 +139,7 @@ export function StartBotPage() {
       <div
         className={cn(
           isDev && '__StartBotPageActions', // DEBUG
-          'flex flex-wrap items-center gap-2',
+          'flex flex-wrap items-center gap-2 px-4 py-2',
         )}
       >
         {/* showServerInfo */}
@@ -185,7 +187,7 @@ export function StartBotPage() {
           <span className="truncate">Clear log</span>
         </Button>
       </div>
-      <ShowLogRecords logs={logs} />
+      <ShowLogRecords logs={logs} className="mx-4 my-6" />
       {/* <DialogDemo /> */}
       <ConfirmModal
         dialogTitle="Confirm delete answer"
@@ -205,7 +207,7 @@ export function StartBotPage() {
       <div
         className={cn(
           isDev && '__StartBotPageActions', // DEBUG
-          'flex flex-wrap items-center gap-2',
+          'flex flex-wrap items-center gap-2 px-4 py-2',
         )}
       >
         <Button

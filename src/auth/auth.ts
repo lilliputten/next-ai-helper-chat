@@ -42,6 +42,7 @@ export const nextAuthApp = NextAuth({
     // @see https://next-auth.js.org/configuration/pages
     signIn: welcomeRoute, // <-- /api/auth/signin
     error: '/auth/error', // <-- /api/auth/error
+    // signOut: '/auth/signout',
   },
   callbacks: {
     async signIn(params) {

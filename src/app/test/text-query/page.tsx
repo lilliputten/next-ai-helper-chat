@@ -25,14 +25,14 @@ export default async function TestQueryPage() {
 
   return (
     <PageWrapper
-      id="ImageQueryPage"
+      id="TextQueryPage"
       className={cn(
-        isDev && '__ImageQueryPage', // DEBUG
+        isDev && '__TextQueryPage', // DEBUG
       )}
       innerClassName={cn(
-        isDev && '__ImageQueryPage_Inner', // DEBUG
+        isDev && '__TextQueryPage_Inner', // DEBUG
       )}
-      padded
+      // padded
     >
       <TextQueryForm />
     </PageWrapper>

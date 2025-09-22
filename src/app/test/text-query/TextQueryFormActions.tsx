@@ -11,6 +11,7 @@ import { isDev } from '@/config';
 import { TFormType } from './TextQueryFormDefinitions';
 
 interface TTextQueryFormActionsProps {
+  className?: string;
   form: TFormType;
   clearLogs: () => void;
   isPending: boolean;
@@ -20,7 +21,7 @@ interface TTextQueryFormActionsProps {
 }
 
 export function TextQueryFormActions(props: TTextQueryFormActionsProps) {
-  const { form, logs, clearLogs, isPending, showForm, toggleForm } = props;
+  const { className, form, logs, clearLogs, isPending, showForm, toggleForm } = props;
 
   const { formState, watch } = form;
   const { isValid, isReady } = formState;
@@ -50,7 +51,8 @@ export function TextQueryFormActions(props: TTextQueryFormActionsProps) {
     <div
       className={cn(
         isDev && '__TextQueryFormActions', // DEBUG
-        'flex flex-wrap items-center gap-2',
+        'flex flex-wrap items-center gap-2 p-4',
+        className,
       )}
     >
       <Button type="submit" disabled={!isSubmitEnabled} variant="theme" className="flex gap-2">

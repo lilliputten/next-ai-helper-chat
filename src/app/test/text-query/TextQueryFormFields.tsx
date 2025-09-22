@@ -3,6 +3,9 @@
 import React from 'react';
 
 import { aiClientTypes } from '@/lib/types/TAiClientType';
+import { cn } from '@/lib/utils';
+import { ScrollArea } from '@/components/ui/ScrollArea';
+import { isDev } from '@/config';
 
 import { TFormType } from './TextQueryFormDefinitions';
 
@@ -16,7 +19,16 @@ export function TextQueryFormFields(props: TTextQueryFormFieldsProps) {
   const { register } = form;
 
   return (
-    <>
+    <ScrollArea
+      className={cn(
+        isDev && '__TextQueryFormFields_Scroll', // DEBUG
+        'flex flex-col',
+      )}
+      viewportClassName={cn(
+        isDev && '__TextQueryFormFields_ScrollViewport', // DEBUG
+        'px-4 py-2 [&>div]:!flex [&>div]:flex-col [&>div]:gap-4 [&>div]:flex-1',
+      )}
+    >
       <div className="flex flex-col gap-1">
         <label htmlFor="model" className="block font-medium opacity-50">
           AI Model
@@ -59,6 +71,7 @@ export function TextQueryFormFields(props: TTextQueryFormFieldsProps) {
           id="systemQueryText"
           rows={5}
           className="focus:ring-primary-500 w-full rounded border border-gray-500/20 px-3 py-2 transition focus:ring-2 focus:outline-none"
+          placeholder="Provide the context, personality, and rules for the entire interaction. The system prompt is typically sent only once at the beginning."
         />
       </div>
 
@@ -71,8 +84,9 @@ export function TextQueryFormFields(props: TTextQueryFormFieldsProps) {
           id="userQueryText"
           rows={5}
           className="focus:ring-primary-500 w-full rounded border border-gray-500/20 px-3 py-2 transition focus:ring-2 focus:outline-none"
+          placeholder="User placeholder query text"
         />
       </div>
-    </>
+    </ScrollArea>
   );
 }
