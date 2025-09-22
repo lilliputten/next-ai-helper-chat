@@ -15,7 +15,6 @@ export default function TelegramProvider(): Provider {
       identifier: { label: 'Telegram User ID', type: 'text' },
     },
     authorize: async (credentials) => {
-      debugger;
       return await verifyTelegramToken(credentials || {});
     },
   };
@@ -26,14 +25,10 @@ export interface TTelegramCredentials {
   identifier?: string;
 }
 
+const __debugKeepToken = false && isDev;
+
 export async function verifyTelegramToken(credentials: TTelegramCredentials) {
   const { token, identifier } = credentials;
-
-  console.log('[src/auth/telegram/telegram-provider.ts:verifyTelegramToken]', {
-    token,
-    identifier,
-    credentials,
-  });
 
   try {
     if (!token) {
@@ -68,10 +63,10 @@ export async function verifyTelegramToken(credentials: TTelegramCredentials) {
       throw new Error('Verification token not found or expired');
     }
 
-    const { name, locale } = verificationToken;
+    const { name, locale, image } = verificationToken;
 
     // Delete the used token
-    if (!isDev) {
+    if (!__debugKeepToken) {
       await prisma.verificationToken.delete({
         where: {
           identifier_token: {
@@ -83,20 +78,12 @@ export async function verifyTelegramToken(credentials: TTelegramCredentials) {
     }
 
     const id = identifier;
-    // const email = identifier; // Use telegram ID as email identifier?
-    console.log('[src/auth/telegram/telegram-provider.ts:verifyTelegramToken] Done', {
-      id,
-      // email,
-      name,
-      locale,
-    });
-    debugger;
 
     // Return user object
     return {
       id,
-      // email, // Use telegram ID as email identifier
       name,
+      image,
       locale,
     };
   } catch (error) {
@@ -109,8 +96,6 @@ export async function verifyTelegramToken(credentials: TTelegramCredentials) {
       error,
     });
     debugger; // eslint-disable-line no-debugger
-    // return null;
-    // Error: step 1
     throw new Error(errMsg);
   }
 }

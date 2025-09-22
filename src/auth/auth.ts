@@ -3,6 +3,7 @@ import { PrismaAdapter } from '@auth/prisma-adapter';
 import NextAuth from 'next-auth';
 import { JWT } from 'next-auth/jwt';
 
+import { welcomeRoute } from '@/config/routesConfig';
 import { prisma } from '@/lib/db';
 import { isDev } from '@/config';
 import { getUserById } from '@/features/users/actions/';
@@ -10,6 +11,7 @@ import { getValidEmails } from '@/features/users/actions/getValidEmails';
 import { TExtendedUser } from '@/features/users/types/TUser';
 
 import authConfig from './auth.config.server';
+import { sessionMaxAge, sessionUpdateAge } from './constants';
 
 const invalidEmailRoute = '/demo-info';
 
@@ -29,36 +31,21 @@ export type TInvalidEmailReason = 'NO_EMAIL' | 'UNKNOWN_EMAIL';
  */
 
 export const nextAuthApp = NextAuth({
-  debug: false && isDev,
+  debug: isDev,
   adapter: PrismaAdapter(prisma),
-  session: { strategy: 'jwt' },
+  session: {
+    strategy: 'jwt',
+    maxAge: sessionMaxAge,
+    updateAge: sessionUpdateAge,
+  },
   pages: {
     // @see https://next-auth.js.org/configuration/pages
-    // signIn: '/login', // TODO: Add login page (see examples in `wordwizzz-saas` project)
-    // error: "/auth/error",
+    signIn: welcomeRoute, // <-- /api/auth/signin
+    error: '/auth/error', // <-- /api/auth/error
   },
   callbacks: {
     async signIn(params) {
       const validEmails = await getValidEmails();
-      /* // Got params for 'telegram` here:
-       * {
-       *   "user": {
-       *     "id": "490398083",
-       *     "email": "490398083",
-       *     "name": "Ig ",
-       *     "image": "https://t.me/i/userpic/320/3meBKT_rsGqbt3HOAqNHdAIWEQYHGeW3m86yeYhZiUo.jpg"
-       *   },
-       *   "account": {
-       *     "providerAccountId": "490398083",
-       *     "type": "credentials",
-       *     "provider": "telegram-auth"
-       *   },
-       *   "credentials": {
-       *     "csrfToken": "ac76870b50b256c123f85ff1a5bf46dac39f9c2b74c1a57cfa9bc852d3740688",
-       *     "callbackUrl": "/data"
-       *   }
-       * }
-       */
       const {
         user,
         account,

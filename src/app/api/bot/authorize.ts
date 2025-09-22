@@ -1,12 +1,41 @@
 import { randomBytes } from 'crypto';
 import { Context } from 'grammy';
 
-import { PUBLIC_URL, WEBHOOK_HOST } from '@/config/envServer';
+import { BOT_TOKEN, PUBLIC_URL, WEBHOOK_HOST } from '@/config/envServer';
 import { prisma } from '@/lib/db';
 import { isDev } from '@/config';
 import { minuteMs } from '@/constants';
+import { getBot } from '@/features/bot/helpers/getBot';
 
-const expireTime = 10 * minuteMs;
+const expireTime = 60 * minuteMs;
+
+async function getTelegramUseAvatarUrl(userId: number) {
+  const bot = getBot();
+  const photos = await bot.api.getUserProfilePhotos(userId, { limit: 1 });
+  const firstPhoto = photos.photos[0];
+
+  if (firstPhoto) {
+    // Selecting smallest photo size, e.g., index 0 or 1 (say 160x160)
+    const idx = Math.min(1, firstPhoto.length);
+    const fileId = firstPhoto[idx].file_id;
+    if (fileId) {
+      const file = await bot.api.getFile(fileId);
+      if (file) {
+        const image = `https://api.telegram.org/file/bot${BOT_TOKEN}/${file.file_path}`;
+        /* console.log('[src/app/api/bot/authorize.ts:handleAuthorizeCommand] image', {
+         *   idx,
+         *   fileId,
+         *   file,
+         *   image,
+         * });
+         */
+        return image;
+      }
+    }
+  }
+
+  return undefined;
+}
 
 export async function handleAuthorizeCommand(ctx: Context) {
   const from = ctx.from;
@@ -16,48 +45,49 @@ export async function handleAuthorizeCommand(ctx: Context) {
   }
 
   const {
+    id,
+    // is_bot, // false
     first_name, // 'Ig'
     last_name,
-    id, // 490398083
-    is_bot, // false
     language_code, // 'en'
     username, // 'lilliputten'
   } = from;
 
-  // const identifier = ctx.from?.id?.toString();
-  // const username = ctx.from?.username;
-  // const firstName = ctx.from?.first_name;
-  // const lastName = ctx.from?.last_name;
-
   try {
     // Generate verification token
     const token = randomBytes(32).toString('hex');
-    const expires = new Date(Date.now() + expireTime);
+    const now = Date.now();
+    const expires = new Date(now + expireTime);
 
-    const displayName = [first_name, last_name].filter(Boolean).join(' ') || `@${username}`;
+    const name = [first_name, last_name].filter(Boolean).join(' ') || `@${username}`;
 
-    console.log('[src/app/api/bot/authorize.ts:handleAuthorizeCommand]', {
-      displayName,
-      id,
-      username,
-      first_name,
-      last_name,
-      is_bot, // false
-      language_code, // 'en'
-      token,
-      expires,
-      ctx,
-    });
+    const image = await getTelegramUseAvatarUrl(id);
+
+    /* console.log('[src/app/api/bot/authorize.ts:handleAuthorizeCommand]', {
+     *   image,
+     *   name,
+     *   id,
+     *   username,
+     *   first_name,
+     *   last_name,
+     *   is_bot,
+     *   language_code,
+     *   token,
+     *   expires,
+     *   ctx,
+     * });
+     */
 
     // Store verification token in database
     await prisma.verificationToken.create({
       // TODO: Add name, language and other parameters?
       data: {
         token,
-        identifier: String(id),
-        name: displayName,
-        locale: language_code,
         expires,
+        identifier: String(id),
+        name,
+        locale: language_code,
+        image,
       },
     });
 
@@ -70,7 +100,7 @@ export async function handleAuthorizeCommand(ctx: Context) {
     // TODO: To use `useFormattedDuration` or whatever else
     const expiredMins = Math.round(expireTime / minuteMs);
 
-    const helloStr = ['Hello', displayName].filter(Boolean).join(' ') + '!';
+    const helloStr = ['Hello', name].filter(Boolean).join(' ') + '!';
 
     // @see https://core.telegram.org/bots/api#sendmessage
     await ctx.reply(

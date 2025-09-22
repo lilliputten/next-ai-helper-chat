@@ -1,9 +1,13 @@
 import { NextRequest } from 'next/server';
+import { encode } from '@auth/core/jwt';
 
-import { PUBLIC_URL } from '@/config/envServer';
+import { AUTH_SECRET, PUBLIC_URL } from '@/config/envServer';
+import { prisma } from '@/lib/db';
 import { ServerError } from '@/lib/errors';
 import { getErrorText } from '@/lib/helpers';
+import { cookieName, sessionMaxAge } from '@/auth/constants';
 import { verifyTelegramToken } from '@/auth/telegram/telegram-provider';
+import { isProd } from '@/config';
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
@@ -11,7 +15,7 @@ export async function GET(request: NextRequest) {
   const identifier = searchParams.get('id');
   const callbackUrl = searchParams.get('callbackUrl') || '/';
 
-  let user: Awaited<ReturnType<typeof verifyTelegramToken>>;
+  let tokenData: Awaited<ReturnType<typeof verifyTelegramToken>>;
 
   // Check parameters...
   try {
@@ -19,8 +23,8 @@ export async function GET(request: NextRequest) {
       throw new ServerError('Missing token or identifier', 400);
     }
     // Verify the token
-    user = await verifyTelegramToken({ token, identifier });
-    if (!user) {
+    tokenData = await verifyTelegramToken({ token, identifier });
+    if (!tokenData) {
       throw new ServerError('Invalid or expired token', 401);
     }
   } catch (error) {
@@ -29,8 +33,8 @@ export async function GET(request: NextRequest) {
       .filter(Boolean)
       .join(': ');
     // Redirect to error page with error details
-    // const errorUrl = new URL('/auth/error', PUBLIC_URL);
-    const errorUrl = new URL('/api/auth/error', PUBLIC_URL);
+    const errorUrl = new URL('/auth/error', PUBLIC_URL);
+    // const errorUrl = new URL('/api/auth/error', PUBLIC_URL); // Default (bare) handler
     errorUrl.searchParams.set('error', errMsg);
     // errorUrl.searchParams.set('title', 'Authentication Failed');
     // eslint-disable-next-line no-console
@@ -48,37 +52,115 @@ export async function GET(request: NextRequest) {
     return Response.redirect(errorUrl);
   }
 
-  // Create a redirect url...
+  // Create user and account directly
   try {
-    // Redirect to next-auth signin with credentials
-    const signInUrl = new URL('/api/auth/signin/telegram', request.url);
+    const {
+      name,
+      image,
+      // locale,
+    } = tokenData;
 
-    signInUrl.searchParams.set('token', token);
-    signInUrl.searchParams.set('identifier', identifier);
-    signInUrl.searchParams.set('callbackUrl', callbackUrl);
-
-    console.log('[src/app/api/auth/callback/telegram/route.ts]', {
-      signInUrl: signInUrl.toString(),
-      searchParams,
-      token,
-      identifier,
-      callbackUrl,
+    // Create or update user
+    const user = await prisma.user.upsert({
+      where: { id: identifier },
+      update: {
+        name,
+        image,
+      },
+      create: {
+        id: identifier,
+        // email: identifier,
+        name,
+        image,
+      },
     });
-    debugger;
 
-    return Response.redirect(signInUrl);
+    // Create an account if it doesn't exist
+    await prisma.account.upsert({
+      where: {
+        provider_providerAccountId: {
+          provider: 'telegram',
+          providerAccountId: identifier,
+        },
+      },
+      update: {},
+      create: {
+        userId: user.id,
+        type: 'credentials',
+        provider: 'telegram',
+        providerAccountId: identifier,
+      },
+    });
+
+    // Create NextAuth JWT session token
+    const now = Date.now();
+    const expires = new Date(now + sessionMaxAge * 1000);
+
+    const sessionToken = await encode({
+      token: {
+        sub: user.id,
+        // email: user.email,
+        name: user.name,
+        picture: user.image,
+        iat: Math.floor(now / 1000),
+        exp: Math.floor(expires.getTime() / 1000),
+      },
+      secret: AUTH_SECRET,
+      salt: cookieName,
+    });
+
+    // Create session record in database for tracking
+    await prisma.session.create({
+      data: {
+        sessionToken,
+        userId: user.id,
+        expires,
+      },
+    });
+
+    const redirectUrl = new URL(callbackUrl, PUBLIC_URL);
+
+    // Set session cookie and redirect
+    const cookieValue = `${cookieName}=${sessionToken}; Path=/; HttpOnly; SameSite=Lax; Expires=${expires.toUTCString()}${isProd ? '; Secure' : ''}`;
+
+    const response = new Response(null, {
+      status: 302,
+      headers: {
+        Location: redirectUrl.toString(),
+        'Set-Cookie': cookieValue,
+      },
+    });
+
+    /* console.log('[src/app/api/auth/callback/telegram/route.ts] User and session created', {
+     *   user,
+     *   // account,
+     *   // session,
+     *   sessionToken,
+     *   expires,
+     *   redirectUrl,
+     *   cookieValue,
+     *   cookieName,
+     *   response,
+     *   name,
+     *   image,
+     *   locale,
+     *   tokenData,
+     * });
+     */
+
+    return response;
   } catch (error) {
     const status = error instanceof ServerError ? error.statusCode : 500;
     const errMsg = ['Authentication failed', getErrorText(error)].filter(Boolean).join(': ');
     // Redirect to error page with error details
-    // const errorUrl = new URL('/auth/error', PUBLIC_URL);
-    const errorUrl = new URL('/api/auth/error', PUBLIC_URL);
+    const errorUrl = new URL('/auth/error', PUBLIC_URL);
+    // const errorUrl = new URL('/api/auth/error', PUBLIC_URL); // Default (bare) handler
     errorUrl.searchParams.set('error', errMsg);
     // errorUrl.searchParams.set('title', 'Authentication Failed');
     // eslint-disable-next-line no-console
     console.error('[src/app/api/auth/callback/telegram/route.ts]', errMsg, {
       errorUrl: errorUrl.toString(),
-      user,
+      tokenData,
       searchParams,
       token,
       identifier,

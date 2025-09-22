@@ -85,6 +85,7 @@ model VerificationToken {
   // Extra optional paramteres (for telegram bot auth provideer)
   name   String?
   locale String?
+  image  String?
 
   @@unique([identifier, token])
   @@map("verification_tokens")

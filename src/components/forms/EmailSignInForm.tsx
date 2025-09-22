@@ -88,11 +88,6 @@ export function EmailSignInForm({ className }: TPropsWithClassName) {
           callbackUrl: startRoute,
         });
 
-        console.log('[EmailSignInForm:onSubmit] done', {
-          data,
-          result,
-        });
-
         if (!result || result?.error) {
           throw result?.error;
         }
