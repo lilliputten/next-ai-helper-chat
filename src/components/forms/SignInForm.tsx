@@ -4,16 +4,16 @@ import React from 'react';
 import Link from 'next/link';
 import { signIn, SignInOptions } from 'next-auth/react';
 
-import { startRoute } from '@/config/routesConfig';
+import { rootRoute } from '@/config/routesConfig';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/Button';
-import { ExternalLink, Github, Google, Spinner, Telegram, Yandex } from '@/components/shared/Icons';
+import { Github, Google, Spinner, Yandex } from '@/components/shared/Icons';
 import { TGenericIcon } from '@/components/shared/IconTypes';
 import { Logo } from '@/components/shared/Logo';
 import { isDev } from '@/config';
-import { useEnv } from '@/contexts/EnvContext';
 
 import { EmailSignInForm } from './EmailSignInForm';
+import { TelegramSignIn } from './TelegramSignIn';
 
 type TSignInParameters = Parameters<typeof signIn>;
 export type TSignInProvider = TSignInParameters[0];
@@ -45,7 +45,7 @@ function OAuthSignInButton(props: OAuthSignInButtonProps) {
   const isClicked = !!currentProvider;
   const isThisClicked = currentProvider == provider;
   const onSignIn = React.useCallback(() => {
-    const options: SignInOptions = { redirectTo: startRoute };
+    const options: SignInOptions = { redirectTo: rootRoute };
     if (onSignInStart) {
       onSignInStart(provider);
     }
@@ -81,59 +81,22 @@ function OAuthSignInButton(props: OAuthSignInButtonProps) {
   );
 }
 
-function TelegramSignInButton() {
-  const { botUsername } = useEnv();
-  const telegramUrl = `https://t.me/${botUsername}?start=/authorize`;
-
-  return (
-    <>
-      <p className="mt-2 text-center text-sm font-medium">Or use telegram bot sign-in:</p>
-      <Button
-        className={cn(isDev && '__TelegramSignInButton', 'flex gap-2')}
-        variant="theme"
-        rounded="full"
-        // onClick={() => window.open(telegramUrl, '_blank')}
-      >
-        <Link
-          target="_blank"
-          rel="noopener noreferrer"
-          href={telegramUrl}
-          className="flex items-center gap-2"
-        >
-          <Telegram className="mr-2 size-4" />
-          <span>Sign in with Telegram bot</span>
-        </Link>
-      </Button>
-      <p className="text-content text-center text-sm">
-        Click the button above or go to the{' '}
-        <Link
-          target="_blank"
-          rel="noopener noreferrer"
-          href={telegramUrl}
-          // className="flex-inline gap-1"
-        >
-          @{botUsername}
-          <ExternalLink className="ml-0.5 inline size-3.5 align-baseline opacity-50" />
-        </Link>{' '}
-        telegram bot, and select the <code>/authorize</code> command.
-      </p>
-    </>
-  );
-}
-
 interface TSignInFormHeaderProps {
   dark?: boolean;
+  inBody?: boolean;
 }
 
 export function SignInFormHeader(props: TSignInFormHeaderProps) {
-  const { dark } = props;
+  const { dark, inBody } = props;
   // const t = useTranslations('SignInForm');
   return (
     <>
-      <Link href={'/'}>
-        <Logo className="size-32" dark={dark} />
-      </Link>
-      <h3 className="font-urban text-app-orange text-2xl font-bold">{t('Sign In')}</h3>
+      {false && !inBody && (
+        <Link href={rootRoute}>
+          <Logo className="size-32" dark={dark} />
+        </Link>
+      )}
+      <h3 className="font-urban text-app-orange text-2xl font-bold">Sign In</h3>
       {/*
       <p className="text-center text-sm">{t('intro')}</p>
       */}
@@ -204,7 +167,7 @@ export function SignInForm(props: TSignInFormProps) {
       />
       */}
       {/* Telegram login section */}
-      <TelegramSignInButton />
+      <TelegramSignIn />
       {/* Email login section */}
       <EmailSignInForm />
     </>

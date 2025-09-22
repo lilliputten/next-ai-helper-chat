@@ -12,18 +12,21 @@ import { isProd } from '@/config';
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   const token = searchParams.get('token');
-  const identifier = searchParams.get('id');
+  // const identifier = searchParams.get('id');
   const callbackUrl = searchParams.get('callbackUrl') || '/';
 
   let tokenData: Awaited<ReturnType<typeof verifyTelegramToken>>;
 
   // Check parameters...
   try {
-    if (!token || !identifier) {
-      throw new ServerError('Missing token or identifier', 400);
+    if (!token) {
+      throw new ServerError('Missing token', 400);
     }
     // Verify the token
-    tokenData = await verifyTelegramToken({ token, identifier });
+    tokenData = await verifyTelegramToken({
+      token,
+      // identifier,
+    });
     if (!tokenData) {
       throw new ServerError('Invalid or expired token', 401);
     }
@@ -42,7 +45,7 @@ export async function GET(request: NextRequest) {
       errorUrl: errorUrl.toString(),
       searchParams,
       token,
-      identifier,
+      // identifier,
       callbackUrl,
       error,
       status,
@@ -55,6 +58,7 @@ export async function GET(request: NextRequest) {
   // Create user and account directly
   try {
     const {
+      id,
       name,
       image,
       // locale,
@@ -62,14 +66,13 @@ export async function GET(request: NextRequest) {
 
     // Create or update user
     const user = await prisma.user.upsert({
-      where: { id: identifier },
+      where: { id },
       update: {
         name,
         image,
       },
       create: {
-        id: identifier,
-        // email: identifier,
+        id,
         name,
         image,
       },
@@ -80,7 +83,7 @@ export async function GET(request: NextRequest) {
       where: {
         provider_providerAccountId: {
           provider: 'telegram',
-          providerAccountId: identifier,
+          providerAccountId: id,
         },
       },
       update: {},
@@ -88,7 +91,7 @@ export async function GET(request: NextRequest) {
         userId: user.id,
         type: 'credentials',
         provider: 'telegram',
-        providerAccountId: identifier,
+        providerAccountId: id,
       },
     });
 
@@ -131,22 +134,22 @@ export async function GET(request: NextRequest) {
       },
     });
 
-    /* console.log('[src/app/api/auth/callback/telegram/route.ts] User and session created', {
-     *   user,
-     *   // account,
-     *   // session,
-     *   sessionToken,
-     *   expires,
-     *   redirectUrl,
-     *   cookieValue,
-     *   cookieName,
-     *   response,
-     *   name,
-     *   image,
-     *   locale,
-     *   tokenData,
-     * });
-     */
+    console.log('[src/app/api/auth/callback/telegram/route.ts] User and session created', {
+      user,
+      // account,
+      // session,
+      sessionToken,
+      expires,
+      redirectUrl,
+      cookieValue,
+      cookieName,
+      response,
+      name,
+      image,
+      // locale,
+      tokenData,
+    });
+    debugger
 
     return response;
   } catch (error) {
@@ -163,7 +166,7 @@ export async function GET(request: NextRequest) {
       tokenData,
       searchParams,
       token,
-      identifier,
+      // identifier,
       callbackUrl,
       error,
       status,

@@ -93,7 +93,7 @@ export async function handleAuthorizeCommand(ctx: Context) {
 
     // Create authorization URL
     const callbackUrl = encodeURIComponent('/');
-    const urlPath = `/api/auth/callback/telegram?callbackUrl=${callbackUrl}&token=${token}&id=${id}`;
+    const urlPath = `/api/auth/callback/telegram?callbackUrl=${callbackUrl}&token=${token}`;
     const authUrl = `${WEBHOOK_HOST}${urlPath}`;
     const localUrl = `${PUBLIC_URL}${urlPath}`;
 
@@ -106,8 +106,10 @@ export async function handleAuthorizeCommand(ctx: Context) {
     await ctx.reply(
       [
         helloStr,
-        `Click the link below to sign in:`,
-        `${authUrl}`,
+        'Now you can sign-in in the application with the following authorization code:',
+        token,
+        `Or, you can just click the link below:`,
+        authUrl,
         isDev && localUrl,
         `This link will expire in ${expiredMins} minutes.`,
       ]

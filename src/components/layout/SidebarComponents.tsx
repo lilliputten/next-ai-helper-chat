@@ -11,13 +11,7 @@ export interface TSidebarBlockProps extends TPropsWithClassName {
   closeOuterMenu?: () => void;
 }
 export function SidebarWrapper(props: TSidebarBlockProps & { children: React.ReactNode }) {
-  const {
-    // onPrimary,
-    // onSidebar,
-    // align,
-    className,
-    children,
-  } = props;
+  const { className, children } = props;
   return (
     <div
       className={cn(
@@ -33,21 +27,13 @@ export function SidebarWrapper(props: TSidebarBlockProps & { children: React.Rea
 
 export function SidebarMenuItem(
   props: TSidebarBlockProps & {
-    onClick?: () => void;
+    onSelect?: (ev: React.MouseEvent) => void;
     children: React.ReactNode;
     asChild?: boolean;
     disabled?: boolean;
   },
 ) {
-  const {
-    // onPrimary,
-    // onSidebar,
-    // align,
-    className,
-    children,
-    onClick,
-    disabled,
-  } = props;
+  const { className, children, onSelect, disabled } = props;
   return (
     <div
       className={cn(
@@ -55,7 +41,7 @@ export function SidebarMenuItem(
         disabled && 'pointer-events-none opacity-50',
         className,
       )}
-      onClick={onClick}
+      onClick={onSelect}
     >
       {children}
     </div>

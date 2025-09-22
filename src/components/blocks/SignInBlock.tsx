@@ -32,7 +32,7 @@ export function SignInBlock(props: TPropsWithClassName) {
           'md:px-16',
         )}
       >
-        <SignInFormHeader dark />
+        <SignInFormHeader inBody dark />
       </div>
       <div
         className={cn(

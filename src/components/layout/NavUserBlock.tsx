@@ -2,7 +2,7 @@
 
 import { signOut, useSession } from 'next-auth/react';
 
-import { settingsRoute } from '@/config/routesConfig';
+import { rootRoute, settingsRoute } from '@/config/routesConfig';
 import { cn } from '@/lib/utils';
 import {
   DropdownMenuContent,
@@ -83,7 +83,7 @@ export function NavUserBlock(props: TSidebarBlockProps) {
       {/*isAdmin && (
       <MenuItem asChild>
         <Link
-          href="/admin"
+          href={adminRoute}
           className={cn(
             'flex items-center space-x-2.5',
             'disabled', // UNUSED
@@ -102,7 +102,7 @@ export function NavUserBlock(props: TSidebarBlockProps) {
             className="hover:bg-theme-500 cursor-pointer rounded-sm px-2 py-1.5 text-sm hover:text-white"
           >
             <Link
-              href="/" // dashboard
+              href={rootRoute} // dashboard
               className={cn(
                 'flex items-center space-x-2.5',
                 'disabled', // UNUSED
@@ -117,13 +117,7 @@ export function NavUserBlock(props: TSidebarBlockProps) {
             asChild
             className="hover:bg-theme-500 cursor-pointer rounded-sm px-2 py-1.5 text-sm hover:text-white"
           >
-            <Link
-              href={settingsRoute}
-              className={cn(
-                'flex items-center space-x-2.5',
-                // 'disabled', // UNUSED
-              )}
-            >
+            <Link href={settingsRoute} className="flex items-center space-x-2.5">
               <Settings className="size-4" />
               <p className="text-sm">{t('Settings')}</p>
             </Link>

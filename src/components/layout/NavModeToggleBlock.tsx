@@ -48,7 +48,7 @@ export function NavModeToggleBlock(props: TSidebarBlockProps) {
               'hover:bg-theme-500 flex cursor-pointer items-center gap-1 rounded-sm px-2 py-1.5 text-sm hover:text-white',
             )}
             disabled={thisTheme === currentTheme}
-            onClick={() => handleThemeChange(thisTheme)}
+            onSelect={() => handleThemeChange(thisTheme)}
           >
             {ThemeIcon && <ThemeIcon className="mr-2 size-4" />}
             <span>{t(thisTheme)}</span>

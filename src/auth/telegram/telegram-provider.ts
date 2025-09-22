@@ -12,7 +12,7 @@ export default function TelegramProvider(): Provider {
     // maxAge: 24 * 60 * 60,
     credentials: {
       token: { label: 'Token', type: 'text' },
-      identifier: { label: 'Telegram User ID', type: 'text' },
+      // identifier: { label: 'Telegram User ID', type: 'text' },
     },
     authorize: async (credentials) => {
       return await verifyTelegramToken(credentials || {});
@@ -22,21 +22,24 @@ export default function TelegramProvider(): Provider {
 
 export interface TTelegramCredentials {
   token?: string;
-  identifier?: string;
+  // identifier?: string;
 }
 
 const __debugKeepToken = false && isDev;
 
 export async function verifyTelegramToken(credentials: TTelegramCredentials) {
-  const { token, identifier } = credentials;
+  const {
+    token,
+    // identifier,
+  } = credentials;
 
   try {
     if (!token) {
       throw new Error('Auth token is undefined');
     }
-    if (!token || !identifier) {
-      throw new Error('Auth identifier is undefined');
-    }
+    // if (!identifier) {
+    //   throw new Error('Auth identifier is undefined');
+    // }
 
     const now = new Date();
 
@@ -52,10 +55,11 @@ export async function verifyTelegramToken(credentials: TTelegramCredentials) {
     // Find and verify the token
     const verificationToken = await prisma.verificationToken.findUnique({
       where: {
-        identifier_token: {
-          identifier: identifier,
-          token,
-        },
+        token,
+        // identifier_token: {
+        //   // identifier: identifier,
+        //   token,
+        // },
       },
     });
 
@@ -69,15 +73,16 @@ export async function verifyTelegramToken(credentials: TTelegramCredentials) {
     if (!__debugKeepToken) {
       await prisma.verificationToken.delete({
         where: {
-          identifier_token: {
-            identifier: identifier as string,
-            token: token as string,
-          },
+          token,
+          // identifier_token: {
+          //   identifier,
+          //   token,
+          // },
         },
       });
     }
 
-    const id = identifier;
+    const id = verificationToken.identifier;
 
     // Return user object
     return {
@@ -91,7 +96,7 @@ export async function verifyTelegramToken(credentials: TTelegramCredentials) {
     // eslint-disable-next-line no-console
     console.error('[src/auth/telegram/telegram-provider.ts:verifyTelegramToken]', errMsg, {
       token,
-      identifier,
+      // identifier,
       credentials,
       error,
     });

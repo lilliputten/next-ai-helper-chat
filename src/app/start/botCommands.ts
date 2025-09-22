@@ -9,7 +9,7 @@ export const botCommands = [
   },
   {
     command: 'authorize',
-    description: 'Get an authorization link to access the advanced features of the website',
+    description: 'Get an authorization token to log in to the website',
   },
   {
     command: 'settings',
