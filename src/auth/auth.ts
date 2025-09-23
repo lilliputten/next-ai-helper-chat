@@ -6,8 +6,8 @@ import { JWT } from 'next-auth/jwt';
 import { authErrorRoute, welcomeRoute } from '@/config/routesConfig';
 import { prisma } from '@/lib/db';
 import { isDev } from '@/config';
+import { getAllAllowedEmails } from '@/features/AllowedUsers/actions/getAllAllowedEmails';
 import { getUserById } from '@/features/users/actions/';
-import { getValidEmails } from '@/features/users/actions/getValidEmails';
 import { TExtendedUser } from '@/features/users/types/TUser';
 
 import authConfig from './auth.config.server';
@@ -46,7 +46,7 @@ export const nextAuthApp = NextAuth({
   },
   callbacks: {
     async signIn(params) {
-      const validEmails = await getValidEmails();
+      const validEmails = await getAllAllowedEmails();
       const {
         user,
         account,

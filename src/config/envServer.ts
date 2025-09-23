@@ -4,6 +4,9 @@ import { z } from 'zod';
 
 import { ensureBoolean } from '@/lib/helpers/types';
 
+// import appInfo from '@/app-info.json';
+// export const versionInfo = appInfo.versionInfo;
+
 const envSchema = z.object({
   // Vercel
   VERCEL_PROJECT_PRODUCTION_URL: z.string().optional(),
@@ -13,7 +16,8 @@ const envSchema = z.object({
   // Environment
   NEXT_PUBLIC_APP_URL: z.string().optional(),
 
-  // Auth
+  // Telegram
+  BOT_ADMIN_USERNAME: z.string().min(1),
   BOT_USERNAME: z.string().min(1),
   BOT_USERNAME_PREVIEW: z.string().optional(),
   BOT_USERNAME_LOCAL: z.string().optional(),
@@ -22,6 +26,7 @@ const envSchema = z.object({
   BOT_TOKEN_LOCAL: z.string().optional(),
   WEBHOOK_HOST: z.string().optional(),
 
+  // AI API
   // GigaChat AI API
   GIGACHAT_CREDENTIALS: z.string().min(1),
   GIGACHAT_MODEL: z.string().min(1),
@@ -65,12 +70,16 @@ if (!parsedEnv.success) {
 const envServer = parsedEnv.data;
 
 export const {
+  // App
   NEXT_PUBLIC_APP_URL,
+  VERCEL_ENV,
+  // AI API
   GIGACHAT_CREDENTIALS,
   GIGACHAT_MODEL,
   CLOUDFLARE_ACCOUNT_ID,
   CLOUDFLARE_API_TOKEN,
-  VERCEL_ENV,
+  // Telegram
+  BOT_ADMIN_USERNAME,
   // Auth
   AUTH_SECRET,
   GITHUB_CLIENT_ID,

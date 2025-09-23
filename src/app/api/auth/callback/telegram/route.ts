@@ -127,23 +127,6 @@ export async function GET(request: NextRequest) {
       },
     });
 
-    /* console.log('[src/app/api/auth/callback/telegram/route.ts] User and session created', {
-     *   user,
-     *   // account,
-     *   // session,
-     *   sessionToken,
-     *   expires,
-     *   redirectUrl,
-     *   cookieValue,
-     *   cookieName,
-     *   response,
-     *   name,
-     *   image,
-     *   // locale,
-     *   tokenData,
-     * });
-     */
-
     return response;
   } catch (error) {
     const status = error instanceof ServerError ? error.statusCode : 500;

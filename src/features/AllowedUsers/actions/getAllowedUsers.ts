@@ -1,0 +1,23 @@
+import { Prisma } from '@prisma/client';
+
+import { prisma } from '@/lib/db';
+import { DatabaseError } from '@/lib/errors';
+import { getErrorText } from '@/lib/helpers';
+
+export async function getAllowedUsers(args: Prisma.AllowedUsersFindManyArgs = {}) {
+  try {
+    const allowedUsers = await prisma.allowedUsers.findMany(args);
+    return allowedUsers;
+  } catch (error) {
+    const nextMessage = ['AllowedUsers not found', getErrorText(error)].filter(Boolean).join(': ');
+    const nextError = new DatabaseError(nextMessage);
+    // eslint-disable-next-line no-console
+    console.warn('[getAllowedAllowedUserss]', nextMessage, {
+      nextError,
+      error,
+    });
+    debugger; // eslint-disable-line no-debugger
+    // NOTE: Re-throw an error?
+    throw nextError;
+  }
+}

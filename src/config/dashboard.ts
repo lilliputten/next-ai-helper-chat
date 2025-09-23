@@ -9,7 +9,6 @@ import {
   AtSign,
   BookOpen,
   Hand,
-  Laptop,
   Messages,
   Rocket,
   Settings,
@@ -18,12 +17,6 @@ import {
 
 import {
   adminAllowedUsersRoute,
-  adminRoute,
-  // allTopicsRoute,
-  // availableTopicsRoute,
-  // chartsRoute,
-  // dashboardRoute,
-  // myTopicsRoute,
   rootRoute,
   settingsRoute,
   startRoute,
@@ -60,8 +53,8 @@ export const sidebarLinks: SidebarNavItem[] = [
     titleId: 'Configuration',
     authorizedOnly: UserRoles.ADMIN,
     items: [
-      { href: adminAllowedUsersRoute, icon: Users, titleId: 'Allowed Users', disabled: true },
-      { href: adminRoute, icon: Laptop, titleId: 'Admin Panel', authorizedOnly: UserRoles.ADMIN, disabled: true },
+      { href: adminAllowedUsersRoute, icon: Users, titleId: 'Allowed Users', authorizedOnly: UserRoles.ADMIN },
+      // { href: adminRoute, icon: Laptop, titleId: 'Admin Panel', authorizedOnly: UserRoles.ADMIN, disabled: true },
     ],
   },
   {

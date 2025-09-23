@@ -3,7 +3,7 @@
  @changed 2025.09.22, 05:21
 -->
 
-# Node/Next AI Helper Chat
+# Node/Next AI Helper
 
 Next.js UI app and telegram chat apps
 

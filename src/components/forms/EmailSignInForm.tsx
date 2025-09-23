@@ -14,7 +14,7 @@ import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/Button';
 import { ArrowRight, Spinner } from '@/components/shared/Icons';
 import { isDev } from '@/config';
-import { getValidEmails } from '@/features/users/actions/getValidEmails';
+import { getAllAllowedEmails } from '@/features/AllowedUsers/actions/getAllAllowedEmails';
 
 export const emailSignInSchema = z.object({
   email: z.string().email('Please enter a valid email address'),
@@ -40,7 +40,7 @@ export function EmailSignInForm({ className }: TPropsWithClassName) {
   React.useEffect(() => {
     startStarting(async () => {
       try {
-        const validEmails = await getValidEmails();
+        const validEmails = await getAllAllowedEmails();
         setValidEmails(validEmails);
       } catch (error) {
         const errMsg = ['Cannot get valid emails list', getErrorText(error)]

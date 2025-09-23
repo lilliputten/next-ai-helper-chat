@@ -16,8 +16,8 @@ export const defaultLanguage = process.env.NEXT_PUBLIC_DEFAULT_LANGUAGE || 'en';
 
 export const dataContentType = 'application/json; charset=utf-8';
 
-export const siteTitle = 'Next AI Helper Chat';
-export const siteDescription = 'NextJS chat application';
+export const siteTitle = 'Next AI Helper';
+export const siteDescription = 'NextJS AI Chat Application';
 export const siteKeywords = [
   // ...
   'next.js',

@@ -2,7 +2,9 @@ import { webhookCallback } from 'grammy';
 
 import { getBot } from '@/features/bot/helpers/getBot';
 
-import { handleAuthorizeCommand } from './authorize';
+import { authorizeCommand } from './authorizeCommand';
+import { helpCommand } from './helpCommand';
+import { startCommand } from './startCommand';
 
 export const dynamic = 'force-dynamic';
 
@@ -10,32 +12,18 @@ export const fetchCache = 'force-no-store';
 
 const bot = getBot();
 
-bot.command('start', async (ctx) => {
-  const startPayload = ctx.match;
+bot.command('start', startCommand);
+bot.command('help', helpCommand);
+bot.command('authorize', authorizeCommand);
 
-  // Automatically authorize...
-  if (startPayload === '/authorize') {
-    await handleAuthorizeCommand(ctx);
-    return;
-  }
-
-  await ctx.reply('Welcome! Use /authorize to sign in to the app.');
-});
-
-bot.command('authorize', async (ctx) => {
-  await handleAuthorizeCommand(ctx);
-});
-
+// Test
 bot.on('message:text', async (ctx) => {
   const { message } = ctx;
   const { text } = message;
-  /* console.log('[src/app/api/bot/route:message:text]', {
-   *   text,
-   *   message,
-   *   ctx,
-   * });
-   */
-  const replyText = `Reply: ${text}`;
+  const replyText = [
+    `${text} command is not implemented, sorry.`,
+    'Check the available commands list via /help.',
+  ].join('\n\n');
   await ctx.reply(replyText);
 });
 

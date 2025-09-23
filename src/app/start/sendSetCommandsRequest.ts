@@ -2,8 +2,7 @@
 
 import { BOT_TOKEN } from '@/config/envServer';
 import { fetchJson } from '@/lib/helpers/requests';
-
-import { botCommands } from './botCommands';
+import { botCommands } from '@/features/bot/constants/botCommands';
 
 type TSetWebHookResponse = {
   ok: boolean;

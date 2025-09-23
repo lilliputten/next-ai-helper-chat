@@ -13,7 +13,7 @@ import { TExtendedUser } from '@/features/users/types/TUser';
 type TParams = Omit<TCheckIfUserExistsParams, 'id'>;
 
 /** Server: Get user data from auth data.
- * Use `useSessionUser` for client components.
+ * NOTE: Use `useSessionUser` for client components.
  */
 export const getSessionUser = cache<(params?: TParams) => Promise<TExtendedUser | undefined>>(
   async (params: TParams = {}) => {

@@ -54,13 +54,13 @@ export function NavUserBlock(props: TSidebarBlockProps) {
       >
         {onSidebar && (
           <UserAvatar
-            user={{ name: user.name || null, image: user.image || null }}
+            user={user}
             className={cn(
               isDev && '__NavUserBlock_UserAvatar', // DEBUG
               className,
-              'bg-theme-300/25 size-8 rounded-full',
-              isAdmin && 'border-2 border-solid border-lime-400', // Indicate admin role
-              onSidebar && 'flex',
+              // 'bg-theme-300/25 size-8 rounded-full',
+              // isAdmin && 'border-2 border-solid border-lime-400', // Indicate admin role
+              // onSidebar && 'flex',
             )}
           />
         )}

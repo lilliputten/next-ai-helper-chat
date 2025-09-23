@@ -1,51 +1,35 @@
 import { randomBytes } from 'crypto';
 import { Context } from 'grammy';
 
-import { BOT_TOKEN, PUBLIC_URL, WEBHOOK_HOST } from '@/config/envServer';
+import { BOT_ADMIN_USERNAME, PUBLIC_URL, WEBHOOK_HOST } from '@/config/envServer';
 import { prisma } from '@/lib/db';
 import { isDev } from '@/config';
 import { minuteMs } from '@/constants';
-import { getBot } from '@/features/bot/helpers/getBot';
+import { getAllAllowedTelegramIds } from '@/features/AllowedUsers/actions/getAllAllowedTelegramIds';
+import { getTelegramUserAvatarUrl } from '@/features/bot/actions/getTelegramUserAvatarUrl';
 
 const expireTime = 60 * minuteMs;
 
-async function getTelegramUseAvatarUrl(userId: number) {
-  const bot = getBot();
-  const photos = await bot.api.getUserProfilePhotos(userId, { limit: 1 });
-  const firstPhoto = photos.photos[0];
-
-  if (firstPhoto) {
-    // Selecting smallest photo size, e.g., index 0 or 1 (say 160x160)
-    const idx = Math.min(1, firstPhoto.length);
-    const fileId = firstPhoto[idx].file_id;
-    if (fileId) {
-      const file = await bot.api.getFile(fileId);
-      if (file) {
-        const image = `https://api.telegram.org/file/bot${BOT_TOKEN}/${file.file_path}`;
-        /* console.log('[src/app/api/bot/authorize.ts:handleAuthorizeCommand] image', {
-         *   idx,
-         *   fileId,
-         *   file,
-         *   image,
-         * });
-         */
-        return image;
-      }
-    }
-  }
-
-  return undefined;
-}
-
-export async function handleAuthorizeCommand(ctx: Context) {
+export async function authorizeCommand(ctx: Context) {
   const from = ctx.from;
 
-  if (!from?.id) {
+  const id = from?.id;
+
+  if (!id) {
     return await ctx.reply('Unable to identify user. Please try again.');
   }
 
+  const allowedTelegramIds = await getAllAllowedTelegramIds();
+  if (!allowedTelegramIds.includes(id)) {
+    return await ctx.reply(
+      [
+        'The bot is running in test mode, and only whitelisted users are allowed to participate.',
+        `Reach the administrator (@${BOT_ADMIN_USERNAME}), and ask him to whitelist your ID (${id}).`,
+      ].join('\n\n'),
+    );
+  }
+
   const {
-    id,
     // is_bot, // false
     first_name, // 'Ig'
     last_name,
@@ -61,22 +45,7 @@ export async function handleAuthorizeCommand(ctx: Context) {
 
     const name = [first_name, last_name].filter(Boolean).join(' ') || `@${username}`;
 
-    const image = await getTelegramUseAvatarUrl(id);
-
-    /* console.log('[src/app/api/bot/authorize.ts:handleAuthorizeCommand]', {
-     *   image,
-     *   name,
-     *   id,
-     *   username,
-     *   first_name,
-     *   last_name,
-     *   is_bot,
-     *   language_code,
-     *   token,
-     *   expires,
-     *   ctx,
-     * });
-     */
+    const image = await getTelegramUserAvatarUrl(id);
 
     // Store verification token in database
     await prisma.verificationToken.create({
@@ -132,7 +101,7 @@ export async function handleAuthorizeCommand(ctx: Context) {
     );
   } catch (error) {
     // eslint-disable-next-line no-console
-    console.error('[src/app/api/bot/authorize.ts:handleAuthorizeCommand]', {
+    console.error('[src/app/api/bot/authorize.ts:authorizeCommand]', {
       error,
     });
     // eslint-disable-next-line no-debugger

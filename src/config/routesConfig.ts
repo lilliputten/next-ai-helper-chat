@@ -1,7 +1,3 @@
-// export const allTopicsRoute = '/topics/all';
-// export const availableTopicsRoute = '/topics/available'; // Example
-// export const chartsRoute = '/charts';
-// export const myTopicsRoute = '/topics/my';
 export const authErrorRoute = '/auth/error';
 export const adminAllowedUsersRoute = '/admin/allowed-users';
 export const adminRoute = '/admin';
@@ -17,10 +13,6 @@ export const welcomeRoute = '/welcome';
 
 /** NOTE: That's used only to mock real intl context */
 export const pathnames = {
-  // [allTopicsRoute]: allTopicsRoute,
-  // [availableTopicsRoute]: availableTopicsRoute,
-  // [chartsRoute]: chartsRoute,
-  // [myTopicsRoute]: myTopicsRoute,
   [adminRoute]: adminRoute,
   [contactsRoute]: contactsRoute,
   [dashboardRoute]: dashboardRoute,
