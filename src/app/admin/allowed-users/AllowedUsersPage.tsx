@@ -4,78 +4,32 @@ import React from 'react';
 
 import { cn } from '@/lib/utils';
 import { useAllowedUsers } from '@/hooks/react-query/useAllowedUsers';
-import { Button } from '@/components/ui/Button';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-} from '@/components/ui/DropdownMenu';
-import { Add, Edit, FlaskConical, MenuVertical } from '@/components/shared/Icons';
-import { ConfirmModal } from '@/components/ui-atoms';
 import { isDev } from '@/config';
 import { TAllowedUser } from '@/features/allowed-users/types';
-import { useMediaQuery } from '@/hooks';
 
+import { AllowedUserEditModal } from './AllowedUserEditModal';
 import { AllowedUsersList } from './AllowedUsersList';
+import { AllowedUsersPageMenu } from './AllowedUsersPageMenu';
 
 const __useDebugData = isDev && false;
 
-function AllowedUsersPageMenu() {
-  const mediaQuery = useMediaQuery();
-  const { isDesktop } = mediaQuery;
-  const menuContent = (
-    <div
-      className={cn(
-        isDev && '__AllowedUsersPageMenu', // DEBUG
-        'flex',
-        isDesktop ? 'flex-wrap gap-2' : 'w-full flex-col gap-1 p-2',
-      )}
-    >
-      <Button variant="ghost" className="flex gap-2">
-        <Add className="size-4 opacity-50" />
-        <span className="flex flex-1 truncate">Add new</span>
-      </Button>
-      <Button variant="ghost" className="flex gap-2">
-        <Edit className="size-4 opacity-50" />
-        <span className="flex flex-1 truncate">Edit</span>
-      </Button>
-    </div>
-  );
-  if (isDesktop) {
-    return menuContent;
-  }
-  return (
-    <DropdownMenu>
-      <DropdownMenuTrigger
-        asChild
-        aria-label="Show Menu"
-        className={cn(
-          isDev && '__AllowedUsersPage_DropdownMenuTrigger', // DEBUG
-        )}
-      >
-        <Button size="icon" variant="ghost" title="Show menu">
-          <MenuVertical className="size-4 transition-all" />
-          <span className="sr-only">Show menu</span>
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent
-        align="end"
-        className={cn(
-          isDev && '__AllowedUsersPage_DropdownMenuContent', // DEBUG
-        )}
-      >
-        {menuContent}
-      </DropdownMenuContent>
-    </DropdownMenu>
-  );
-}
-
 export function AllowedUsersPage() {
-  const [isModalVisible, setModalVisible] = React.useState(false);
+  const [isEditModalVisible, setEditModalVisible] = React.useState(false);
+  const [editingAllowedUser, setEditingAllowedUser] = React.useState<TAllowedUser | undefined>();
 
   const allowedUsersQuery = useAllowedUsers({ orderBy: [{ type: 'asc' }, { value: 'asc' }] });
   const selectedUsersState = React.useState<TAllowedUser[]>();
   // const [selectedUsers, setSelectedIndices] = selectedUsersState;
+
+  const editAllowedUser = (allowedUser: TAllowedUser) => {
+    setEditingAllowedUser(allowedUser);
+    setEditModalVisible(true);
+  };
+
+  const addAllowedUser = () => {
+    setEditingAllowedUser(undefined);
+    setEditModalVisible(true);
+  };
 
   return (
     <div
@@ -87,7 +41,7 @@ export function AllowedUsersPage() {
       <div className="flex flex-col gap-4 px-4 py-4">
         <div className="flex">
           <h1 className="flex-1 truncate text-2xl">Allowed Users List</h1>
-          <AllowedUsersPageMenu />
+          <AllowedUsersPageMenu addAllowedUser={addAllowedUser} />
         </div>
         {__useDebugData && (
           <div className="flex flex-wrap gap-2">
@@ -101,20 +55,36 @@ export function AllowedUsersPage() {
       <AllowedUsersList
         selectedUsersState={selectedUsersState}
         allowedUsersQuery={allowedUsersQuery}
+        editAllowedUser={editAllowedUser}
       />
-      {/* <DialogDemo /> */}
+      {isEditModalVisible && (
+        <AllowedUserEditModal
+          initialAllowedUser={editingAllowedUser}
+          handleConfirm={(allowedUser) => {
+            console.log('[AllowedUsersPage] Edit finished', {
+              allowedUser,
+            });
+            debugger;
+          }}
+          handleClose={() => {
+            setEditModalVisible(false);
+            setEditingAllowedUser(undefined);
+          }}
+        />
+      )}
+      {/*
       <ConfirmModal
         dialogTitle="Confirm delete answer"
         confirmButtonVariant="destructive"
         confirmButtonText="Delete"
         confirmButtonBusyText="Deleting"
         cancelButtonText="Cancel"
-        handleClose={() => setModalVisible(false)}
+        handleClose={() => setEditModalVisible(false)}
         handleConfirm={() => {
-          setModalVisible(false);
+          setEditModalVisible(false);
         }}
         // isPending={isLoadingOverall}
-        isVisible={isModalVisible}
+        isVisible={isEditModalVisible}
       >
         Do you confirm deleting the answer?
       </ConfirmModal>
@@ -125,7 +95,7 @@ export function AllowedUsersPage() {
         )}
       >
         <Button
-          onClick={() => setModalVisible(true)}
+          onClick={() => setEditModalVisible(true)}
           className="flex flex-1 gap-2"
           variant="primary"
         >
@@ -133,6 +103,7 @@ export function AllowedUsersPage() {
           <span className="truncate">Show Modal</span>
         </Button>
       </div>
+      */}
     </div>
   );
 }

@@ -11,7 +11,7 @@
       "type": "node-terminal",
       "name": "Run local dev server",
       "request": "launch",
-      "command": "pnpm run dev",
+      "command": "pnpm run dev --turbo",
       "cwd": "${workspaceFolder}",
       "skipFiles": ["!${workspaceRoot}/node_modules/**/*.js"]
       // "runtimeArgs": ["--preserve-symlinks"]

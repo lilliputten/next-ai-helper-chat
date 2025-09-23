@@ -28,6 +28,7 @@ import { useGoBack } from '@/hooks';
 // const __useDebugData = isDev && false;
 
 interface TProps {
+  editAllowedUser: (user: TAllowedUser) => void;
   allowedUsersQuery: ReturnType<typeof useAllowedUsers>;
   selectedUsersState: ReturnType<typeof React.useState<TAllowedUser[]>>;
 }
@@ -44,7 +45,7 @@ function compareAllowedUsers(u1: TAllowedUser, u2: TAllowedUser) {
 }
 
 export function AllowedUsersList(props: TProps) {
-  const { allowedUsersQuery, selectedUsersState } = props;
+  const { allowedUsersQuery, selectedUsersState, editAllowedUser } = props;
 
   const [selectedUsers, setSelectedIndices] = selectedUsersState;
 
@@ -203,7 +204,12 @@ export function AllowedUsersList(props: TProps) {
                   {truncateString(allowedUser.value, 100)}
                 </TableCell>
                 <TableCell id="actions" className="w-[2em] text-right">
-                  <Button variant="ghost" className="flex gap-2" size="icon">
+                  <Button
+                    variant="ghost"
+                    className="flex gap-2"
+                    size="icon"
+                    onClick={() => editAllowedUser(allowedUser)}
+                  >
                     <SquarePen className="size-4 opacity-50" />
                     <span className="sr-only flex flex-1 truncate">Edit</span>
                   </Button>
