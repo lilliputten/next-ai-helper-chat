@@ -25,7 +25,7 @@ interface TErrorProps {
   reset?: () => void;
   className?: string;
   icon?: TGenericIcon;
-  padded?: boolean;
+  padded?: boolean | 'lg';
   border?: boolean;
 }
 
@@ -79,7 +79,7 @@ export function PageError(props: TErrorProps) {
       className={cn(
         isDev && '__PageError', // DEBUG
         'overflow-auto',
-        padded && 'm-6',
+        padded && (padded === 'lg' ? 'm-6' : 'm-4'),
         !border && 'border-none',
         className,
       )}

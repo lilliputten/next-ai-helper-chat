@@ -144,7 +144,7 @@ export function StartBotPage() {
       >
         {/* showServerInfo */}
         <Button
-          disabled={isInitWebhookRunning}
+          disabled={isShowServerInfoRunning}
           onClick={showServerInfo}
           variant="theme"
           className={cn('flex gap-2', isShowServerInfoRunning && 'pointer-events-none opacity-50')}
