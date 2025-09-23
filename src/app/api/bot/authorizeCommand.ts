@@ -5,7 +5,7 @@ import { BOT_ADMIN_USERNAME, PUBLIC_URL, WEBHOOK_HOST } from '@/config/envServer
 import { prisma } from '@/lib/db';
 import { isDev } from '@/config';
 import { minuteMs } from '@/constants';
-import { getAllAllowedTelegramIds } from '@/features/AllowedUsers/actions/getAllAllowedTelegramIds';
+import { getAllAllowedTelegramIds } from '@/features/allowed-users/actions/getAllAllowedTelegramIds';
 import { getTelegramUserAvatarUrl } from '@/features/bot/actions/getTelegramUserAvatarUrl';
 
 const expireTime = 60 * minuteMs;

@@ -1,1 +1,1 @@
-export * from './AllowedUsers';
+export * from './AllowedUser';

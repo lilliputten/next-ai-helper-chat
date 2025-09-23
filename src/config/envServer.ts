@@ -99,17 +99,19 @@ export const {
 
 export const EMAIL_USE_SSL = ensureBoolean(process.env.EMAIL_USE_SSL);
 
-export const isLocal = ensureBoolean(process.env.NEXT_PUBLIC_LOCAL);
-export const isDev = process.env.NODE_ENV === 'development' || !!isLocal;
-
-// Derived variables
-export const PUBLIC_URL = envServer.VERCEL_URL
-  ? 'https://' + envServer.VERCEL_URL
-  : NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
-
 export const isVercel = !!envServer.VERCEL_URL;
 export const isVercelPreview = isVercel && VERCEL_ENV === 'preview';
-export const isVercelProduction = isVercel && VERCEL_ENV === 'production';
+export const isVercelProduction =
+  isVercel && VERCEL_ENV === 'production' && !!envServer.VERCEL_PROJECT_PRODUCTION_URL;
+
+export const isLocal = !isVercel && ensureBoolean(process.env.NEXT_PUBLIC_LOCAL);
+export const isDev = !isVercel && (process.env.NODE_ENV === 'development' || !!isLocal);
+
+// Derived variables
+export const PUBLIC_URL = isVercel
+  ? 'https://' +
+    (isVercelProduction ? envServer.VERCEL_PROJECT_PRODUCTION_URL : envServer.VERCEL_URL)
+  : NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
 
 export const WEBHOOK_HOST = envServer.WEBHOOK_HOST || PUBLIC_URL;
 

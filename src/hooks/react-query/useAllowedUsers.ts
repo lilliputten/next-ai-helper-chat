@@ -13,17 +13,17 @@ import { toast } from 'sonner';
 import { getErrorText } from '@/lib/helpers';
 import { stringifyQueryKey } from '@/lib/helpers/react-query';
 import { composeUrlQuery } from '@/lib/helpers/urls';
-import { TAllowedUsersResultsQueryData, TAllUsedKeys } from '@/lib/types/react-query';
-import { TGetAllowedUsersParams, TGetAllowedUsersResults } from '@/lib/zod-schemas';
+import { TAllowedUserResultsQueryData, TAllUsedKeys } from '@/lib/types/react-query';
+import { TGetAllowedUserParams, TGetAllowedUserResults } from '@/lib/zod-schemas';
 import { minuteMs } from '@/constants';
-import { getAllowedUsersResults } from '@/features/AllowedUsers/actions';
-import { itemsLimit } from '@/features/AllowedUsers/constants';
+import { getAllowedUsersResults } from '@/features/allowed-users/actions';
+import { itemsLimit } from '@/features/allowed-users/constants';
 
 const staleTime = minuteMs * 10;
 
 // TODO: Register all the query keys
 
-interface TUseAllowedUsersProps extends Omit<TGetAllowedUsersParams, 'skip' | 'take'> {
+interface TUseAllowedUserProps extends Omit<TGetAllowedUserParams, 'skip' | 'take'> {
   enabled?: boolean;
 }
 
@@ -35,7 +35,7 @@ interface TUseAllowedUsersProps extends Omit<TGetAllowedUsersParams, 'skip' | 't
  */
 const allUsedKeys: TAllUsedKeys = {};
 
-export function useAllowedUsers(props: TUseAllowedUsersProps = {}) {
+export function useAllowedUsers(props: TUseAllowedUserProps = {}) {
   const { enabled, ...queryProps } = props;
   // const queryClient = useQueryClient();
   // const invalidateKeys = useInvalidateReactQueryKeys();
@@ -43,13 +43,13 @@ export function useAllowedUsers(props: TUseAllowedUsersProps = {}) {
 
   /* Use partrial query url as a part of the query key */
   const queryHash = React.useMemo(() => composeUrlQuery(queryProps), [queryProps]);
-  const queryKey = React.useMemo<QueryKey>(() => ['AllowedUsers', queryHash], [queryHash]);
+  const queryKey = React.useMemo<QueryKey>(() => ['AllowedUser', queryHash], [queryHash]);
   allUsedKeys[stringifyQueryKey(queryKey)] = queryKey;
 
-  const query: UseInfiniteQueryResult<TAllowedUsersResultsQueryData, Error> = useInfiniteQuery<
-    TGetAllowedUsersResults,
+  const query: UseInfiniteQueryResult<TAllowedUserResultsQueryData, Error> = useInfiniteQuery<
+    TGetAllowedUserResults,
     Error,
-    InfiniteData<TGetAllowedUsersResults>,
+    InfiniteData<TGetAllowedUserResults>,
     QueryKey,
     number // Cursor type (from `skip` api parameter)
   >({
@@ -177,7 +177,7 @@ export function useAllowedUsers(props: TUseAllowedUsersProps = {}) {
     queryKey,
     allUsedKeys,
     allAllowedUsers,
-    hasAllowedUsers: !!allAllowedUsers?.length, // !!query.data?.pages[0]?.totalCount,
+    hasAllowedUser: !!allAllowedUsers?.length, // !!query.data?.pages[0]?.totalCount,
     // // Helpers...
     // addNewAllowedUser,
     // deleteAllowedUser,

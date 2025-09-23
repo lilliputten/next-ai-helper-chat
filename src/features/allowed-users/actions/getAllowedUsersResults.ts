@@ -5,16 +5,16 @@ import { Prisma } from '@prisma/client';
 import { prisma } from '@/lib/db';
 import { DatabaseError } from '@/lib/errors';
 import { getErrorText } from '@/lib/helpers';
-import { TGetAllowedUsersResults } from '@/lib/zod-schemas';
+import { TGetAllowedUserResults } from '@/lib/zod-schemas';
 
-export async function getAllowedUsersResults(args: Prisma.AllowedUsersFindManyArgs = {}) {
+export async function getAllowedUsersResults(args: Prisma.AllowedUserFindManyArgs = {}) {
   try {
     const where = args.where || {};
     const [items, totalCount] = await prisma.$transaction([
-      prisma.allowedUsers.findMany(args),
-      prisma.allowedUsers.count({ where }),
+      prisma.allowedUser.findMany(args),
+      prisma.allowedUser.count({ where }),
     ]);
-    return { items, totalCount } satisfies TGetAllowedUsersResults;
+    return { items, totalCount } satisfies TGetAllowedUserResults;
   } catch (error) {
     const nextMessage = ['Allowed users results fetching error', getErrorText(error)]
       .filter(Boolean)

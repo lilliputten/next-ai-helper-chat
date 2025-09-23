@@ -6,7 +6,7 @@ import { JWT } from 'next-auth/jwt';
 import { authErrorRoute, welcomeRoute } from '@/config/routesConfig';
 import { prisma } from '@/lib/db';
 import { isDev } from '@/config';
-import { getAllAllowedEmails } from '@/features/AllowedUsers/actions/getAllAllowedEmails';
+import { getAllAllowedEmails } from '@/features/allowed-users/actions/getAllAllowedEmails';
 import { getUserById } from '@/features/users/actions/';
 import { TExtendedUser } from '@/features/users/types/TUser';
 

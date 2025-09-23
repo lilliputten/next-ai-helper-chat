@@ -100,7 +100,7 @@ model VerificationToken {
 //   @@map("telegram_session")
 // }
 
-model AllowedUsers {
+model AllowedUser {
   type  String @default("EMAIL") // EMAIL (String), TELEGRAM (Int)
   value String @default("")
 

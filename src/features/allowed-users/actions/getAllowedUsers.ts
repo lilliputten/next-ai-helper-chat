@@ -6,9 +6,9 @@ import { prisma } from '@/lib/db';
 import { DatabaseError } from '@/lib/errors';
 import { getErrorText } from '@/lib/helpers';
 
-export async function getAllowedUsers(args: Prisma.AllowedUsersFindManyArgs = {}) {
+export async function getAllowedUsers(args: Prisma.AllowedUserFindManyArgs = {}) {
   try {
-    const allowedUsers = await prisma.allowedUsers.findMany(args);
+    const allowedUsers = await prisma.allowedUser.findMany(args);
     return allowedUsers;
   } catch (error) {
     const nextMessage = ['Allowed users fetching error', getErrorText(error)]

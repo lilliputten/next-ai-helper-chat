@@ -1,12 +1,14 @@
 'use server';
 
 import {
+  BOT_TOKEN,
   BOT_USERNAME,
   isDev,
   isLocal,
   isVercel,
   isVercelPreview,
   isVercelProduction,
+  PUBLIC_URL,
 } from '@/config/envServer';
 import { versionInfo } from '@/config';
 
@@ -14,7 +16,9 @@ export async function getServerInfo() {
   try {
     return {
       versionInfo,
+      PUBLIC_URL,
       BOT_USERNAME,
+      BOT_TOKEN,
       isLocal,
       isDev,
       isVercel,

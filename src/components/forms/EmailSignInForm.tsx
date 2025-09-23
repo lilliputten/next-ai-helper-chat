@@ -14,7 +14,7 @@ import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/Button';
 import { ArrowRight, Spinner } from '@/components/shared/Icons';
 import { isDev } from '@/config';
-import { getAllAllowedEmails } from '@/features/AllowedUsers/actions/getAllAllowedEmails';
+import { getAllAllowedEmails } from '@/features/allowed-users/actions/getAllAllowedEmails';
 
 export const emailSignInSchema = z.object({
   email: z.string().email('Please enter a valid email address'),
