@@ -16,7 +16,7 @@ export async function generateMetadata(/* { params }: TAwaitedLocaleProps */) {
 }
 
 export default async function StartBotPageWrapper() {
-  const user = await getSessionUser({ include: { accounts: true } });
+  const user = await getSessionUser();
   // const isAdmin = user?.role === UserRoles.ADMIN;
 
   if (!user) {

@@ -9,10 +9,12 @@ export async function getAllowedUsers(args: Prisma.AllowedUsersFindManyArgs = {}
     const allowedUsers = await prisma.allowedUsers.findMany(args);
     return allowedUsers;
   } catch (error) {
-    const nextMessage = ['AllowedUsers not found', getErrorText(error)].filter(Boolean).join(': ');
+    const nextMessage = ['Allowed users fetching error', getErrorText(error)]
+      .filter(Boolean)
+      .join(': ');
     const nextError = new DatabaseError(nextMessage);
     // eslint-disable-next-line no-console
-    console.warn('[getAllowedAllowedUserss]', nextMessage, {
+    console.warn('[getAllowedUsers]', nextMessage, {
       nextError,
       error,
     });
