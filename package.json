@@ -147,7 +147,7 @@
     "lint-all": "echo --Run all pre-commit check-ups-- && npm-run-all eslint tsc stylelint && echo --All check-ups passed--",
     "check-all": "echo --Run all pre-commit check-ups-- && npm-run-all prettier lint-all && echo --All checks passed--",
     "check-and-test": "echo --Run all pre-commit check-ups-- && npm-run-all check-all test && echo --All checks and tests passed--",
-    "dev": "next dev",
+    "dev": "next dev --turbo",
     "dev-https": "next dev --experimental-https",
     "build": "echo --Build the project-- && next build",
     "start": "echo --Start the project-- && next start",

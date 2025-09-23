@@ -53,6 +53,7 @@ export const {
   Package,
   PanelLeftClose,
   PanelRightClose,
+  SquarePen,
   Pencil,
   Plus,
   Rocket,

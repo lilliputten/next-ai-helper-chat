@@ -22,6 +22,7 @@ export async function getAllowedUsersResults(args: Prisma.AllowedUserFindManyArg
     const nextError = new DatabaseError(nextMessage);
     // eslint-disable-next-line no-console
     console.warn('[getAllowedUsersResults]', nextMessage, {
+      args,
       nextError,
       error,
     });

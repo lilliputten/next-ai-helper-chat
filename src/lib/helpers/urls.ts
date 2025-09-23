@@ -46,6 +46,19 @@ export function composeUrlQuery(
   return queryString;
 }
 
+/** Compose an url query string (`{a: 1, b: 2}` => `a:1,b:2`
+ * @param {TComposeUrlParams} params
+ * @param {TComposeUrlOptions} options
+ * @param {boolean} [options.omitEmpty=true] - Skip all undefined (or null) values (default=true)
+ * @param {boolean} [options.omitFalsy] - Skip all falsy values
+ */
+export function composeQueryHash(
+  params: TComposeUrlParams = {},
+  _options: TComposeUrlOptions = {},
+): string {
+  return JSON.stringify(params);
+}
+
 /** Compose an url from the url base and parameters hash
  * @param {string} baseUrl
  * @param {string} queryString

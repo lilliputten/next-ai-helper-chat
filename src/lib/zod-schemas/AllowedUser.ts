@@ -14,9 +14,9 @@ export type TAllowedUserOrderBy = z.infer<typeof zAllowedUserOrderBy>;
 
 export const GetAllowedUserParamsSchema = z.object({
   type: z.coerce.string().optional(),
+  value: z.coerce.string().optional(),
   skip: z.coerce.number().int().nonnegative().optional(),
   take: z.coerce.number().int().positive().optional(),
-  value: z.coerce.string().optional(),
   /** Sort by parameter, default: `{ updatedAt: 'desc' }`, packed json string */
   // orderBy: AllowedUserFindManyArgsSchema.shape.orderBy, // This approach doesn't work
   orderBy: zAllowedUserOrderBy,

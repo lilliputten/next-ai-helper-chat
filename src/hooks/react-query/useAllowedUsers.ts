@@ -12,7 +12,7 @@ import { toast } from 'sonner';
 
 import { getErrorText } from '@/lib/helpers';
 import { stringifyQueryKey } from '@/lib/helpers/react-query';
-import { composeUrlQuery } from '@/lib/helpers/urls';
+import { composeQueryHash } from '@/lib/helpers/urls';
 import { TAllowedUserResultsQueryData, TAllUsedKeys } from '@/lib/types/react-query';
 import { TGetAllowedUserParams, TGetAllowedUserResults } from '@/lib/zod-schemas';
 import { minuteMs } from '@/constants';
@@ -42,9 +42,17 @@ export function useAllowedUsers(props: TUseAllowedUserProps = {}) {
   const routePath = usePathname();
 
   /* Use partrial query url as a part of the query key */
-  const queryHash = React.useMemo(() => composeUrlQuery(queryProps), [queryProps]);
-  const queryKey = React.useMemo<QueryKey>(() => ['AllowedUser', queryHash], [queryHash]);
+  const queryHash = React.useMemo(() => composeQueryHash(queryProps), [queryProps]);
+  const queryKey = React.useMemo<QueryKey>(() => ['AllowedUsers', queryHash], [queryHash]);
   allUsedKeys[stringifyQueryKey(queryKey)] = queryKey;
+
+  console.log('[useAllowedUsers]', {
+    enabled,
+    queryProps,
+    routePath,
+    queryHash,
+    queryKey,
+  });
 
   const query: UseInfiniteQueryResult<TAllowedUserResultsQueryData, Error> = useInfiniteQuery<
     TGetAllowedUserResults,
