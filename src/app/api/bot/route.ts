@@ -3,7 +3,9 @@ import { webhookCallback } from 'grammy';
 import { getBot } from '@/features/bot/helpers/getBot';
 
 import { authorizeCommand } from './authorizeCommand';
+import { botInfoCommand } from './botInfoCommand';
 import { helpCommand } from './helpCommand';
+import { serverInfoCommand } from './serverInfoCommand';
 import { startCommand } from './startCommand';
 
 export const dynamic = 'force-dynamic';
@@ -15,6 +17,8 @@ const bot = getBot();
 bot.command('start', startCommand);
 bot.command('help', helpCommand);
 bot.command('authorize', authorizeCommand);
+bot.command('server_info', serverInfoCommand);
+bot.command('bot_info', botInfoCommand);
 
 // Test
 bot.on('message:text', async (ctx) => {

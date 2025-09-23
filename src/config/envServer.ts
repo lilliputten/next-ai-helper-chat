@@ -8,16 +8,18 @@ import { ensureBoolean } from '@/lib/helpers/types';
 // export const versionInfo = appInfo.versionInfo;
 
 const envSchema = z.object({
+  // App
+  VERCEL_ENV: z.string().optional(),
+  NODE_ENV: z.string().optional(),
+  NEXT_PUBLIC_LOCAL: z.string().optional(),
+  NEXT_PUBLIC_APP_URL: z.string().optional(),
   // Vercel
   VERCEL_PROJECT_PRODUCTION_URL: z.string().optional(),
   VERCEL_URL: z.string().optional(),
-  VERCEL_ENV: z.string().optional(),
-
-  // Environment
-  NEXT_PUBLIC_APP_URL: z.string().optional(),
 
   // Telegram
   BOT_ADMIN_USERNAME: z.string().min(1),
+  BOT_ADMIN_USERID: z.coerce.number(),
   BOT_USERNAME: z.string().min(1),
   BOT_USERNAME_PREVIEW: z.string().optional(),
   BOT_USERNAME_LOCAL: z.string().optional(),
@@ -36,7 +38,7 @@ const envSchema = z.object({
 
   // // Prisma
   // DATABASE_URL: z.string().min(1),
-  // CONFIG_ID: z.number().optional(), // Default config slot
+  // CONFIG_ID: z.coerce.number().optional(), // Default config slot
 
   // Authentication (NextAuth.js)
   // @see https://nextjs.org/learn/dashboard-app/adding-authentication
@@ -71,8 +73,13 @@ const envServer = parsedEnv.data;
 
 export const {
   // App
-  NEXT_PUBLIC_APP_URL,
   VERCEL_ENV,
+  NODE_ENV,
+  NEXT_PUBLIC_LOCAL,
+  NEXT_PUBLIC_APP_URL,
+  // Vercel
+  VERCEL_PROJECT_PRODUCTION_URL,
+  VERCEL_URL,
   // AI API
   GIGACHAT_CREDENTIALS,
   GIGACHAT_MODEL,
@@ -80,6 +87,7 @@ export const {
   CLOUDFLARE_API_TOKEN,
   // Telegram
   BOT_ADMIN_USERNAME,
+  BOT_ADMIN_USERID,
   // Auth
   AUTH_SECRET,
   GITHUB_CLIENT_ID,
@@ -104,8 +112,8 @@ export const isVercelPreview = isVercel && VERCEL_ENV === 'preview';
 export const isVercelProduction =
   isVercel && VERCEL_ENV === 'production' && !!envServer.VERCEL_PROJECT_PRODUCTION_URL;
 
-export const isLocal = !isVercel && ensureBoolean(process.env.NEXT_PUBLIC_LOCAL);
-export const isDev = !isVercel && (process.env.NODE_ENV === 'development' || !!isLocal);
+export const isLocal = !isVercel && ensureBoolean(envServer.NEXT_PUBLIC_LOCAL);
+export const isDev = !isVercel && (envServer.NODE_ENV === 'development' || !!isLocal);
 
 // Derived variables
 export const PUBLIC_URL = isVercel

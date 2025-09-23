@@ -11,8 +11,7 @@ import { getTelegramUserAvatarUrl } from '@/features/bot/actions/getTelegramUser
 const expireTime = 60 * minuteMs;
 
 export async function authorizeCommand(ctx: Context) {
-  const from = ctx.from;
-
+  const { from } = ctx;
   const id = from?.id;
 
   if (!id) {
