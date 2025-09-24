@@ -19,35 +19,30 @@ import {
   TableRow,
 } from '@/components/ui/Table';
 import { PageEmpty } from '@/components/pages/shared';
-import { Add, ArrowLeft, Edit, MenuVertical, SquarePen } from '@/components/shared/Icons';
+import { Add, ArrowLeft } from '@/components/shared/Icons';
 import { PageError } from '@/components/shared/PageError';
 import { isDev } from '@/config';
+import { compareAllowedUsers } from '@/features/allowed-users/helpers/compareAllowedUsers';
+import { findSelectedUserIdx } from '@/features/allowed-users/helpers/findSelectedUserIdx';
 import { TAllowedUser } from '@/features/allowed-users/types';
 import { useGoBack } from '@/hooks';
 
 // const __useDebugData = isDev && false;
 
 interface TProps {
-  editAllowedUser: (user: TAllowedUser) => void;
+  // editAllowedUser: (user: TAllowedUser) => void;
   allowedUsersQuery: ReturnType<typeof useAllowedUsers>;
   selectedUsersState: ReturnType<typeof React.useState<TAllowedUser[]>>;
 }
 
-function findSelectedUserIdx(selectedUsers: TAllowedUser[] | undefined, user: TAllowedUser) {
-  return selectedUsers ? selectedUsers.findIndex((u) => compareAllowedUsers(u, user)) : -1;
-}
-
-function compareAllowedUsers(u1: TAllowedUser, u2: TAllowedUser) {
-  if (!u1 || !u2) {
-    return false;
-  }
-  return u1.type === u2.type && u1.value === u2.value;
-}
-
 export function AllowedUsersList(props: TProps) {
-  const { allowedUsersQuery, selectedUsersState, editAllowedUser } = props;
+  const {
+    allowedUsersQuery,
+    selectedUsersState,
+    // editAllowedUser,
+  } = props;
 
-  const [selectedUsers, setSelectedIndices] = selectedUsersState;
+  const [selectedUsers, setSelectedUsers] = selectedUsersState;
 
   // TODO: See RC implementation in the `d:\Work\Me\trainwizzz\trainwizzz\src\components\pages\AvailableTopics\WorkoutQuestion\WorkoutQuestionContainer.tsx`
   const {
@@ -68,7 +63,7 @@ export function AllowedUsersList(props: TProps) {
   // const selectedUserIdx = (user: TAllowedUser) => findSelectedUserIdx(selectedUsers, user);
   const isSelectedUser = (user: TAllowedUser) => findSelectedUserIdx(selectedUsers, user) !== -1;
   const toggleSelectedUser = (user: TAllowedUser) => {
-    setSelectedIndices((selectedUsers = []) => {
+    setSelectedUsers((selectedUsers = []) => {
       const foundIdx = selectedUsers.findIndex((u) => compareAllowedUsers(u, user));
       const isFound = foundIdx !== -1;
       if (!isFound) {
@@ -81,9 +76,9 @@ export function AllowedUsersList(props: TProps) {
   };
   const toggleAllSelected = () => {
     if (isAllUsersSelected) {
-      setSelectedIndices(undefined);
+      setSelectedUsers(undefined);
     } else {
-      setSelectedIndices([...allAllowedUsers]);
+      setSelectedUsers([...allAllowedUsers]);
     }
   };
 
@@ -178,7 +173,7 @@ export function AllowedUsersList(props: TProps) {
             <TableHead id="name" className="w-[50%] truncate">
               Name
             </TableHead>
-            <TableHead id="actions" className="w-[4em]" />
+            {/* <TableHead id="actions" className="w-[4em]" /> */}
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -203,6 +198,7 @@ export function AllowedUsersList(props: TProps) {
                 <TableCell id="value" className="truncate">
                   {truncateString(allowedUser.value, 100)}
                 </TableCell>
+                {/*
                 <TableCell id="actions" className="w-[2em] text-right">
                   <Button
                     variant="ghost"
@@ -214,6 +210,7 @@ export function AllowedUsersList(props: TProps) {
                     <span className="sr-only flex flex-1 truncate">Edit</span>
                   </Button>
                 </TableCell>
+                */}
               </TableRow>
             );
           })}

@@ -48,6 +48,7 @@ export function quoteHtmlAttr(str: string, preserveCR?: boolean) {
   );
 }
 
+/** Capitalize string */
 export function ucFirst(str: string) {
   const c = str.substring(0, 1);
   const rest = str.substring(1);

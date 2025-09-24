@@ -7,17 +7,21 @@ import {
   QueryKey,
   useInfiniteQuery,
   UseInfiniteQueryResult,
+  useQueryClient,
 } from '@tanstack/react-query';
 import { toast } from 'sonner';
 
 import { getErrorText } from '@/lib/helpers';
-import { stringifyQueryKey } from '@/lib/helpers/react-query';
+import { invalidateAllUsedKeysExcept, stringifyQueryKey } from '@/lib/helpers/react-query';
 import { composeQueryHash } from '@/lib/helpers/urls';
+import { TGetResults, TGetResultsInfiniteQueryData } from '@/lib/types/api';
 import { TAllowedUserResultsQueryData, TAllUsedKeys } from '@/lib/types/react-query';
 import { TGetAllowedUserParams, TGetAllowedUserResults } from '@/lib/zod-schemas';
 import { minuteMs } from '@/constants';
 import { getAllowedUsersResults } from '@/features/allowed-users/actions';
 import { itemsLimit } from '@/features/allowed-users/constants';
+import { findSelectedUserIdx } from '@/features/allowed-users/helpers/findSelectedUserIdx';
+import { TAllowedUser } from '@/features/allowed-users/types';
 
 const staleTime = minuteMs * 10;
 
@@ -37,7 +41,7 @@ const allUsedKeys: TAllUsedKeys = {};
 
 export function useAllowedUsers(props: TUseAllowedUserProps = {}) {
   const { enabled, ...queryProps } = props;
-  // const queryClient = useQueryClient();
+  const queryClient = useQueryClient();
   // const invalidateKeys = useInvalidateReactQueryKeys();
   const routePath = usePathname();
 
@@ -45,14 +49,6 @@ export function useAllowedUsers(props: TUseAllowedUserProps = {}) {
   const queryHash = React.useMemo(() => composeQueryHash(queryProps), [queryProps]);
   const queryKey = React.useMemo<QueryKey>(() => ['AllowedUsers', queryHash], [queryHash]);
   allUsedKeys[stringifyQueryKey(queryKey)] = queryKey;
-
-  console.log('[useAllowedUsers]', {
-    enabled,
-    queryProps,
-    routePath,
-    queryHash,
-    queryKey,
-  });
 
   const query: UseInfiniteQueryResult<TAllowedUserResultsQueryData, Error> = useInfiniteQuery<
     TGetAllowedUserResults,
@@ -104,6 +100,56 @@ export function useAllowedUsers(props: TUseAllowedUserProps = {}) {
     return query.data?.pages.flatMap((page) => page.items) || [];
   }, [query.data?.pages]);
 
+  const invalidateAllKeysExcept = React.useCallback(
+    (excludeKeys?: QueryKey[]) =>
+      invalidateAllUsedKeysExcept(queryClient, excludeKeys, allUsedKeys),
+    [queryClient],
+  );
+
+  const addNewAllowedUser = React.useCallback(
+    (newItem: TAllowedUser) => {
+      // addNewItemToQueryCache, queryKey, newTopic)<TAllowedUser>(queryClient, queryKey, newItem, toStart),
+      return queryClient.setQueryData<TGetResultsInfiniteQueryData<TAllowedUser>>(
+        queryKey,
+        (oldData) => {
+          if (!oldData || !oldData.pages.length) {
+            return oldData;
+          }
+          const lastPageIndex = oldData.pages.length - 1;
+          const [firstPage, ...restPages] = oldData.pages;
+          const newPage = { ...firstPage };
+          newPage.items = [newItem, ...newPage.items];
+          oldData.pages[lastPageIndex].totalCount++;
+          return { ...oldData, pages: [newPage, ...restPages] };
+        },
+      );
+    },
+    [queryClient, queryKey],
+  );
+
+  const deleteAllowedUsers = React.useCallback(
+    (itemsToDelete: TAllowedUser[]) => {
+      // return deleteItemFromQueryCache(queryClient, queryKey, topicIdToDelete)<TAllowedUser>(queryClient, queryKey, availableUserIdToDelete);
+      return queryClient.setQueryData<TGetResultsInfiniteQueryData<TAllowedUser>>(
+        queryKey,
+        (oldData) => {
+          if (!oldData) return oldData;
+          let totalCount = 0;
+          const pages: TGetResults<TAllowedUser>[] = oldData.pages.map((page) => {
+            const items: TAllowedUser[] = page.items.filter(
+              (item) => findSelectedUserIdx(itemsToDelete, item) === -1,
+            );
+            totalCount += items.length;
+            return { ...page, items };
+          });
+          const updatedPages = pages.map((page) => ({ ...page, totalCount }));
+          return { ...oldData, pages: updatedPages };
+        },
+      );
+    },
+    [queryClient, queryKey],
+  );
+
   /* // UNUSED: Incapsulated helpers...
    * [> Add new AvailableUser record to the pages data
    *  * @param {TAllowedUser} newAllowedUser - Record to add
@@ -122,7 +168,7 @@ export function useAllowedUsers(props: TUseAllowedUserProps = {}) {
    *     deleteItemFromQueryCache<TAllowedUser>(queryClient, queryKey, availableUserIdToDelete),
    *   [queryClient, queryKey],
    * );
-   * [>* Delete the specified AvailableUser (by id) from the pages data.
+   * [>* Update the specified AvailableUser (by id) from the pages data.
    *  * @param {TAllowedUserId} availableUserIdToDelete - Assuming AvailableUser has a unique id of string or number type
    *  <]
    * const updateAllowedUser = React.useCallback(
@@ -186,10 +232,11 @@ export function useAllowedUsers(props: TUseAllowedUserProps = {}) {
     allUsedKeys,
     allAllowedUsers,
     hasAllowedUser: !!allAllowedUsers?.length, // !!query.data?.pages[0]?.totalCount,
-    // // Helpers...
-    // addNewAllowedUser,
+    // Helpers...
+    invalidateAllKeysExcept,
+    addNewAllowedUser,
+    deleteAllowedUsers,
     // deleteAllowedUser,
     // updateAllowedUser,
-    // invalidateAllKeysExcept,
   };
 }

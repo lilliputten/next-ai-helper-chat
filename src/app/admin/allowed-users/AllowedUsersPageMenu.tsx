@@ -15,11 +15,21 @@ import { useMediaQuery } from '@/hooks';
 
 interface TAllowedUsersPageMenuProps {
   addAllowedUser: () => void;
+  handleRefetch: () => void;
+  isRefetching?: boolean;
+  handleDeleteSelected: () => void;
+  hasSelected?: boolean;
 }
 
-export function AllowedUsersPageMenu({ addAllowedUser }: TAllowedUsersPageMenuProps) {
+export function AllowedUsersPageMenu(props: TAllowedUsersPageMenuProps) {
+  const [isDropdownOpen, setDropdownOpen] = React.useState(false);
+  const { addAllowedUser, handleRefetch, isRefetching, hasSelected, handleDeleteSelected } = props;
   const mediaQuery = useMediaQuery();
   const { isDesktop } = mediaQuery;
+  const closeAndRun = (func: () => void) => {
+    setDropdownOpen(false);
+    func();
+  };
   const menuContent = (
     <div
       className={cn(
@@ -28,16 +38,26 @@ export function AllowedUsersPageMenu({ addAllowedUser }: TAllowedUsersPageMenuPr
         isDesktop ? 'flex-wrap gap-2' : 'w-full flex-col gap-1 p-2',
       )}
     >
-      <Button variant="ghost" className="flex gap-2" onClick={addAllowedUser}>
+      <Button variant="ghost" className="flex gap-2" onClick={() => closeAndRun(addAllowedUser)}>
         <Add className="size-4 opacity-50" />
         <span className="flex flex-1 truncate">Add new</span>
       </Button>
-      <Button variant="ghost" className="flex gap-2" disabled>
+      <Button
+        variant="ghost"
+        className="flex gap-2"
+        disabled={!hasSelected}
+        onClick={() => closeAndRun(handleDeleteSelected)}
+      >
         <Trash className="size-4 opacity-50" />
         <span className="flex flex-1 truncate">Delete selected</span>
       </Button>
-      <Button variant="ghost" className="flex gap-2" disabled>
-        <Refresh className="size-4 opacity-50" />
+      <Button
+        variant="ghost"
+        className="flex gap-2"
+        disabled={isRefetching}
+        onClick={() => closeAndRun(handleRefetch)}
+      >
+        <Refresh className={cn('size-4 opacity-50', isRefetching && 'animate-spin')} />
         <span className="flex flex-1 truncate">Reload</span>
       </Button>
     </div>
@@ -46,7 +66,7 @@ export function AllowedUsersPageMenu({ addAllowedUser }: TAllowedUsersPageMenuPr
     return menuContent;
   }
   return (
-    <DropdownMenu>
+    <DropdownMenu open={isDropdownOpen} onOpenChange={setDropdownOpen}>
       <DropdownMenuTrigger
         asChild
         aria-label="Show Menu"
