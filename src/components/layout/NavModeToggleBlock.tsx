@@ -4,6 +4,7 @@
 import { useTheme } from 'next-themes';
 
 import { defaultSystemTheme, systemThemeIcons, TSystemThemeId } from '@/config/themes';
+import { ucFirst } from '@/lib/helpers';
 import { cn } from '@/lib/utils';
 import { DropdownMenuContent, DropdownMenuItem } from '@/components/ui/DropdownMenu';
 import { isDev } from '@/config';
@@ -23,7 +24,7 @@ export function NavModeToggleBlock(props: TSidebarBlockProps) {
   const { theme: currentTheme = defaultSystemTheme, themes, setTheme: setAppTheme } = useTheme();
   // const ThemeIcon = systemThemeIcons[currentTheme as TSystemThemeId];
   // const { setTheme } = useSettingsContext();
-  const t = (s: string) => s; // useTranslations('NavModeToggle');
+  // const t = (s: string) => s; // useTranslations('NavModeToggle');
   const handleThemeChange = (theme: string) => {
     setAppTheme(theme);
     // setTheme(theme);
@@ -51,7 +52,7 @@ export function NavModeToggleBlock(props: TSidebarBlockProps) {
             onSelect={() => handleThemeChange(thisTheme)}
           >
             {ThemeIcon && <ThemeIcon className="mr-2 size-4" />}
-            <span>{t(thisTheme)}</span>
+            <span>{ucFirst(thisTheme)}</span>
           </MenuItem>
         );
       })}

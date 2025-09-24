@@ -3,9 +3,8 @@ import Image from 'next/image';
 import { TPropsWithChildrenAndClassName } from '@/lib/types/react';
 import { cn } from '@/lib/utils';
 import { ScrollArea } from '@/components/ui/ScrollArea';
+import svgArt from '@/assets/arts/login-blue.svg';
 import { isDev } from '@/config';
-
-import svgArt from '/public/static/arts/login-blue.svg';
 
 export function WelcomeVisualBlock(props: TPropsWithChildrenAndClassName) {
   const { className, children } = props;

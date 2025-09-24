@@ -169,22 +169,24 @@ export function AllowedUsersPage() {
           error={editError}
         />
       )}
-      <ConfirmModal
-        dialogTitle="Confirm delete users"
-        confirmButtonVariant="destructive"
-        confirmButtonText="Delete"
-        confirmButtonBusyText="Deleting"
-        cancelButtonText="Cancel"
-        handleClose={() => setConfirmDeleteModalVisible(false)}
-        handleConfirm={() => {
-          setConfirmDeleteModalVisible(false);
-          handleDeleteSelected();
-        }}
-        // isPending={isPending}
-        isVisible={isConfirmDeleteModalVisible}
-      >
-        Do you confirm deleting the selected users?
-      </ConfirmModal>
+      {isConfirmDeleteModalVisible && (
+        <ConfirmModal
+          dialogTitle="Confirm Delete Selected Users"
+          confirmButtonVariant="destructive"
+          confirmButtonText="Delete"
+          confirmButtonBusyText="Deleting"
+          cancelButtonText="Cancel"
+          handleClose={() => setConfirmDeleteModalVisible(false)}
+          handleConfirm={() => {
+            setConfirmDeleteModalVisible(false);
+            handleDeleteSelected();
+          }}
+          // isPending={isPending}
+          isVisible={isConfirmDeleteModalVisible}
+        >
+          Do you confirm deleting the selected users?
+        </ConfirmModal>
+      )}
     </div>
   );
 }

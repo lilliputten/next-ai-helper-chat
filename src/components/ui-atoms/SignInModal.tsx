@@ -32,7 +32,7 @@ function SignInModal(props: TSignInModalProps) {
         'text-center',
         'text-theme-foreground',
         'flex flex-1 flex-col justify-around',
-        'max-h-[90%] overflow-hidden',
+        'overflow-hidden sm:max-h-[90%]',
       )}
     >
       <div
@@ -45,8 +45,8 @@ function SignInModal(props: TSignInModalProps) {
         <div
           className={cn(
             isDev && '__SignInModal_InnerHeader', // DEBUG
-            'flex flex-1 flex-col items-center justify-center',
-            'space-y-3 border-b px-4 py-6 pt-8 md:px-16',
+            'flex flex-col items-center justify-center',
+            'space-y-3 border-b px-4 py-4 md:px-16',
             'bg-theme border-theme-400',
           )}
         >
@@ -59,7 +59,7 @@ function SignInModal(props: TSignInModalProps) {
           )}
           viewportClassName={cn(
             isDev && '__SignInModal_ScrollViewport', // DEBUG
-            'px-4 py-8 md:px-16 [&>div]:!flex [&>div]:flex-col [&>div]:gap-4 [&>div]:flex-1',
+            'px-4 py-8 md:px-16 flex flex-col [&>div]:!flex [&>div]:justify-center [&>div]:flex-col [&>div]:gap-4 [&>div]:flex-1',
           )}
         >
           <SignInForm onSignInDone={handleSignInDone} />
