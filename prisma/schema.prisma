@@ -101,6 +101,7 @@ model VerificationToken {
 // }
 
 model AllowedUser {
+  // id    Int    @id @default(autoincrement())
   type  String @default("EMAIL") // EMAIL (String), TELEGRAM (Int)
   value String @default("")
 

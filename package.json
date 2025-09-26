@@ -162,7 +162,8 @@
     "prisma-db-push-test": "echo --Create test database-- && cross-env DATABASE_URL='file:test.db' prisma db push --accept-data-loss",
     "prisma-db-push-all": "echo --Create all databases-- && npm-run-all prisma-db-push prisma-db-push-test",
     "prisma-studio": "echo --Run database explorer-- && prisma studio",
-    "postinstall": "npm-run-all prisma-generate prisma-db-push",
+    "postinstall-ORIG": "npm-run-all prisma-generate prisma-migrate",
+    "postinstall": "pnpm prisma-generate && pnpm prisma migrate resolve --applied 00_initial 00_initial && pnpm prisma-migrate",
     "test": "jest"
   }
 }
