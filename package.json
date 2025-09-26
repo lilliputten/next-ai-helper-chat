@@ -112,6 +112,7 @@
     "eslint-plugin-tailwindcss": "^3.17.5",
     "eslint-plugin-yaml": "^1.0.3",
     "eslint-plugin-yml": "^1.18.0",
+    "glob": "^11.0.3",
     "globals": "^16.0.0",
     "jest": "^30.0.0",
     "mkdirp": "^3.0.1",
@@ -163,7 +164,7 @@
     "prisma-db-push-all": "echo --Create all databases-- && npm-run-all prisma-db-push prisma-db-push-test",
     "prisma-studio": "echo --Run database explorer-- && prisma studio",
     "postinstall-ORIG": "npm-run-all prisma-generate prisma-migrate",
-    "postinstall": "pnpm prisma-generate && pnpm prisma migrate resolve --applied 00_initial 00_initial && pnpm prisma-migrate",
+    "postinstall": "pnpm prisma-generate && pnpm prisma-migrate",
     "test": "jest"
   }
 }

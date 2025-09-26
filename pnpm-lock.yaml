@@ -282,6 +282,9 @@ importers:
       eslint-plugin-yml:
         specifier: ^1.18.0
         version: 1.18.0(eslint@9.35.0(jiti@2.5.1))
+      glob:
+        specifier: ^11.0.3
+        version: 11.0.3
       globals:
         specifier: ^16.0.0
         version: 16.3.0
