@@ -1,4 +1,5 @@
 // vim: fdm=indent
+// @changed 2025.09.27, 03:14
 
 // See for `DATABASE_URL` parameter in the environment for the sqlite file location (under the `prisma` folder).
 
@@ -101,7 +102,7 @@ model VerificationToken {
 // }
 
 model AllowedUser {
-  // id    Int    @id @default(autoincrement())
+  id    Int    @id @default(autoincrement())
   type  String @default("EMAIL") // EMAIL (String), TELEGRAM (Int)
   value String @default("")
 

@@ -4,7 +4,7 @@
   "main": "index/index.ts",
   "version": "0.0.0",
   "timestamp": "2025.09.23 06:27:45 +0300",
-  "changed": "2025.09.23, 03:50",
+  "changed": "2025.09.27, 03:14",
   "keywords": [],
   "author": "lilliputten@gmail.com",
   "license": "ISC",
@@ -157,14 +157,15 @@
     "vercel-publish": "pnpm vercel --prod --force",
     "prisma-validate": "echo --Check prisma configuration-- && prisma validate",
     "prisma-format": "echo --Format prisma configuration file-- && prisma format",
-    "prisma-generate": "echo --Generate database client-- && node prisma-switch.mjs && prisma generate",
+    "prisma-generate": "echo --Generate database client-- && prisma generate",
+    "prisma-switch": "echo --Switch to proper prisma provider-- && tsx prisma-switch.ts",
     "prisma-migrate": "echo --Migrate database-- && prisma migrate deploy",
     "prisma-db-push": "echo --Create database-- && prisma db push",
     "prisma-db-push-test": "echo --Create test database-- && cross-env DATABASE_URL='file:test.db' prisma db push --accept-data-loss",
     "prisma-db-push-all": "echo --Create all databases-- && npm-run-all prisma-db-push prisma-db-push-test",
     "prisma-studio": "echo --Run database explorer-- && prisma studio",
     "postinstall-ORIG": "npm-run-all prisma-generate prisma-migrate",
-    "postinstall": "pnpm prisma-generate && pnpm prisma-migrate",
+    "postinstall": "pnpm prisma-switch && pnpm prisma migrate resolve --rolled-back 20250926221731_allowed_users_with_id && npm-run-all prisma-generate prisma-migrate",
     "test": "jest"
   }
 }
