@@ -8,6 +8,7 @@ import { prisma } from '@/lib/db';
 import { isDev } from '@/config';
 import { getAllAllowedEmails } from '@/features/allowed-users/actions/getAllAllowedEmails';
 import { getUserById } from '@/features/users/actions/';
+import { setFirstUserAsAdmin } from '@/features/users/helpers/setFirstUserAsAdmin';
 import { TExtendedUser } from '@/features/users/types/TUser';
 
 import authConfig from './auth.config.server';
@@ -133,33 +134,18 @@ export const nextAuthApp = NextAuth({
     },
     async jwt(params) {
       const token = params.token as JWT;
-      // const { token } = params;
-      /* // Values for telegram login:
-       * {
-       *   "token": {
-       *     "name": "Ig ",
-       *     "email": "490398083",
-       *     "picture": "https://t.me/i/userpic/320/3meBKT_rsGqbt3HOAqNHdAIWEQYHGeW3m86yeYhZiUo.jpg",
-       *     "sub": "490398083"
-       *   },
-       *   "user": {
-       *     "id": "490398083",
-       *     "email": "490398083",
-       *     "name": "Ig ",
-       *     "image": "https://t.me/i/userpic/320/3meBKT_rsGqbt3HOAqNHdAIWEQYHGeW3m86yeYhZiUo.jpg"
-       *   },
-       *   "account": {
-       *     "providerAccountId": "490398083",
-       *     "type": "credentials",
-       *     "provider": "telegram-auth"
-       *   },
-       *   "isNewUser": false,
-       *   "trigger": "signIn"
-       * }
-       */
+      const { trigger } = params;
+      const isNewUser = trigger === 'signUp';
+
       if (!token.sub) {
         return token;
       }
+
+      // Set first user as admin if this is a new user
+      if (isNewUser) {
+        await setFirstUserAsAdmin(token.sub);
+      }
+
       const dbUser = await getUserById(token.sub);
       if (!dbUser) {
         return token;

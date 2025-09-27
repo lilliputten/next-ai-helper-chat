@@ -58,18 +58,24 @@ export async function GET(request: NextRequest) {
       // locale,
     } = tokenData;
 
+    // Check if user exists
+    // const existingUser = await prisma.user.findUnique({ where: { id } });
+    // const isNewUser = !existingUser;
+    const usersCount = await prisma.user.count({
+      where: { id: { not: id } },
+    });
+
+    const userData = {
+      name,
+      image,
+      role: usersCount ? 'USER' : 'ADMIN',
+    };
+
     // Create or update user
     const user = await prisma.user.upsert({
       where: { id },
-      update: {
-        name,
-        image,
-      },
-      create: {
-        id,
-        name,
-        image,
-      },
+      update: userData,
+      create: { id, ...userData },
     });
 
     // Create an account if it doesn't exist
