@@ -112,7 +112,7 @@ export function useAllowedUsers(props: TUseAllowedUserProps = {}) {
    * @param {boolean} toStart - Add the new item to the beginning of the existing items. TODO: Determine default behavior by `orderBy`?
    */
   const addNewAllowedUser = React.useCallback(
-    (newAllowedUser: TAllowedUser, toStart?: boolean) =>
+    (newAllowedUser: TAllowedUser, toStart: boolean = true) =>
       addNewItemToQueryCache<TAllowedUser, TAllowedUserId>(
         queryClient,
         queryKey,
