@@ -1,0 +1,312 @@
+@use 'tailwindcss';
+@use 'utils' as *;
+
+// @use 'root-layout';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@custom-variant hover (&:hover);
+
+// Card: Light
+$cardLightColor: #ffffff;
+$cardForegroundLightColor: #0a0a0a;
+// Popover: Light
+$popoverLightColor: #ffffff;
+$popoverForegroundLightColor: #0a0a0a;
+// Muted: Light
+$mutedLightColor: #ddd; // #f5f5f5;
+$mutedForegroundLightColor: #737373;
+
+// Card: Dark
+$cardDarkColor: #0a0a0a;
+$cardForegroundDarkColor: #fafafa;
+// Popover: Dark
+$popoverDarkColor: #0a0a0a;
+$popoverForegroundDarkColor: #fafafa;
+// Muted: Dark
+$mutedDarkColor: #171717;
+$mutedForegroundDarkColor: #a3a3a3;
+
+// Accent
+$accentLightColor: #eee; // #fafafa;
+$accentForegroundLightColor: #171717;
+$accentDarkColor: #141414;
+$accentForegroundDarkColor: #fafafa;
+// Misc: Light
+$destructiveLightColor: #ef4444;
+$destructiveForegroundLightColor: $accentLightColor; // #fafafa;
+$errorLightColor: $destructiveLightColor; // #fafafa;
+// $successLightColor: #00ff00;
+// $successForegroundLightColor: $accentLightColor; // #fafafa;
+$borderLightColor: #e5e5e5;
+$inputLightColor: #e5e5e5;
+$ringLightColor: #0a0a0a;
+// Misc: Dark
+$destructiveDarkColor: #7f1d1d;
+$destructiveForegroundDarkColor: #fafafa;
+$errorDarkColor: $destructiveDarkColor;
+// $successDarkColor: #00cc00;
+// $successForegroundDarkColor: #fafafa;
+$borderDarkColor: #262626;
+$inputDarkColor: #262626;
+$ringDarkColor: #d4d4d4;
+
+@theme {
+  /* // Percents are for purple primary color
+   * @include defineThemeColor("primary", $primaryColor, 18%);
+   * @include defineThemeColor("secondary", $secondaryColor, -8%);
+   */
+  @include defineThemeColor('theme', $primaryColor);
+  @include defineThemeColor('primary', $primaryColor);
+  @include defineThemeColor('secondary', $secondaryColor);
+
+  // ToDO: To use predefined colors, like `colors.pink.500`)?
+  @include defineThemeColor('purple', oklch(65.6% 0.241 354.308));
+}
+
+html {
+  color-scheme: light dark;
+
+  // Base colors
+  --color-background: theme(colors.white);
+  --color-foreground: theme(colors.gray.900);
+
+  // Card: Light
+  --card-color: #{$cardLightColor};
+  --card-foreground-color: #{$cardForegroundLightColor};
+  // Popover: Light
+  --popover-color: #{$popoverLightColor};
+  --popover-foreground-color: #{$popoverForegroundLightColor};
+  // Muted: Light
+  --muted-color: theme(colors.gray.200); // #{$mutedLightColor};
+  --muted-foreground-color: #{$mutedForegroundLightColor};
+
+  // Accent
+  --accent-color: #{$accentLightColor};
+  // --accent-color-RGB: #{rgbComponents($accentLightColor)};
+  --accent-foreground-color: #{$accentForegroundLightColor};
+  // --accent-foreground-color-RGB: #{rgbComponents($accentForegroundLightColor)};
+  // Destructive
+  --destructive-color: #{$destructiveLightColor};
+  --destructive-color-RGB: #{rgbComponents($destructiveLightColor)};
+  --destructive-foreground-color: #{$destructiveForegroundLightColor};
+  // --destructive-foreground-color-RGB: #{rgbComponents($destructiveForegroundLightColor)};
+  // Border
+  --border-color: #{$borderLightColor};
+}
+html.dark {
+  --color-background: theme(colors.gray.900);
+  --color-foreground: theme(colors.gray.200);
+
+  // Card: Dark
+  --card-color: #{$cardDarkColor};
+  --card-foreground-color: #{$cardForegroundDarkColor};
+  // Popover: Dark
+  --popover-color: #{$popoverDarkColor};
+  --popover-foreground-color: #{$popoverForegroundDarkColor};
+  // Muted: Dark
+  --muted-color: theme(colors.gray.800); // #{$mutedDarkColor};
+  --muted-foreground-color: #{$mutedForegroundDarkColor};
+
+  // Accent
+  --accent-color: #{$accentDarkColor};
+  // --accent-color-RGB: #{rgbComponents($accentDarkColor)};
+  --accent-foreground-color: #{$accentForegroundDarkColor};
+  // --accent-foreground-color-RGB: #{rgbComponents($accentForegroundDarkColor)};
+  // Destructive
+  --destructive-color: #{$destructiveDarkColor};
+  // --destructive-color-RGB: #{rgbComponents($destructiveDarkColor)};
+  --destructive-foreground-color: #{$destructiveForegroundDarkColor};
+  // --destructive-foreground-color-RGB: #{rgbComponents($destructiveForegroundDarkColor)};
+  // Border
+  --border-color: #{$borderDarkColor};
+}
+
+/* Apply theme variables to elements using @apply */
+@layer base {
+  * {
+    border-color: var(--border-color);
+  }
+  body {
+    @apply bg-[var(--color-background)] text-[var(--foreground-color)];
+  }
+  .bg-background {
+    background-color: var(--color-background);
+  }
+  .bg-accent {
+    background-color: var(--accent-color);
+  }
+  .bg-accent-foreground {
+    background-color: var(--accent-foreground-color);
+  }
+  .bg-destructive {
+    background-color: var(--destructive-color);
+  }
+  .text-destructive-foreground {
+    color: var(--destructive-foreground-color);
+  }
+  .bg-popover {
+    background-color: var(--popover-color);
+  }
+  .text-popover-foreground {
+    color: var(--popover-foreground-color);
+  }
+  .bg-muted {
+    background-color: var(--muted-color);
+  }
+  .bg-border {
+    background-color: var(--border-color);
+  }
+  .bg-card {
+    background-color: var(--card-color);
+  }
+}
+
+@layer utilities {
+  // .step {
+  //   counter-increment: step;
+  // }
+  // .step:before {
+  //   @apply border-background bg-muted absolute inline-flex h-9 w-9 items-center justify-center rounded-full border-4 text-center -indent-px font-mono text-base font-medium;
+  //   @apply mt-[-4px] ml-[-50px];
+  //   content: counter(step);
+  // }
+
+  .error-gradient-background {
+    background: repeating-linear-gradient(
+      -30deg,
+      rgba(var(--destructive-color-RGB) / 100%) 0px,
+      rgba(var(--destructive-color-RGB) / 100%) 6px,
+      rgba(var(--destructive-color-RGB) / 90%) 6px,
+      rgba(var(--destructive-color-RGB) / 90%) 12px
+    );
+  }
+
+  .welcome-screen-gradient {
+    // position: relative;
+    overflow: hidden;
+    background: radial-gradient(
+      70% 60% at 40% 60%,
+      rgba(var(--color-theme-500-RGB) / 25%) 0%,
+      rgba(var(--color-theme-500-RGB) / 10%) 100%
+    );
+    &:before {
+      overflow: hidden;
+      position: absolute;
+      left: -75%;
+      right: -75%;
+      top: -75%;
+      bottom: -75%;
+      content: '';
+      transform: rotate(-30deg);
+      background: radial-gradient(
+        50% 20% at 70% 50%,
+        rgba(var(--color-purple-400-RGB) / 20%) 0%,
+        rgba(var(--color-purple-300-RGB) / 2%) 100%
+      );
+    }
+  }
+
+  .text-gradient-brand {
+    background: linear-gradient(
+      15deg,
+      rgba(var(--primaryColorRGB) / 80%) 0%,
+      rgb(var(--color-theme-500-RGB)) 100%
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .disabled {
+    pointer-events: none;
+    opacity: 50%;
+    cursor: default;
+  }
+
+  :root {
+    --formSize: 2.5em;
+
+    font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+    line-height: 1.5;
+    font-weight: 400;
+
+    // Set font size to approx fit 20 lines in the list
+    // font-size: max(14px, 1.62vh);
+
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  .text-content {
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    p,
+    ul,
+    ol {
+      margin-top: 0.25em;
+      margin-bottom: 0.25em;
+    }
+    h1,
+    h2,
+    h3 {
+      color: var(--color-primary-500);
+    }
+    h1 {
+      font-size: 2rem;
+    }
+    h2 {
+      font-size: 1.75rem;
+    }
+    h3 {
+      font-size: 1.5rem;
+    }
+    a {
+      color: var(--color-primary-500);
+      &:hover {
+        text-decoration: underline;
+        color: var(--color-primary-400);
+      }
+    }
+    code {
+      border-radius: 4px;
+      display: inline-block;
+      padding: 0 0.2em;
+      border: 1px solid rgba(127 127 127 / 30%);
+      color: var(--color-pink-500);
+      opacity: 50%;
+    }
+  }
+
+  select {
+    // background-color: var(--color-background);
+    background:
+      url('/static/icons/select-arrows-gray.svg') no-repeat 98% 50%,
+      var(--color-background);
+    color: var(--color-foreground);
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    appearance: none;
+    /* // NOTE: It works wierd, let use browser's native styles
+     * option {
+     *   background-color: var(--color-background);
+     *   &:hover,
+     *   &:checked {
+     *     background-color: var(--color-primary) !important;
+     *     color: #fff;
+     *   }
+     *   &:hover {
+     *     box-shadow: 0 0 10px 100px #0f0 inset !important;
+     *   }
+     * }
+     */
+  }
+}

@@ -1,0 +1,33 @@
+@use 'sass:color';
+@use 'utils' as *;
+
+body {
+  &[data-layout='scrollable'] {
+    &,
+    .layout-follow {
+      overflow: auto;
+    }
+  }
+  &[data-layout='clippable'] {
+    // padding-bottom: env(safe-area-inset-bottom) !important;
+    overflow: hidden;
+    width: 100%;
+    height: 100dvh;
+    min-height: 100dvh;
+    max-height: 100dvh;
+    max-width: 100vw;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    .layout-follow {
+      overflow: hidden;
+      width: 100%;
+      height: 100%;
+    }
+  }
+}
+.layout-scrollable {
+  overflow: auto;
+  width: 100%;
+  height: 100%;
+}

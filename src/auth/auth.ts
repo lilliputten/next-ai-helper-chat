@@ -1,0 +1,167 @@
+import { AuthConfig } from '@auth/core';
+import { PrismaAdapter } from '@auth/prisma-adapter';
+import NextAuth from 'next-auth';
+import { JWT } from 'next-auth/jwt';
+
+import { authErrorRoute, welcomeRoute } from '@/config/routesConfig';
+import { prisma } from '@/lib/db';
+import { isDev } from '@/config';
+import { getAllAllowedEmails } from '@/features/allowed-users/actions/getAllAllowedEmails';
+import { getUserById } from '@/features/users/actions/';
+import { setFirstUserAsAdmin } from '@/features/users/helpers/setFirstUserAsAdmin';
+import { TExtendedUser } from '@/features/users/types/TUser';
+
+import authConfig from './auth.config.server';
+import { sessionMaxAge, sessionUpdateAge } from './constants';
+
+const invalidEmailRoute = '/demo-info';
+
+export type TInvalidEmailReason = 'NO_EMAIL' | 'UNKNOWN_EMAIL';
+
+/* // UNUSED: Workaround for make sure that `auth.config.server` is used only on server.
+ * // Use different imports for server and client
+ * import authConfig from './auth.config';
+ * // This is a dynamic import that only runs on the server
+ * // It's not included in the client bundle
+ * let serverConfig = authConfig;
+ * if (typeof window === 'undefined') {
+ *   // We're on the server
+ *   // eslint-disable-next-line @typescript-eslint/no-require-imports
+ *   serverConfig = require('./auth.config.server').default;
+ * }
+ */
+
+export const nextAuthApp = NextAuth({
+  debug: isDev,
+  adapter: PrismaAdapter(prisma),
+  session: {
+    strategy: 'jwt',
+    maxAge: sessionMaxAge,
+    updateAge: sessionUpdateAge,
+  },
+  pages: {
+    // @see https://next-auth.js.org/configuration/pages
+    signIn: welcomeRoute, // <-- /api/auth/signin
+    error: authErrorRoute, // <-- /api/auth/error
+    // signOut: '/auth/signout',
+  },
+  callbacks: {
+    async signIn(params) {
+      const validEmails = await getAllAllowedEmails();
+      const {
+        user,
+        account,
+        profile,
+        // email: verificationEmail, // { verificationRequest?: boolean }
+        credentials,
+      } = params;
+      const { provider, type, providerAccountId } = account || {};
+      const userEmail = user.email;
+      const profileEmail = profile?.email;
+      const email = userEmail || profileEmail;
+      let rejectReason: TInvalidEmailReason | undefined;
+
+      // Skip email validation for telegram provider
+      if (provider === 'telegram') {
+        return true;
+      }
+
+      if (!email) {
+        rejectReason = 'NO_EMAIL';
+      } else if (!validEmails.includes(email)) {
+        rejectReason = 'UNKNOWN_EMAIL';
+      }
+      if (rejectReason) {
+        // eslint-disable-next-line no-console
+        console.warn('[auth:callbacks:signIn] Sing in rejected:', {
+          rejectReason,
+          email,
+          userEmail,
+          profileEmail,
+          provider,
+          type,
+          providerAccountId,
+          user,
+          account,
+          profile,
+          credentials,
+        });
+        // debugger; // eslint-disable-line no-debugger
+        if (provider === 'nodemailer' && type === 'email') {
+          throw rejectReason;
+        }
+        return `${invalidEmailRoute}?reason=${rejectReason}`;
+      }
+      /* console.log('[auth:callbacks:signIn] success', {
+       *   email,
+       *   profileEmail,
+       *   provider,
+       *   type,
+       *   providerAccountId,
+       *   user,
+       *   account,
+       *   profile,
+       *   credentials,
+       * });
+       */
+      return true;
+    },
+    async session(params) {
+      const { token, session } = params;
+      /* console.log('[auth:callbacks:session]', {
+       *   token,
+       *   session,
+       *   params,
+       * });
+       */
+      const user = session.user as unknown as TExtendedUser;
+      if (user) {
+        if (token.sub) {
+          user.id = token.sub;
+          // It uses tg user id for telegram login
+        }
+        if (token.email) {
+          user.email = token.email;
+        }
+        if (token.role) {
+          // @see JWT type extension in `@types/next-auth.d.ts`
+          user.role = token.role as UserRole;
+        }
+        user.name = token.name || null;
+        user.image = token.picture || null;
+      }
+      return session;
+    },
+    async jwt(params) {
+      const token = params.token as JWT;
+      const { trigger } = params;
+      const isNewUser = trigger === 'signUp';
+
+      if (!token.sub) {
+        return token;
+      }
+
+      // Set first user as admin if this is a new user
+      if (isNewUser) {
+        await setFirstUserAsAdmin(token.sub);
+      }
+
+      const dbUser = await getUserById(token.sub);
+      if (!dbUser) {
+        return token;
+      }
+      token.name = dbUser.name;
+      token.email = dbUser.email;
+      token.picture = dbUser.image;
+      token.role = dbUser.role as UserRole;
+      return token;
+    },
+  } satisfies AuthConfig['callbacks'],
+  // Use the server config if we're on the server, otherwise use the client-safe config
+  ...authConfig,
+});
+
+export const {
+  handlers: { GET, POST },
+  auth,
+} = nextAuthApp;

@@ -1,0 +1,106 @@
+// Using client side in order to regenerate save scroll hash on each app open
+'use client';
+
+import { TPropsWithChildrenAndClassName } from '@/lib/types/react';
+import { cn } from '@/lib/utils';
+import { MaxWidthWrapper } from '@/components/shared/MaxWidthWrapper';
+import { TLayoutType, UseScrollableLayout } from '@/components/shared/ScrollableLayout';
+import { isDev } from '@/config';
+
+// const saveScrollHash = getRandomHashString();
+
+interface TPageWrapperProps extends TPropsWithChildrenAndClassName {
+  id?: string;
+  innerClassName?: string;
+  scrollable?: boolean;
+  limitWidth?: boolean;
+  padded?: boolean;
+  xPadded?: boolean;
+  vPadded?: boolean;
+  layoutType?: TLayoutType;
+}
+
+export function PageWrapper(props: TPageWrapperProps) {
+  const {
+    id,
+    className,
+    children,
+    scrollable,
+    limitWidth,
+    padded,
+    xPadded,
+    vPadded,
+    layoutType = 'clippable',
+    innerClassName,
+  } = props;
+
+  let content = children;
+
+  content = (
+    <div
+      className={cn(
+        isDev && '__PageWrapper_InnerWrapper', // DEBUG
+        'flex flex-1 flex-col',
+        'h-full w-full',
+        !scrollable && 'overflow-hidden',
+        innerClassName,
+      )}
+    >
+      {content}
+    </div>
+  );
+
+  if (scrollable) {
+    content = (
+      <div
+        // saveScrollKey={id}
+        // saveScrollHash={saveScrollHash}
+        className={cn(
+          isDev && '__PageWrapper_Scroll', // DEBUG
+          'flex flex-col items-center',
+          'layout-follow',
+          'layout-scrollable',
+        )}
+        // viewportClassName={cn(
+        //   isDev && '__PageWrapper_Viewport', // DEBUG
+        //   'flex-1 flex flex-col',
+        //   '[&>div]:!flex [&>div]:flex-1',
+        // )}
+      >
+        {content}
+      </div>
+    );
+  }
+
+  if (limitWidth) {
+    content = (
+      <MaxWidthWrapper
+        className={cn(
+          isDev && '__PageWrapper_Wrapper', // DEBUG
+          'flex flex-1 flex-col',
+          'layout-follow',
+          'm-auto',
+        )}
+      >
+        {content}
+      </MaxWidthWrapper>
+    );
+  }
+
+  return (
+    <div
+      data-testid={id}
+      className={cn(
+        isDev && '__PageWrapper', // DEBUG
+        'flex flex-1 flex-col items-center',
+        'overflow-hidden',
+        (padded || xPadded) && 'mx-4',
+        (padded || vPadded) && 'my-4',
+        className,
+      )}
+    >
+      {<UseScrollableLayout type={layoutType} />}
+      {content}
+    </div>
+  );
+}

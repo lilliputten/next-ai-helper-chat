@@ -1,9 +1,8 @@
 // @ts-check
 
-// import { fixupPluginRules } from '@eslint/compat';
+import { fixupPluginRules } from '@eslint/compat';
 import pluginJs from '@eslint/js';
-// import nextPlugin from '@next/eslint-plugin-next';
-// import pluginQuery from '@tanstack/eslint-plugin-query';
+import nextPlugin from '@next/eslint-plugin-next';
 import tsPlugin from '@typescript-eslint/eslint-plugin';
 import tsParser from '@typescript-eslint/parser';
 import { dirname } from 'path';
@@ -12,11 +11,14 @@ import prettierConfig from 'eslint-config-prettier';
 import { readGitignoreFiles } from 'eslint-gitignore';
 import prettierPlugin from 'eslint-plugin-prettier';
 import pluginReact from 'eslint-plugin-react';
-// import pluginReactHooks from 'eslint-plugin-react-hooks';
+import pluginReactHooks from 'eslint-plugin-react-hooks';
 import pluginYml from 'eslint-plugin-yml';
 import globals from 'globals';
 import * as tseslint from 'typescript-eslint';
 import yamlParser from 'yaml-eslint-parser';
+
+// import tailwindcssPlugin from 'eslint-plugin-tailwindcss';
+// import pluginQuery from '@tanstack/eslint-plugin-query';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -48,6 +50,8 @@ export default [
       ...readGitignoreFiles({ cwd: __dirname }),
       '.next/**',
       'src/generated/prisma/**',
+      '*~',
+      '**/*~',
     ],
   },
 
@@ -67,12 +71,13 @@ export default [
       },
     },
     plugins: {
-      // '@next/next': fixupPluginRules(nextPlugin),
+      // @ts-expect-error: Check types for the plugin
+      '@next/next': fixupPluginRules(nextPlugin),
     },
     rules: {
       ...pluginJs.configs.recommended.rules,
-      // ...nextPlugin.configs.recommended.rules,
-      // ...nextPlugin.configs['core-web-vitals'].rules,
+      ...nextPlugin.configs.recommended.rules,
+      ...nextPlugin.configs['core-web-vitals'].rules,
       ...defaultJsRules,
       ...commonJsRules,
     },
@@ -83,14 +88,14 @@ export default [
     files: ['src/**/*.{js,jsx,ts,tsx}'],
     plugins: {
       // tailwindcss: tailwindcssPlugin,
-      // 'react-hooks': fixupPluginRules(pluginReactHooks),
+      'react-hooks': fixupPluginRules(pluginReactHooks),
       // '@tanstack/query': pluginQuery,
     },
     rules: {
       // ...defaultJsRules,
       // ...tailwindcssPlugin.configs.recommended.rules,
       // 'tailwindcss/no-custom-classname': ['warn', { callees: ['twMerge'] }],
-      // ...pluginReactHooks.configs.recommended.rules,
+      ...pluginReactHooks.configs.recommended.rules,
       ...commonJsRules,
       // '@tanstack/query/exhaustive-deps': 'warn',
     },

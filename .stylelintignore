@@ -1,0 +1,8 @@
+/node_modules
+/.next
+/dist*
+/build
+/.contentlayer
+/pnpm-lock.yaml
+/assets
+/src/generated
