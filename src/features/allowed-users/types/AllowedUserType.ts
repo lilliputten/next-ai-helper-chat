@@ -1,3 +1,5 @@
+import * as z from 'zod';
+
 export const AllowedUserTypes = {
   email: 'EMAIL',
   telegram: 'TELEGRAM',
@@ -13,3 +15,4 @@ export const AllowedUserTypeEnum = allowedUserTypesList.reduce(
   },
   {} as Record<TAllowedUserType, TAllowedUserType>,
 );
+export const coercedAllosedUserTypeZType = z.nativeEnum(AllowedUserTypeEnum);

@@ -5,9 +5,9 @@ import { DatabaseError } from '@/lib/errors';
 import { getErrorText } from '@/lib/helpers';
 import { isDev } from '@/config';
 
-import { TAllowedUser } from '../types';
+import { TAllowedUser, TAllowedUserId } from '../types';
 
-export async function deleteAllowedUser(user: TAllowedUser) {
+export async function deleteAllowedUser(id: TAllowedUserId) {
   if (isDev) {
     // DEBUG: Emulate network delay
     await new Promise((resolve) => setTimeout(resolve, 1000));
@@ -15,7 +15,7 @@ export async function deleteAllowedUser(user: TAllowedUser) {
   try {
     const deletedUser = await prisma.allowedUser.delete({
       where: {
-        type_value: user,
+        id,
       },
     });
     return deletedUser as TAllowedUser;

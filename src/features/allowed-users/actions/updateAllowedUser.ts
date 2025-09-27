@@ -5,27 +5,28 @@ import { DatabaseError } from '@/lib/errors';
 import { getErrorText } from '@/lib/helpers';
 import { isDev } from '@/config';
 
-import { TAllowedUserId } from '../types';
+import { TAllowedUser } from '../types';
 
-export async function deleteAllowedUsers(ids: TAllowedUserId[]) {
+export async function updateAllowedUser(user: TAllowedUser) {
   if (isDev) {
     // DEBUG: Emulate network delay
     await new Promise((resolve) => setTimeout(resolve, 1000));
   }
   try {
-    const result = await prisma.allowedUser.deleteMany({
+    const addedUser = await prisma.allowedUser.update({
       where: {
-        id: { in: ids },
+        id: user.id,
       },
+      data: user,
     });
-    return result;
+    return addedUser as TAllowedUser;
   } catch (error) {
-    const nextMessage = ['Deleting allowed users error', getErrorText(error)]
+    const nextMessage = ['Updating allowed user error', getErrorText(error)]
       .filter(Boolean)
       .join(': ');
     const nextError = new DatabaseError(nextMessage);
     // eslint-disable-next-line no-console
-    console.warn('[deleteAllowedUsers]', nextMessage, {
+    console.warn('[updateAllowedUser]', nextMessage, {
       nextError,
       error,
     });

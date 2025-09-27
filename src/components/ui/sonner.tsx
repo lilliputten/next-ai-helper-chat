@@ -3,6 +3,8 @@
 import { useTheme } from 'next-themes';
 import { Toaster as Sonner } from 'sonner';
 
+import { Spinner } from '@/components/shared/Icons';
+
 type ToasterProps = React.ComponentProps<typeof Sonner>;
 
 const Toaster = ({ ...props }: ToasterProps) => {
@@ -19,7 +21,11 @@ const Toaster = ({ ...props }: ToasterProps) => {
           description: 'group-[.toast]:text-muted-foreground',
           actionButton: 'group-[.toast]:bg-theme group-[.toast]:text-theme-foreground',
           cancelButton: 'group-[.toast]:bg-muted group-[.toast]:text-muted-foreground',
+          loading: 'animate-spin',
         },
+      }}
+      icons={{
+        loading: <Spinner className="size-4 animate-spin opacity-50" />,
       }}
       {...props}
     />

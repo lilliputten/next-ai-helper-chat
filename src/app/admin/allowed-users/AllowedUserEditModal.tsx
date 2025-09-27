@@ -22,16 +22,13 @@ import { Check, Close, Spinner } from '@/components/shared/Icons';
 import { ModalWrapper } from '@/components/ui-atoms/ModalWrapper';
 import { isDev } from '@/config';
 import {
-  AllowedUserTypeEnum,
   AllowedUserTypes,
   allowedUserTypesList,
+  coercedNewOrExistedAllowedUserSchema,
   TAllowedUser,
 } from '@/features/allowed-users/types';
 
-const formSchema = z.object({
-  type: z.nativeEnum(AllowedUserTypeEnum),
-  value: z.string(),
-});
+const formSchema = coercedNewOrExistedAllowedUserSchema;
 
 type TFormData = z.infer<typeof formSchema>;
 
@@ -46,7 +43,7 @@ const defaultFormValues: TFormData = {
 
 interface TProps {
   initialAllowedUser?: TAllowedUser;
-  handleConfirm: (user: TAllowedUser) => Promise<unknown>;
+  handleConfirm: (user: TFormData) => Promise<unknown>;
   handleClose?: () => void;
   error?: ErrorLike;
 }
@@ -85,6 +82,10 @@ export function AllowedUserEditModal(props: TProps) {
 
   const onSubmit = handleSubmit((formData) => {
     setSaving(true);
+    /* console.log('[AllowedUserEditModal:onSubmit]', {
+     *   formData,
+     * });
+     */
     handleConfirm(formData).finally(() => setSaving(false));
   });
 

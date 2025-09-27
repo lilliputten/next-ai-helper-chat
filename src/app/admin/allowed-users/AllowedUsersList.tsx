@@ -19,7 +19,7 @@ import {
   TableRow,
 } from '@/components/ui/Table';
 import { PageEmpty } from '@/components/pages/shared';
-import { Add, ArrowLeft } from '@/components/shared/Icons';
+import { Add, ArrowLeft, SquarePen } from '@/components/shared/Icons';
 import { PageError } from '@/components/shared/PageError';
 import { isDev } from '@/config';
 import { compareAllowedUsers } from '@/features/allowed-users/helpers/compareAllowedUsers';
@@ -30,17 +30,13 @@ import { useGoBack } from '@/hooks';
 // const __useDebugData = isDev && false;
 
 interface TProps {
-  // editAllowedUser: (user: TAllowedUser) => void;
+  editAllowedUser: (user: TAllowedUser) => void;
   allowedUsersQuery: ReturnType<typeof useAllowedUsers>;
   selectedUsersState: ReturnType<typeof React.useState<TAllowedUser[]>>;
 }
 
 export function AllowedUsersList(props: TProps) {
-  const {
-    allowedUsersQuery,
-    selectedUsersState,
-    // editAllowedUser,
-  } = props;
+  const { allowedUsersQuery, selectedUsersState, editAllowedUser } = props;
 
   const [selectedUsers, setSelectedUsers] = selectedUsersState;
 
@@ -173,7 +169,7 @@ export function AllowedUsersList(props: TProps) {
             <TableHead id="name" className="w-[50%] truncate">
               Name
             </TableHead>
-            {/* <TableHead id="actions" className="w-[4em]" /> */}
+            <TableHead id="actions" className="w-[4em]" />
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -198,19 +194,19 @@ export function AllowedUsersList(props: TProps) {
                 <TableCell id="value" className="truncate">
                   {truncateString(allowedUser.value, 100)}
                 </TableCell>
-                {/*
                 <TableCell id="actions" className="w-[2em] text-right">
                   <Button
                     variant="ghost"
                     className="flex gap-2"
                     size="icon"
                     onClick={() => editAllowedUser(allowedUser)}
+                    aria-label="Edit"
+                    title="Edit"
                   >
                     <SquarePen className="size-4 opacity-50" />
                     <span className="sr-only flex flex-1 truncate">Edit</span>
                   </Button>
                 </TableCell>
-                */}
               </TableRow>
             );
           })}

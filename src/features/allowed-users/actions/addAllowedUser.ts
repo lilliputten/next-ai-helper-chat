@@ -5,9 +5,9 @@ import { DatabaseError } from '@/lib/errors';
 import { getErrorText } from '@/lib/helpers';
 import { isDev } from '@/config';
 
-import { TAllowedUser } from '../types';
+import { TAllowedUser, TNewAllowedUser } from '../types';
 
-export async function addAllowedUser(user: TAllowedUser) {
+export async function addAllowedUser(user: TNewAllowedUser) {
   if (isDev) {
     // DEBUG: Emulate network delay
     await new Promise((resolve) => setTimeout(resolve, 1000));

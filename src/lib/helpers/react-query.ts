@@ -27,7 +27,7 @@ export function getUnqueItemsList<TItem extends { id: TId }, TId = string>(
 }
 
 /** Add a new item record to cached pages. */
-export function addNewItemToQueryCache<TItem>(
+export function addNewItemToQueryCache<TItem extends { id: TId }, TId = string>(
   queryClient: TQueryClient,
   queryKey: QueryKey,
   newTopic: TItem,
@@ -62,6 +62,25 @@ export function deleteItemFromQueryCache<TItem extends { id: TId }, TId = string
     let totalCount = 0;
     const pages: TGetResults<TItem>[] = oldData.pages.map((page) => {
       const items = page.items.filter((topic) => topic.id !== topicIdToDelete);
+      totalCount += items.length;
+      return { ...page, items };
+    });
+    const updatedPages = pages.map((page) => ({ ...page, totalCount }));
+    return { ...oldData, pages: updatedPages };
+  });
+}
+
+/** Delete an item from cached pages by id. */
+export function deleteItemsFromQueryCache<TItem extends { id: TId }, TId = string>(
+  queryClient: TQueryClient,
+  queryKey: QueryKey,
+  topicIdsToDelete: TId[],
+) {
+  return queryClient.setQueryData<TGetResultsInfiniteQueryData<TItem>>(queryKey, (oldData) => {
+    if (!oldData) return oldData;
+    let totalCount = 0;
+    const pages: TGetResults<TItem>[] = oldData.pages.map((page) => {
+      const items = page.items.filter((topic) => !topicIdsToDelete.includes(topic.id));
       totalCount += items.length;
       return { ...page, items };
     });

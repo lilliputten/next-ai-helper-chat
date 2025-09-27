@@ -159,13 +159,14 @@
     "prisma-format": "echo --Format prisma configuration file-- && prisma format",
     "prisma-generate": "echo --Generate database client-- && prisma generate",
     "prisma-switch": "echo --Switch to proper prisma provider-- && tsx prisma-switch.ts",
+    "prisma-remove-failed-migration": "echo --Clear failed migration before the next attempt, use after prisma-switch-- && pnpm prisma migrate resolve --rolled-back MIGRATION_ID",
     "prisma-migrate": "echo --Migrate database-- && prisma migrate deploy",
     "prisma-db-push": "echo --Create database-- && prisma db push",
     "prisma-db-push-test": "echo --Create test database-- && cross-env DATABASE_URL='file:test.db' prisma db push --accept-data-loss",
     "prisma-db-push-all": "echo --Create all databases-- && npm-run-all prisma-db-push prisma-db-push-test",
     "prisma-studio": "echo --Run database explorer-- && prisma studio",
     "postinstall-ORIG": "npm-run-all prisma-generate prisma-migrate",
-    "postinstall": "pnpm prisma-switch && pnpm prisma migrate resolve --rolled-back 20250926221731_allowed_users_with_id && npm-run-all prisma-generate prisma-migrate",
+    "postinstall": "pnpm prisma-switch && npm-run-all prisma-generate prisma-migrate",
     "test": "jest"
   }
 }

@@ -11,7 +11,8 @@ import { ConfirmModal } from '@/components/ui-atoms';
 import { isDev } from '@/config';
 import { addAllowedUser } from '@/features/allowed-users/actions/addAllowedUser';
 import { deleteAllowedUsers } from '@/features/allowed-users/actions/deleteAllowedUsers';
-import { TAllowedUser } from '@/features/allowed-users/types';
+import { updateAllowedUser } from '@/features/allowed-users/actions/updateAllowedUser';
+import { TAllowedUser, TNewOrExistedAllowedUser } from '@/features/allowed-users/types';
 
 import { AllowedUserEditModal } from './AllowedUserEditModal';
 import { AllowedUsersList } from './AllowedUsersList';
@@ -20,6 +21,7 @@ import { AllowedUsersPageMenu } from './AllowedUsersPageMenu';
 const __useDebugData = isDev && false;
 
 export function AllowedUsersPage() {
+  const [editingAllowedUser, setEditingAllowedUser] = React.useState<TAllowedUser | undefined>();
   const [isEditModalVisible, setEditModalVisible] = React.useState(false);
   const [editError, setEditError] = React.useState<ErrorLike>();
   const [isSaving, startSaving] = React.useTransition();
@@ -48,20 +50,24 @@ export function AllowedUsersPage() {
       return Promise.reject(new Error('No selected records'));
     }
     setDeleting(true);
-    return deleteAllowedUsers(selectedUsers)
+    const ids = selectedUsers.map(({ id }) => id);
+    return deleteAllowedUsers(ids)
       .then((result) => {
-        console.log('[AllowedUsersPage:handleCreateUser] Edit finished', {
-          result,
-          selectedUsers,
-        });
+        /* console.log('[AllowedUsersPage:handleCreateOrUpdateUser] Deletion finished', {
+         *   ids,
+         *   result,
+         *   selectedUsers,
+         * });
+         */
         setEditModalVisible(false);
-        allowedUsersQuery.deleteAllowedUsers(selectedUsers);
+        setEditingAllowedUser(undefined);
+        allowedUsersQuery.deleteAllowedUsers(ids);
         allowedUsersQuery.invalidateAllKeysExcept([allowedUsersQuery.queryKey]);
         setSelectedUsers(undefined);
         return result;
       })
       .catch((error) => {
-        const errMsg = ['Error deleting allowed user', getErrorText(error)]
+        const errMsg = ['Deletion of the allowed users failed', getErrorText(error)]
           .filter(Boolean)
           .join(': ');
         // eslint-disable-next-line no-console
@@ -83,32 +89,48 @@ export function AllowedUsersPage() {
   };
 
   const handleAddAllowedUser = () => {
+    setEditingAllowedUser(undefined);
     setEditModalVisible(true);
   };
 
-  /* // UNUSED: We don't have ids, so, its' impossible to update data
-   * const editAllowedUser = (allowedUser: TAllowedUser) => {
-   *   setEditingAllowedUser(allowedUser);
-   *   setEditModalVisible(true);
-   * };
-   */
+  // UNUSED: We don't have ids, so, its' impossible to update data
+  const editAllowedUser = (allowedUser: TAllowedUser) => {
+    setEditingAllowedUser(allowedUser);
+    setEditModalVisible(true);
+  };
 
-  const handleCreateUser = (allowedUser: TAllowedUser) => {
+  const handleCreateOrUpdateUser = (allowedUser: TNewOrExistedAllowedUser) => {
     return new Promise<TAllowedUser>((resolve, reject) => {
       startSaving(async () => {
         try {
-          const addedUser = await addAllowedUser(allowedUser);
-          console.log('[AllowedUsersPage:handleCreateUser] Edit finished', {
-            queryKey: allowedUsersQuery.queryKey,
-            addedUser,
-            allowedUser,
+          const isNew = !allowedUser.id;
+          const promise = isNew
+            ? addAllowedUser(allowedUser)
+            : updateAllowedUser(allowedUser as TAllowedUser);
+          toast.promise(promise, {
+            loading: 'Saving allowed user data...',
+            success: 'Data successfully saved.',
+            error: 'Creation of the allowed user failed.',
           });
+          const updatedUser = await promise;
+          /* console.log('[AllowedUsersPage:handleCreateOrUpdateUser] Edit finished', {
+           *   isNew,
+           *   queryKey: allowedUsersQuery.queryKey,
+           *   updatedUser,
+           *   allowedUser,
+           * });
+           */
           setEditModalVisible(false);
-          allowedUsersQuery.addNewAllowedUser(addedUser);
+          setEditingAllowedUser(undefined);
+          if (isNew) {
+            allowedUsersQuery.addNewAllowedUser(updatedUser);
+          } else {
+            allowedUsersQuery.updateAllowedUser(updatedUser);
+          }
           allowedUsersQuery.invalidateAllKeysExcept([allowedUsersQuery.queryKey]);
-          resolve(addedUser);
+          resolve(updatedUser);
         } catch (error) {
-          const errMsg = ['Error creating allowed user', getErrorText(error)]
+          const errMsg = ['Creation of the allowed user failed', getErrorText(error)]
             .filter(Boolean)
             .join(': ');
           // eslint-disable-next-line no-console
@@ -118,7 +140,7 @@ export function AllowedUsersPage() {
           });
           debugger; // eslint-disable-line no-debugger
           setEditError(errMsg);
-          toast.error(errMsg);
+          // toast.error(errMsg);
           // throw error;
           reject(error);
         }
@@ -159,12 +181,15 @@ export function AllowedUsersPage() {
       <AllowedUsersList
         selectedUsersState={selectedUsersState}
         allowedUsersQuery={allowedUsersQuery}
+        editAllowedUser={editAllowedUser}
       />
       {isEditModalVisible && (
         <AllowedUserEditModal
-          handleConfirm={handleCreateUser}
+          initialAllowedUser={editingAllowedUser}
+          handleConfirm={handleCreateOrUpdateUser}
           handleClose={() => {
             setEditModalVisible(false);
+            setEditingAllowedUser(undefined);
           }}
           error={editError}
         />

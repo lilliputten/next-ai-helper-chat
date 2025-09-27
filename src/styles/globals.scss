@@ -226,17 +226,6 @@ html.dark {
     cursor: default;
   }
 
-  // See animation examples in the `tailwind.config.ts`
-  // Animate sonner toast spinner
-  .sonner-loading-wrapper {
-    animation: rotating-spin 4s linear infinite;
-  }
-  @keyframes rotating-spin {
-    100% {
-      transform: rotate(360deg);
-    }
-  }
-
   :root {
     --formSize: 2.5em;
 

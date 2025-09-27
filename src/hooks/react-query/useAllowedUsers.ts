@@ -12,16 +12,22 @@ import {
 import { toast } from 'sonner';
 
 import { getErrorText } from '@/lib/helpers';
-import { invalidateAllUsedKeysExcept, stringifyQueryKey } from '@/lib/helpers/react-query';
+import {
+  addNewItemToQueryCache,
+  deleteItemFromQueryCache,
+  deleteItemsFromQueryCache,
+  getUnqueItemsList,
+  invalidateAllUsedKeysExcept,
+  stringifyQueryKey,
+  updateItemInQueryCache,
+} from '@/lib/helpers/react-query';
 import { composeQueryHash } from '@/lib/helpers/urls';
-import { TGetResults, TGetResultsInfiniteQueryData } from '@/lib/types/api';
 import { TAllowedUserResultsQueryData, TAllUsedKeys } from '@/lib/types/react-query';
 import { TGetAllowedUserParams, TGetAllowedUserResults } from '@/lib/zod-schemas';
 import { minuteMs } from '@/constants';
 import { getAllowedUsersResults } from '@/features/allowed-users/actions';
 import { itemsLimit } from '@/features/allowed-users/constants';
-import { findSelectedUserIdx } from '@/features/allowed-users/helpers/findSelectedUserIdx';
-import { TAllowedUser } from '@/features/allowed-users/types';
+import { TAllowedUser, TAllowedUserId } from '@/features/allowed-users/types';
 
 const staleTime = minuteMs * 10;
 
@@ -96,95 +102,66 @@ export function useAllowedUsers(props: TUseAllowedUserProps = {}) {
   // Derived data...
 
   const allAllowedUsers = React.useMemo(() => {
-    // return getUnqueItemsList<TAllowedUser>(query.data?.pages);
-    return query.data?.pages.flatMap((page) => page.items) || [];
+    return getUnqueItemsList<TAllowedUser, TAllowedUserId>(query.data?.pages);
+    // return query.data?.pages.flatMap((page) => page.items) || [];
   }, [query.data?.pages]);
 
+  // UNUSED: Incapsulated helpers...
+  /* Add new AvailableUser record to the pages data
+   * @param {TAllowedUser} newAllowedUser - Record to add
+   * @param {boolean} toStart - Add the new item to the beginning of the existing items. TODO: Determine default behavior by `orderBy`?
+   */
+  const addNewAllowedUser = React.useCallback(
+    (newAllowedUser: TAllowedUser, toStart?: boolean) =>
+      addNewItemToQueryCache<TAllowedUser, TAllowedUserId>(
+        queryClient,
+        queryKey,
+        newAllowedUser,
+        toStart,
+      ),
+    [queryClient, queryKey],
+  );
+  /** Delete the specified AvailableUser (by id) from the pages data.
+   * @param {TAllowedUserId} availableUserIdToDelete - Assuming AvailableUser has a unique id of string or number type
+   */
+  const deleteAllowedUser = React.useCallback(
+    (availableUserIdToDelete: TAllowedUserId) =>
+      deleteItemFromQueryCache<TAllowedUser, TAllowedUserId>(
+        queryClient,
+        queryKey,
+        availableUserIdToDelete,
+      ),
+    [queryClient, queryKey],
+  );
+  const deleteAllowedUsers = React.useCallback(
+    (availableUserIdsToDelete: TAllowedUserId[]) =>
+      deleteItemsFromQueryCache<TAllowedUser, TAllowedUserId>(
+        queryClient,
+        queryKey,
+        availableUserIdsToDelete,
+      ),
+    [queryClient, queryKey],
+  );
+  /** Update the specified AvailableUser (by id) from the pages data.
+   * @param {TAllowedUserId} availableUserIdToDelete - Assuming AvailableUser has a unique id of string or number type
+   */
+  const updateAllowedUser = React.useCallback(
+    (updatedAllowedUser: TAllowedUser) =>
+      updateItemInQueryCache<TAllowedUser, TAllowedUserId>(
+        queryClient,
+        queryKey,
+        updatedAllowedUser,
+      ),
+    [queryClient, queryKey],
+  );
+  /** Invalidate all used keys, except optional specified ones
+   * @param {QueryKey[]} [excludeKeys] -- The list of keys to exclude from the invalidation
+   */
   const invalidateAllKeysExcept = React.useCallback(
     (excludeKeys?: QueryKey[]) =>
       invalidateAllUsedKeysExcept(queryClient, excludeKeys, allUsedKeys),
     [queryClient],
   );
-
-  const addNewAllowedUser = React.useCallback(
-    (newItem: TAllowedUser) => {
-      // addNewItemToQueryCache, queryKey, newTopic)<TAllowedUser>(queryClient, queryKey, newItem, toStart),
-      return queryClient.setQueryData<TGetResultsInfiniteQueryData<TAllowedUser>>(
-        queryKey,
-        (oldData) => {
-          if (!oldData || !oldData.pages.length) {
-            return oldData;
-          }
-          const lastPageIndex = oldData.pages.length - 1;
-          const [firstPage, ...restPages] = oldData.pages;
-          const newPage = { ...firstPage };
-          newPage.items = [newItem, ...newPage.items];
-          oldData.pages[lastPageIndex].totalCount++;
-          return { ...oldData, pages: [newPage, ...restPages] };
-        },
-      );
-    },
-    [queryClient, queryKey],
-  );
-
-  const deleteAllowedUsers = React.useCallback(
-    (itemsToDelete: TAllowedUser[]) => {
-      // return deleteItemFromQueryCache(queryClient, queryKey, topicIdToDelete)<TAllowedUser>(queryClient, queryKey, availableUserIdToDelete);
-      return queryClient.setQueryData<TGetResultsInfiniteQueryData<TAllowedUser>>(
-        queryKey,
-        (oldData) => {
-          if (!oldData) return oldData;
-          let totalCount = 0;
-          const pages: TGetResults<TAllowedUser>[] = oldData.pages.map((page) => {
-            const items: TAllowedUser[] = page.items.filter(
-              (item) => findSelectedUserIdx(itemsToDelete, item) === -1,
-            );
-            totalCount += items.length;
-            return { ...page, items };
-          });
-          const updatedPages = pages.map((page) => ({ ...page, totalCount }));
-          return { ...oldData, pages: updatedPages };
-        },
-      );
-    },
-    [queryClient, queryKey],
-  );
-
-  /* // UNUSED: Incapsulated helpers...
-   * [> Add new AvailableUser record to the pages data
-   *  * @param {TAllowedUser} newAllowedUser - Record to add
-   *  * @param {boolean} toStart - Add the new item to the beginning of the existing items. TODO: Determine default behavior by `orderBy`?
-   *  <]
-   * const addNewAllowedUser = React.useCallback(
-   *   (newAllowedUser: TAllowedUser, toStart?: boolean) =>
-   *     addNewItemToQueryCache<TAllowedUser>(queryClient, queryKey, newAllowedUser, toStart),
-   *   [queryClient, queryKey],
-   * );
-   * [>* Delete the specified AvailableUser (by id) from the pages data.
-   *  * @param {TAllowedUserId} availableUserIdToDelete - Assuming AvailableUser has a unique id of string or number type
-   *  <]
-   * const deleteAllowedUser = React.useCallback(
-   *   (availableUserIdToDelete: TAllowedUserId) =>
-   *     deleteItemFromQueryCache<TAllowedUser>(queryClient, queryKey, availableUserIdToDelete),
-   *   [queryClient, queryKey],
-   * );
-   * [>* Update the specified AvailableUser (by id) from the pages data.
-   *  * @param {TAllowedUserId} availableUserIdToDelete - Assuming AvailableUser has a unique id of string or number type
-   *  <]
-   * const updateAllowedUser = React.useCallback(
-   *   (updatedAllowedUser: TAllowedUser) =>
-   *     updateItemInQueryCache<TAllowedUser>(queryClient, queryKey, updatedAllowedUser),
-   *   [queryClient, queryKey],
-   * );
-   * [>* Invalidate all used keys, except optional specified ones
-   *  * @param {QueryKey[]} [excludeKeys] -- The list of keys to exclude from the invalidation
-   *  <]
-   * const invalidateAllKeysExcept = React.useCallback(
-   *   (excludeKeys?: QueryKey[]) =>
-   *     invalidateAllUsedKeysExcept(queryClient, excludeKeys, allUsedKeys),
-   *   [queryClient],
-   * );
-   */
 
   /* // List of query properties:
    * status
@@ -236,7 +213,7 @@ export function useAllowedUsers(props: TUseAllowedUserProps = {}) {
     invalidateAllKeysExcept,
     addNewAllowedUser,
     deleteAllowedUsers,
-    // deleteAllowedUser,
-    // updateAllowedUser,
+    deleteAllowedUser,
+    updateAllowedUser,
   };
 }

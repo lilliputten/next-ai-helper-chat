@@ -12,7 +12,7 @@ import { glob } from 'glob';
 const VERCEL_URL = process.env.VERCEL_URL;
 const isVercel = !!VERCEL_URL;
 
-console.log('prisma-switch: VERCEL_URL:', isVercel, VERCEL_URL);
+console.log('prisma-switch: VERCEL_URL:', VERCEL_URL);
 
 const prismaFile = 'prisma/schema.prisma';
 
@@ -40,6 +40,8 @@ const replacements: TReplacement[] = [
   { provider: 'sqlite', from: /^-- PRAGMA/gm, to: 'PRAGMA' },
   { provider: 'postgresql', from: /INTEGER\b(.*)\bPRIMARY KEY AUTOINCREMENT/g, to: 'SERIAL$1PRIMARY KEY' },
   { provider: 'sqlite', from: /SERIAL\b(.*)\bPRIMARY KEY/g, to: 'INTEGER$1PRIMARY KEY AUTOINCREMENT' },
+  { provider: 'postgresql', from: /'c' \|\| lower\(hex\(randomblob\(12\)\)\) \|\| printf\('%08x', abs\(random\(\)\)\)/g, to: "'c' || encode(gen_random_bytes(12), 'hex') || lpad(to_hex(floor(random() * 4294967295)::int), 8, '0')" },
+  { provider: 'sqlite', from: /'c' \|\| encode\(gen_random_bytes\(12\), 'hex'\) \|\| lpad\(to_hex\(floor\(random\(\) \* 4294967295\)::int\), 8, '0'\)/g, to: "'c' || lower(hex(randomblob(12))) || printf('%08x', abs(random()))" },
 ];
 
 function applyAllReplacements(
